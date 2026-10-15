@@ -33,14 +33,15 @@ Estos problemas son hipótesis de la reunión. Se confirman o se descartan con e
 
 | Aspecto | Definición |
 |---|---|
-| Segmento inicial | **Clínicas estéticas.** Es el segmento que aparece tanto en la lista de prioridades como en la de validación del brief |
-| Segmento secundario de validación | Inmobiliarias (*real estate*), que el brief también incluye para la prueba |
-| Segmentos posteriores | Odontologías y veterinarias |
+| Segmento inicial | **Inmobiliarias, clínicas estéticas y odontologías**, con el mismo producto para los tres. Actualizado el 2026-10-14 (ADR-001): los nichos específicos se analizan después de validar la idea |
+| Segmentos posteriores | Veterinarias |
 | Volumen esperado | 500 conversaciones al mes por negocio |
 | Usuarios diarios | **Asesores**, que atienden a los clientes, y **administradores**, que supervisan las conversaciones |
 | Quién decide la compra | El gerente o dueño del negocio |
 
-**Por qué un solo segmento inicial:** el brief enumera cuatro segmentos en la sección de público objetivo y dos en la de validación. Diseñar para todos a la vez dispersa el MVP. Se prioriza uno y los demás se atienden si el piloto lo justifica.
+**Por qué tres segmentos con el mismo producto:** el brief enumera cuatro segmentos en la sección de público objetivo y dos en la de validación. La versión anterior de este documento priorizaba solo clínicas estéticas. Al decidir el modelo de conexión (ADR-001) se confirmó que los tres primeros se atienden con el **mismo producto**, sin funciones específicas por nicho, así que restringir el piloto a uno no simplificaba la construcción y sí reducía las oportunidades de validación. La especialización por nicho se evalúa después del piloto.
+
+**Consecuencia para el tratamiento de datos:** dos de los tres segmentos —clínicas estéticas y odontologías— manejan información de salud, que la Ley 1581 trata como dato sensible. Esto condiciona el agente de IA (sección 6) y el acuerdo de encargo con cada negocio (sección 8.4).
 
 ## 4. Propuesta de valor
 
@@ -146,13 +147,21 @@ Queda fuera lo que el brief excluye y lo que no es necesario para probar el prod
 - Módulo de marketing y campañas masivas.
 - Integración con Instagram, Messenger, correo y otras plataformas.
 - Versión adaptada a móvil (*responsive*) y aplicación móvil.
-- Agentes de IA y constructor de automatizaciones. La arquitectura se diseña para incorporarlos después.
-- Plantillas de WhatsApp para escribir después de 24 horas, porque cada plantilla requiere aprobación de Meta.
+- **Constructor de automatizaciones**, y las **integraciones del agente de IA con sistemas del negocio** (agendar citas, consultar inventario). Ver abajo el cambio de alcance del 2026-10-15.
+- Plantillas de WhatsApp para escribir después de 24 horas, porque cada plantilla requiere aprobación de Meta. **Consecuencia que conviene tener presente:** una conversación con la ventana de 24 horas vencida **no se puede retomar desde el CRM** (ADR-012).
 - Reportes avanzados y paneles complejos.
 - Campos personalizados, importación de contactos y permisos configurables.
-- Visualización de audios, imágenes y documentos: en el MVP se muestra un marcador con el tipo de mensaje. Ver el punto abierto en la sección 12, porque puede afectar la adopción por parte de las clínicas.
 
 Cualquier función que no esté en la sección 5 se considera fuera del alcance inicial.
+
+**Dos cambios de alcance decididos el 2026-10-15.** Ambos entran al MVP y ya no están fuera:
+
+| Entró al MVP | Qué incluye | Decisión |
+|---|---|---|
+| **Audios, imágenes y documentos** | Se descargan, se guardan y **se muestran**. La descarga es P0 e irreversible —el identificador de Meta caduca a los 7 días—; la visualización en la interfaz es lo primero que se sacrifica si el calendario aprieta | ADR-004 |
+| **Agente de IA configurable por negocio** | Responde en primera línea, escala a un asesor y cierra conversaciones. Configuración por negocio: información en texto libre, nombre y tono, reglas de escalada y preguntas y respuestas fijas. **Apagado por defecto** | ADR-014 |
+
+El agente de IA **contradice la exclusión anterior de este documento**, que decía *"Agentes de IA y constructor de automatizaciones. La arquitectura se diseña para incorporarlos después"*. Franco decidió incorporarlo al MVP sin recortar otro alcance a cambio, asumiendo el riesgo de calendario; ADR-014 registra la objeción y define un orden de repliegue de cuatro escalones para la revisión del 16 de noviembre.
 
 ## 7. Criterios para considerar el MVP listo
 
@@ -182,29 +191,34 @@ El MVP está listo cuando el flujo principal funciona de extremo a extremo, de f
   - **Número solo en la API:** el número deja de usarse en la app del celular y todo se atiende desde el CRM.
   - La elección cambia el alta de cada negocio, lo que se ve en la bandeja y la facilidad para que una clínica acepte el piloto (sección 12).
 
-### 8.2 Stack propuesto en el brief
+### 8.2 Stack
 
-| Capa | Tecnología | Motivo |
+**Actualizado el 2026-10-15.** Las catorce decisiones de arquitectura están aprobadas y registradas en `docs/adr/`. Esta tabla refleja lo decidido; el detalle y el razonamiento están en cada ADR y en `docs/architecture/arquitectura.md`.
+
+| Capa | Tecnología | Decisión |
 |---|---|---|
-| Lenguaje | Node.js con TypeScript | Tipado estático para un producto que va a evolucionar |
-| Backend | Fastify, ejecutado en Cloudflare Workers con runtime compatible con Node.js | API modular y ligera, sin servidores que administrar |
-| Frontend | Next.js en Cloudflare Workers mediante OpenNext | Mismo proveedor que el backend |
-| Base de datos | PostgreSQL administrado (por ejemplo Supabase), conectado con Cloudflare Hyperdrive | Base relacional con políticas de seguridad por fila |
-| Autenticación | Supabase Auth, más validación de permisos en el backend | Autenticación probada; la autorización no depende solo del frontend |
-| Archivos | Cloudflare R2, cuando haya adjuntos | Almacenamiento barato; no se usa si los adjuntos quedan fuera |
-| Procesamiento asíncrono | Cloudflare Queues para webhooks y mensajes | El webhook responde rápido y el procesamiento no bloquea la API |
-| Código y despliegue | GitHub, con entornos de desarrollo y producción | Control de versiones y despliegues separados |
+| Lenguaje | Node.js con TypeScript | — |
+| Backend | **Hono en Cloudflare Workers** | ADR-003 |
+| Frontend | **Aplicación de página única con React y Vite, servida desde Cloudflare Workers** | ADR-009 |
+| Base de datos | PostgreSQL administrado (Supabase), conectado con Cloudflare Hyperdrive | ADR-003 |
+| Autenticación | Supabase Auth **solo como identidad**; toda la autorización en el backend, verificada en cada petición | ADR-007 |
+| Archivos | **Cloudflare R2**, servido por el Worker con verificación de permisos; sin URL firmadas | ADR-004, ADR-010 |
+| Procesamiento asíncrono | **Cloudflare Queues: tres colas** —eventos, archivos y agente— con tolerancias distintas | ADR-005, ADR-014 |
+| Tiempo real | **Supabase Realtime, Broadcast desde el servidor**; el aviso no transporta contenido | ADR-008 |
+| Correo | **Resend**, con dominio propio de Numi | ADR-011 |
+| Agente de IA | **API de Anthropic**, detrás de su propia cola | ADR-014 |
+| Código y despliegue | GitHub, con entornos de desarrollo y producción | ADR-011 |
 
-La arquitectura es serverless, con pocos costos fijos y un backend modular, no microservicios.
+La arquitectura es serverless, con un backend modular, no microservicios. **Se despliegan dos Workers** —la aplicación y la API—; las colas, R2 e Hyperdrive son recursos gestionados, y los tres consumidores son funciones del Worker de la API.
 
-**Puntos técnicos por resolver antes de programar:**
+**Costos fijos mensuales:** Workers plan de pago 5 USD, Supabase Pro en producción 25 USD. Más el costo variable del agente de IA —estimado en unos 6 USD al mes con Claude Haiku 5.5— y los mensajes de Meta.
 
-1. **Fastify en Workers.** Cloudflare indica que Express y Koa ya funcionan en Workers, pero Fastify todavía no. Los caminos son: ejecutar Fastify en un servicio Node.js común y dejar Cloudflare para la interfaz; usar Express en Workers; o usar un framework hecho para Workers, como Hono. Todos mantienen TypeScript y el resto del stack.
-2. **Tiempo real.** Definir cómo llegan los mensajes nuevos a la pantalla sin recargar. La opción más simple es que la interfaz se suscriba a Supabase Realtime, lo que exige políticas de seguridad por fila correctas desde el primer día.
-3. **Seguridad por fila en la API.** Si la API se conecta a la base con un usuario privilegiado, las políticas de seguridad por fila no la protegen. Hay que elegir un patrón: aplicar la identidad del usuario en cada transacción, o filtrar siempre por organización con pruebas automáticas de aislamiento.
-4. **Correo propio.** El servidor de correo por defecto de Supabase no es para producción. Las invitaciones y los restablecimientos de contraseña necesitan un servidor de correo propio.
+**Los cuatro puntos técnicos del brief, resueltos:**
 
-Se deciden en la primera semana, con una prueba corta que reciba un webhook de WhatsApp de punta a punta y lo muestre en tiempo real.
+1. **Fastify en Workers.** Resuelto por ADR-003: Fastify no funciona en Workers y Cloudflare no da fecha. Se adopta **Hono**, nativo de Workers.
+2. **Tiempo real.** Resuelto por ADR-008. La respuesta **no** es que la interfaz se suscriba a las tablas —eso reintroduciría permisos cacheados que no se pueden revocar—, sino **Broadcast desde el servidor**: el aviso notifica y la interfaz recarga desde la API.
+3. **Seguridad por fila en la API.** Resuelto por ADR-006. La respuesta es **ambos patrones**, no uno: filtrado explícito como camino normal y RLS como red de seguridad, más tres roles de base de datos sin `bypassrls`.
+4. **Correo propio.** Resuelto por ADR-011: **Resend** con dominio propio, SMTP configurado en Supabase Auth. Requiere SPF, DKIM y DMARC, cuya propagación no depende del equipo.
 
 ### 8.3 Aislamiento de datos entre negocios
 
@@ -217,6 +231,18 @@ Arquitectura multiempresa (*multi-tenant*) con una base de datos PostgreSQL comp
 - Se valida la autorización en cada operación y se aplican políticas de seguridad por fila (*Row-Level Security*, RLS) en PostgreSQL.
 - Las credenciales de integraciones como WhatsApp se asocian a la organización y se guardan cifradas, nunca en el frontend ni en los registros.
 - El rol **Operador de plataforma** no pertenece a ninguna organización. Las acciones de la consola se ejecutan en el servidor, que verifica ese rol en cada petición; el navegador nunca recibe permisos para leer datos de todas las organizaciones.
+
+**Tres roles de base de datos** (ADR-006), ninguno con `bypassrls`:
+
+| Rol | Quién lo usa | Alcance |
+|---|---|---|
+| `app_user` | La API, para peticiones de usuarios de un negocio | Solo la organización fijada en el contexto de la transacción |
+| `app_platform` | La API, para acciones de la consola | Todas las organizaciones, **pero sin permiso sobre las tablas con contenido de conversaciones** |
+| `app_worker` | Los consumidores de cola | Escribe en cualquier organización; sin lectura más allá de lo necesario |
+
+**La consola no accede al contenido de las conversaciones por permisos, no por disciplina.** `app_platform` no obtiene su alcance saltando RLS, sino careciendo de permiso sobre las tablas de mensajes: una consulta de la consola contra ellas **falla**, no devuelve datos filtrados. Es lo que vuelve estructural el requisito de que los datos sensibles no lleguen a la consola.
+
+El contexto de organización se fija **en cada transacción con alcance local**, porque Hyperdrive opera en modo transacción y reinicia la conexión al devolverla al grupo. El aislamiento se verifica con **siete pruebas automáticas** que corren antes de cada despliegue.
 - Cada petición de un webhook se valida con la firma que envía Meta, y se guarda el identificador del mensaje de Meta como clave única para que un reintento no duplique datos.
 
 Se evita una base de datos por cliente para reducir costos. Si algún cliente requiere aislamiento dedicado, el diseño permite evaluarlo después.
@@ -229,10 +255,11 @@ Se evita una base de datos por cliente para reducir costos. Si algún cliente re
 | Contactos | Nombre, teléfono, correo, estado y fechas de actividad | Mientras el negocio mantenga el contacto y exista una finalidad legítima |
 | Conversaciones | Canal, contacto, responsable, estado y fechas | 12 meses como período inicial, sujeto a validación |
 | Mensajes | Contenido, dirección, identificadores externos y marcas de tiempo | 12 meses como período inicial, sujeto a validación |
-| Adjuntos | Archivos asociados a mensajes | El mismo período del mensaje; solo si los adjuntos entran en el producto |
+| Adjuntos | Archivos asociados a mensajes, en Cloudflare R2 | El mismo período del mensaje. Al borrar un mensaje se borra su archivo (ADR-004) |
+| Eventos recibidos del webhook | Cuerpo crudo del evento, organización y hora de recepción | **30 días.** Es una red de seguridad para reprocesar, no un archivo histórico. Contiene contenido de conversaciones (ADR-005) |
 | Métricas | Volúmenes, tiempos de respuesta y conversiones | 12 meses en detalle; los datos agregados pueden conservarse más tiempo |
 | Auditoría | Accesos relevantes y cambios de estado o permisos | 6 a 12 meses como propuesta inicial |
-| Credenciales de integraciones | Tokens y referencias de conexión | Mientras la integración esté activa, con revocación al desconectarla |
+| Credenciales de integraciones | Tokens y referencias de conexión | Mientras la integración esté activa, con revocación al desconectarla. **Cifrados con AES-GCM; la clave es un secreto del Worker, no está en la base** (ADR-011) |
 
 La retención definitiva se fija según la finalidad del tratamiento, los acuerdos con cada negocio y los requisitos legales. En Colombia aplica la **Ley 1581 de 2012** de protección de datos personales. Las conversaciones de clínicas pueden contener datos de salud, que la ley trata como **datos sensibles**. El negocio es el responsable del tratamiento y Numi actúa como encargado. Antes de usar datos reales de un cliente se necesitan una política de tratamiento de datos y un acuerdo de encargo con cada negocio, que conviene revisar con un abogado. El contenido de las conversaciones solo lo ven los usuarios del negocio: nunca aparece en la consola de plataforma, en los registros técnicos ni en las métricas. Se implementan políticas de eliminación, exportación y atención de solicitudes de los titulares, y las copias de seguridad tienen un período de retención definido.
 
@@ -294,10 +321,14 @@ Las fechas son una propuesta calculada hacia atrás desde la meta del 30 de novi
 | Punto | Detalle | Qué se necesita |
 |---|---|---|
 | Esfuerzo frente a la fecha | Dos personas, un stack con varias piezas y siete semanas. Con la consola, el MVP suma 110 requisitos funcionales indispensables (63 del CRM y 47 de la consola) y 29 vistas. El esfuerzo no está medido | Estimar cada bloque en la primera semana; confirmar las horas semanales de cada socio; decidir si la consola entra completa o en una versión mínima |
-| Modelo de conexión de WhatsApp | Con número solo en la API, la clínica deja de usar la app en esa línea: no puede ver audios ni imágenes fuera del CRM ni escribir pasadas 24 horas, y es difícil que acepte mudar su línea principal para un piloto gratis de una semana. La coexistencia evita eso, pero exige ser Tech Provider de Meta o usar un proveedor | Decidir el modelo antes del 16 de octubre (sección 8.1) |
-| Complejidad del stack | El stack del brief usa varios servicios de Cloudflare más una base externa. Un stack más simple ahorraría tiempo de montaje y operación, a costa de apartarse de lo acordado | Decidir en la primera semana si se mantiene el stack del brief; ver el punto técnico de Fastify en la sección 8.2 |
-| Verificación de Meta | No depende del equipo y puede tardar semanas | Iniciar el trámite esta semana y preparar los documentos del negocio |
-| Audios, imágenes y documentos | Los clientes de WhatsApp envían notas de voz e imágenes con frecuencia. En el MVP se muestra un marcador con el tipo de mensaje; con número solo en la API, la clínica no tiene otro lugar donde verlos | Decidir antes del 26 de octubre, junto con el modelo de conexión, si su visualización entra en el MVP |
+| ~~Modelo de conexión de WhatsApp~~ | **Resuelto el 2026-10-15 (ADR-001).** Modelo objetivo: Tech Provider con registro integrado. El piloto arranca en modo transitorio con números del portafolio de Numi | — |
+| ~~Complejidad del stack~~ | **Resuelto.** Se mantiene el stack del brief con dos cambios de framework (Hono y Vite en lugar de Fastify y Next.js), lo que quita capas de adaptación en vez de agregarlas | — |
+| ~~Audios, imágenes y documentos~~ | **Resuelto el 2026-10-15 (ADR-004).** Entran al MVP: se descargan, se guardan y se muestran | — |
+| **Verificación de Meta** | **Sigue siendo la ruta crítica del proyecto.** No depende del equipo. Mientras el negocio no esté verificado, el portafolio admite 2 números; verificado, 20. Después queda la habilitación como Tech Provider, que es un segundo trámite | Destrabar el trámite; es el único riesgo que puede limitar el piloto a 2 clientes |
+| **Configuración de Resend** | Sin correo no hay invitación, y sin invitación el primer administrador de un negocio no entra. La propagación de DNS de SPF, DKIM y DMARC no depende del equipo | Resolverlo antes de construir la consola (ADR-011) |
+| **Calendario con el agente de IA** | El agente entró al MVP el 2026-10-15 sin recortar otro alcance a cambio. El cronograma ya estaba ajustado antes de eso | Vigilarlo en la revisión del 16 de noviembre; ADR-014 tiene el orden de repliegue listo |
+| **Concentración en Supabase** | Postgres, identidad y tiempo real vienen del mismo proveedor, que tiene antecedentes de caídas | Asumido conscientemente a cambio de operar una pieza en lugar de tres. ADR-011 documenta qué pasa en cada fallo; ninguno causa pérdida irreversible |
+| **Contenido de conversaciones hacia un tercero** | El agente de IA envía el texto de las conversaciones a la API de Anthropic. Con clínicas y odontologías en el segmento, eso incluye datos de salud | Habilitar la preparación para HIPAA en Anthropic **antes de conectar un cliente real**. Es autoservicio e inmediato, pero permanente, y lo acepta un representante legal (ADR-014) |
 | Costos | Costo de la API de WhatsApp por conversación, plan de la base de datos, hosting y números de WhatsApp | Verificar los precios vigentes antes de fijar un precio al cliente |
 | Aspectos legales | Ley 1581 de 2012: las conversaciones pueden contener datos sensibles y Numi actúa como encargado del tratamiento | Redactar la política de datos y el acuerdo de encargo antes de usar datos reales; revisión legal recomendada |
 | Piloto en temporada de festividades | Diciembre puede alterar el volumen de conversaciones | Tenerlo en cuenta al interpretar los resultados |

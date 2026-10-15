@@ -1,7 +1,7 @@
 # ADR-014: Agente de IA configurable por negocio
 
-- **Estado:** Propuesta
-- **Fecha:** 2026-10-15
+- **Estado:** Aprobada
+- **Fecha:** 2026-10-15 (aprobada el 2026-10-15)
 - **Decisores:** Franco, Anthony
 - **Requisitos relacionados:** RF-CNV-11, RF-CNV-12, RF-CNV-13, RF-CNV-16, RF-MET-02, RF-TRV-01, RF-TRV-02, RF-TRV-07, RF-AUT-07, RF-CFG-03
 - **Depende de:** ADR-001, ADR-003, ADR-005, ADR-006, ADR-007, ADR-008, ADR-012

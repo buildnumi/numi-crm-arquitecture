@@ -21,7 +21,7 @@ markdown
 | ADR | Decisión | Qué se eligió |
 | --- | --- | --- |
 | [001](adr/001-modelo-conexion-whatsapp.md) | D-01 Conexión de WhatsApp | Tech Provider como destino; piloto con números del portafolio de Numi |
-| [002](adr/002-alcance-consola.md) | D-02 Alcance de la consola | Completa: 44 requisitos P0, 11 vistas |
+| [002](adr/002-alcance-consola.md) | D-02 Alcance de la consola | Completa: 47 requisitos P0, 11 vistas |
 | [003](adr/003-runtime-backend.md) | D-04 Runtime del backend | Hono en Cloudflare Workers |
 | [004](adr/004-multimedia-mvp.md) | D-03 Multimedia | Se descargan, se guardan y se muestran |
 | [005](adr/005-procesamiento-webhook.md) | D-05 Webhook | Webhook mínimo más Cloudflare Queues |
@@ -54,6 +54,216 @@ markdown
 - **Antes del piloto:** probar una restauración de copia de seguridad, y medir V30 con 6.000 conversaciones y 60.000 mensajes (ADR-013).
 
 **Siguiente paso:** sección 3 de `docs/architecture/arquitectura.md` (contenedores, C4 nivel 2). La revisión independiente de `CLAUDE.md` §11 queda para cuando el documento esté completo.
+
+---
+
+## 2026-10-15 — Documentos fuente actualizados con las 14 decisiones
+
+- **Se decidió o produjo:** aplicadas las **~35 actualizaciones** que los 14 ADR listaban en sus consecuencias y que no se habían tocado desde el 14 de octubre. Era el pendiente más grande del repositorio: los documentos fuente seguían describiendo un sistema que las decisiones ya habían cambiado.
+
+  **`docs/01_definicion_mvp_v2.2.md`:**
+  - **§3, segmento:** pasa de "clínicas estéticas" a **inmobiliarias, clínicas estéticas y odontologías con el mismo producto** (ADR-001), con la consecuencia explícita de que dos de los tres manejan datos de salud.
+  - **§6, Fuera del MVP:** **quitados los agentes de IA y la visualización de multimedia**, que entraron por ADR-014 y ADR-004. Se deja registrado que el agente contradice la exclusión anterior y por decisión de quién. Agregada la consecuencia de que, sin plantillas, una conversación con la ventana vencida no se puede retomar.
+  - **§8.2, stack:** reescrita la tabla con lo decidido —Hono, Vite, tres colas, Realtime, Resend, Anthropic— y **los cuatro puntos técnicos del brief marcados como resueltos**, cada uno con su ADR y su respuesta.
+  - **§8.3:** agregados los tres roles de base y la precisión de que la consola no accede al contenido **por permisos, no por disciplina**.
+  - **§8.4, retención:** adjuntos deja de ser condicional, se agrega la tabla de eventos recibidos con 30 días, y se precisa el cifrado de credenciales con clave fuera de la base.
+  - **§12, riesgos:** cerrados tres (modelo de conexión, complejidad del stack, multimedia) y agregados cuatro nuevos: configuración de Resend, calendario con el agente, concentración en Supabase y contenido hacia un tercero.
+
+  **`docs/02_documento_maestro_v1.1.md`:** reescrito `RF-CNV-10` —ahora cubre solo video, sticker, ubicación y contacto—, agregados `RF-CNV-10a` a `10e` (adjuntos), precisados `RF-CNV-09` (progresión de estados y reintento manual), `RF-CNV-15` (el aviso no transporta contenido) y `RF-MET-02` (con el agente mide cuánto tardó una persona en entrar), y agregados `RF-MET-09` y `RF-CFG-04` a `RF-CFG-08` para el agente. **El CRM pasa de 63 a 73 requisitos.**
+
+  **`docs/03_consola_plataforma_v1.1.md`:** anotado que **P23 es vista de soporte** y que la vía normal de alta de asesores es el CRM —lo que vuelve `RF-USR-*` irrecortable—, que el doble factor se resuelve con el TOTP del proveedor (confirmado disponible y gratuito), y que `RF-PLT-WA-08` sube a P0 al obtener el rol de Tech Provider, con la nota de que la v2 del registro integrado quedó obsoleta.
+
+  **`CLAUDE.md`:** §9 con el stack decidido y su ADR por fila; §8 con la excepción del agente a la regla de datos sensibles.
+
+- **Quedó abierto:**
+  1. **Revisión independiente en sesión nueva** (`CLAUDE.md` §11) — ahora cubre también estos documentos actualizados.
+  2. Confirmar los cinco supuestos de `arquitectura.md` §1.8.
+  3. Elección de framework del frontend (ADR-009).
+  4. El diagrama de Archify, con el candidato validado.
+  5. **Las vistas V11 y V50 de `docs/02` §6 no se reescribieron en detalle**: se agregaron los requisitos, pero la descripción de cada vista todavía no refleja las variantes de mensaje con adjunto ni la configuración del agente. Es trabajo de detalle de interfaz, no de arquitectura.
+
+- **Siguiente paso:** revisión independiente en sesión nueva.
+
+---
+
+## 2026-10-15 — Sección 12: trazabilidad. Documento de arquitectura completo
+
+- **Se decidió o produjo:** escrita la **sección 12**, última pendiente. **`docs/architecture/arquitectura.md` tiene sus 12 secciones**, sobre ADR-001 a ADR-014, todas aprobadas.
+
+  **Cobertura verificada:** los 63 requisitos del CRM, los 47 P0 de la consola y el nuevo `RF-MET-09` tienen componente asignado. Ningún requisito quedó sin dónde cumplirse.
+
+  **Corrección de hecho encontrada al verificar los totales contra `docs/03`:** ADR-002 decía *"44 requisitos en P0 y 8 en P1"*; el documento fuente dice **47 P0 y 5 P1**. ADR-002 contaba las dos vistas P1 (P10 y P30) como si fueran requisitos. La decisión no cambia —consola completa— pero el número sí: **el alcance de la consola es 3 requisitos mayor de lo que decía el ADR**, lo que refuerza su propia advertencia de calendario. Corregido en ADR-002 y en la tabla de estado de esta bitácora; las entradas históricas se dejan como registro de lo que se dijo ese día.
+
+  **La pregunta inversa de `CLAUDE.md` §11 —qué se diseñó sin requisito que lo pida— se respondió explícitamente**: siete piezas sin requisito directo (las tres colas, Hyperdrive, la tabla de eventos crudos, los tres roles y la consulta de respaldo de 60 s), y las siete se justifican. Ninguna sobra. Las tres colas eran el caso que más merecía revisión porque parecen complejidad; existen porque tienen tolerancias de fallo incompatibles.
+
+  **Observación sobre los nueve requisitos innegociables:** los números 1 (aislamiento), 2 (sin duplicados) y 7 (datos sensibles fuera de la consola) son **estructurales** — dependen de restricciones y permisos de la base, no de disciplina. Son los tres que un error de código no puede romper.
+
+  **Tres requisitos cambiaron de significado** por decisiones posteriores y los documentos fuente deben actualizarse: `RF-CNV-10` (ADR-004), `RF-MET-02` (con el agente en primera línea mide "cuánto tardó una persona en entrar", no "cuánto esperó el contacto") y `RF-CFG-*`. Más los nuevos `RF-CNV-10a` a `10e` y `RF-MET-09`.
+
+- **Quedó abierto** — lo que falta para dar el documento por terminado según `CLAUDE.md` §7:
+  1. **Revisión independiente en sesión nueva** (`CLAUDE.md` §11). La sesión que escribió el documento no puede hacerla.
+  2. **Confirmar los cinco supuestos de §1.8**; el más influyente son los 20 mensajes por conversación.
+  3. **Elección de framework del frontend** (ADR-009), que depende de qué conoce Anthony.
+  4. **Actualizar `docs/01` a `docs/03`** con lo que cada ADR lista en sus consecuencias. Ninguna aplicada todavía.
+  5. **El diagrama de Archify**, con el candidato ya validado y pendiente solo de la escritura del HTML.
+
+- **Siguiente paso:** revisión independiente del documento en una sesión nueva, con la instrucción de `CLAUDE.md` §11.
+
+---
+
+## 2026-10-15 — Sección 10: observabilidad
+
+- **Se decidió o produjo:** escrita la **sección 10 de `arquitectura.md`**: qué se registra, qué se vigila y qué avisa, con el objetivo declarado de operar un piloto de una semana con dos personas, no de construir un sistema de monitoreo.
+
+  **Lo que la sección agrega sobre ADR-011**, que se escribió antes del agente: qué vigilar de esa pieza. Dos señales —cola acumulada y tasa de escaladas—, **ninguna como alerta**. El agente es la única pieza del sistema cuyo mal funcionamiento no es una urgencia, y eso es consecuencia directa del diseño de ADR-014: si falla dos veces escala a una persona, de modo que su modo degradado es exactamente el comportamiento del sistema sin agente. Lo que sí hay que vigilar del agente es el costo, que es la única partida variable.
+
+  **Precisión sobre el umbral de la alerta de webhook caído.** Las 2 horas no son arbitrarias: con 500 conversaciones al mes por negocio, dos horas sin eventos es anómalo pero no imposible un martes tranquilo. Un umbral más corto produciría falsas alarmas, y **una alerta que suena sin motivo se empieza a ignorar** — que es la peor forma de perder la única alerta que protege algo irreversible.
+
+  La sección insiste en que la regla de no registrar contenido tiene que ser estructural —las funciones de registro aceptan identificadores, no objetos— porque el fallo no ocurre por mala fe: ocurre a las dos de la mañana, depurando, con un registro del evento entero.
+
+- **Quedó abierto:** sin cambios respecto de la entrada anterior.
+
+- **Siguiente paso:** sección 12, trazabilidad: cada requisito P0 enlazado con el componente que lo cumple. Es la última sección pendiente y la que cierra el criterio de terminado de `CLAUDE.md` §7.
+
+---
+
+## 2026-10-15 — Sección 9: despliegue
+
+- **Se decidió o produjo:** escrita la **sección 9 de `arquitectura.md`**: dos entornos, cómo se despliega, cómo se revierte y qué configuración no vive en el código.
+
+  **Precisión que la sección aporta y que ADR-011 no fijaba: el orden de despliegue cuando la API y la aplicación cambian juntas.** Migraciones primero, luego la API, luego la aplicación. La razón: una aplicación nueva pidiendo un endpoint que todavía no existe da errores inmediatos y visibles; una API nueva sirviendo a una aplicación vieja no, porque los cambios son aditivos. Se despliega en el orden que deja la ventana de incompatibilidad del lado seguro.
+
+  **La asimetría que explica la disciplina de migraciones:** la reversión de Cloudflare cubre el código, no el esquema. Como las migraciones no se revierten, se diseñan para no necesitarlo —solo aditivas—, y eso es justamente lo que vuelve segura la reversión del código: un código anterior funciona sobre un esquema con columnas de más, pero no sobre uno al que le falta algo.
+
+  La sección consolida en una sola tabla **la configuración que no está en el código** —siete verificaciones por entorno—, incluida la corrección de `max_size` de Hyperdrive que encontró la auditoría de escalabilidad. Las tres primeras son las graves y comparten una propiedad: **su fallo es silencioso**. Un canal público de Realtime no da error, simplemente deja de aislar.
+
+  Queda también el **orden de puesta en marcha** por dependencias externas que el equipo no controla: Resend primero (la propagación de DNS no depende de nadie del equipo y sin correo no hay alta de organizaciones), luego la verificación de Meta, después el BAA de Anthropic, y las políticas de RLS **desde la primera migración** — ADR-006 advirtió que si se dejan para el final habrá consultas escritas suponiendo que no existen.
+
+- **Quedó abierto:** sin cambios respecto de la entrada anterior.
+
+- **Siguiente paso:** sección 10, observabilidad.
+
+---
+
+## 2026-10-15 — Sección 8: modos de falla
+
+- **Se decidió o produjo:** escrita la **sección 8 de `arquitectura.md`**. El criterio que la ordena es distinguir lo que **se degrada** —molesta y se recupera solo— de lo que **se pierde** —no vuelve—. Casi todo en este sistema es lo primero; la sección se concentra en identificar dónde está lo segundo.
+
+  **El hallazgo central, que ADR-005 ya había anotado y aquí queda con diagrama propio: los reintentos de Meta duran 7 días y la vigencia del identificador de archivo también.** No es una coincidencia útil. Si el sistema está caído varios días, los mensajes se recuperan cuando Meta reintenta, pero **los archivos de los primeros días ya habrán caducado**. Una caída larga pierde archivos aunque no pierda mensajes, y es el único camino del sistema con pérdida irreversible. De ahí sale la prioridad de la alerta de webhook caído: tiene un reloj de 7 días, no es un aviso de cortesía.
+
+  **Los fallos parciales son los difíciles**, y la sección los trata aparte: un servicio caído se nota, uno que funciona a medias no. El caso delicado es el tiempo límite al enviar —el sistema no sabe si el mensaje salió—, que ADR-012 resolvió dejando la decisión al asesor informado. El agente no tiene esa salida porque su cola reintenta sola, de ahí la clave de idempotencia de ADR-014.
+
+  **Señalado lo contraintuitivo: el fallo más disruptivo no es el más técnico.** Si Resend falla, todo el sistema funciona perfectamente y el negocio se detiene, porque no entran clientes nuevos. Es la pieza más modesta de la arquitectura y la más crítica para la operación comercial; su mitigación —el enlace manual de `RF-PLT-USR-04`— ya estaba en los requisitos por otra razón.
+
+  La sección cierra con el orden de diagnóstico en un incidente —primero el webhook, porque es el único reloj que corre— y con lo que el diseño deliberadamente no cubre.
+
+- **Quedó abierto:** sin cambios respecto de la entrada anterior.
+
+- **Siguiente paso:** sección 9, despliegue.
+
+---
+
+## 2026-10-15 — Secciones 6 y 7: flujos críticos, multiempresa y seguridad
+
+- **Se decidió o produjo:** escritas las **secciones 6 y 7 de `arquitectura.md`**.
+
+  **Sección 6, flujos críticos.** Los cinco diagramas de secuencia que exige `CLAUDE.md` §8, cada uno con qué puede fallar y qué requisito se juega. Recorrerlos de punta a punta confirmó tres cosas —los tres escritores aparecen en los flujos y no hay un cuarto camino oculto; la asignación se dispara desde tres flujos y en los tres pasa por el mismo módulo; ningún flujo lleva contenido a la consola, los registros o el tiempo real— y **encontró un hueco**: el flujo de mensaje entrante crea contacto, conversación y mensaje, y puede asignar, y **todo eso debe ocurrir en una sola transacción**. Si se guardara el mensaje y fallara la asignación, quedaría una conversación en un estado que ningún flujo contempla. Queda explícito en §6.6.
+
+  **Sección 7, multiempresa y seguridad.** Las cinco capas de aislamiento, con una observación que vale la pena retener: **las capas 2 y 3 (filtro explícito y RLS) se cubren mutuamente, pero las capas 4 y 5 (permisos de rol y políticas del canal) no tienen respaldo** — son las más delicadas y hay que verificarlas por separado.
+
+  La decisión más importante de la sección es la que ya tomó ADR-006 y aquí queda dicha con todas las letras: **`app_platform` no obtiene su poder saltando RLS, sino careciendo de permiso sobre las tablas de mensajes.** Una consulta de la consola contra mensajes **falla con un error de permisos**; no devuelve datos filtrados ni un conjunto vacío. Eso convierte `RF-TRV-07` de promesa en imposibilidad.
+
+  La sección documenta además el recorrido completo de un dato sensible —una foto clínica, de Meta a R2 y al navegador—, dónde vive cada secreto, las siete pruebas automáticas de `RF-TRV-01`, y **dos advertencias de configuración que no viven en el código**: el "Allow public access" de Realtime y los roles sin `bypassrls`. Un canal público no da error, simplemente deja de aislar.
+
+  Registrada también la excepción de ADR-014: el agente de IA rompe por primera vez la propiedad de que el contenido no sale del sistema, con el detalle de qué viaja y qué no (el identificador del contacto no viaja) y la condición de la preparación para HIPAA antes de conectar un cliente real.
+
+- **Quedó abierto:**
+  - **El diagrama de Archify no se pudo generar en esta máquina.** El candidato está escrito y **pasa la validación sin errores de contenido ni de layout** (15 componentes, 17 conexiones, 2 límites, 4 fichas), pero la entrega del HTML falla con `delivery/ownership-lost` y `finalize/receipt-publication`. Archify escribe de forma atómica y verifica que nadie toque sus archivos entre escribir y leer; esa comprobación falla siempre aquí y el archivo de bloqueo queda en 0 bytes. Se reprodujo en el repositorio y en `%TEMP%`, con `finalize`, `validate` y `deliver`, así que no depende de la carpeta de destino. Causa más probable: el escáner en tiempo real de Windows Defender. `archify doctor` reporta la instalación sana. Todo queda en `.archify/architecture-numi-crm-20261015-1200/` con un README que trae el comando exacto y el diagnóstico. **Por decisión de Franco se deja el diagrama para el final.**
+  - Sin cambios en lo demás: los cinco supuestos de §1.8, la corrección de `max_size`, el BAA, la elección de framework del frontend y las actualizaciones pendientes en `docs/01` a `docs/03`.
+
+- **Siguiente paso:** sección 8, modos de falla.
+
+---
+
+## 2026-10-15 — Sección 5: componentes del frontend
+
+- **Se decidió o produjo:** escrita la **sección 5 de `arquitectura.md`**, componentes del frontend (C4 nivel 3), con diagrama Mermaid. Cubre cómo se organizan las 31 vistas —18 del CRM y 13 de la consola, verificadas contra `docs/02` y `docs/03`— en una sola aplicación con dos áreas, y cómo se resuelven sesión, datos, estado y tiempo real.
+
+  **La regla que ordena la sección: la interfaz no decide permisos, los refleja.** De ahí se sigue el punto que conviene decir sin rodeos porque es un error frecuente: **que el código de la consola llegue al navegador no otorga ningún permiso.** La carga diferida del área de plataforma es rendimiento, no seguridad; la protección real es que el servidor verifica el rol en cada petición.
+
+  **Lo que no es obvio y hay que construir bien:** sesión expirada, usuario desactivado y organización suspendida pueden ocurrir **a mitad de sesión**, no solo al entrar, porque ADR-007 verifica en cada petición. Consecuencia de diseño: ese manejo vive en el cliente de la API, **no en cada vista** — si cada vista lo resolviera, habría 31 lugares donde olvidarlo, y el olvido se vería como una pantalla congelada sin explicación.
+
+  La sección rescata además una propiedad de ADR-008 que vale la pena no perder: **el tiempo real y la red de seguridad usan el mismo camino** —invalidar y recargar—. No hay dos rutas por las que los datos lleguen a la pantalla, así que no pueden contradecirse.
+
+  Registradas las dos consecuencias del agente en la interfaz: la configuración dentro de V50 y la distinción visual del autor del mensaje en V11 (ADR-014), más `RF-MET-09` como indicador en V30.
+
+- **Quedó abierto:**
+  - **La elección de framework del frontend sigue sin justificar**, como ya registraba ADR-009: depende de qué conoce Anthony, que tiene asignada la interfaz. Todo lo de la sección 5 se mantiene igual con Vue o Svelte. Debe resolverse antes de empezar la interfaz.
+  - Sin cambios en lo demás: los cinco supuestos de §1.8, la corrección de `max_size`, el BAA y las actualizaciones pendientes en `docs/01` a `docs/03`.
+
+- **Siguiente paso:** sección 6, flujos críticos: los cinco diagramas de secuencia que pide `CLAUDE.md` §8.
+
+---
+
+## 2026-10-15 — Sección 4: componentes del backend
+
+- **Se decidió o produjo:** escrita la **sección 4 de `arquitectura.md`**, componentes del backend (C4 nivel 3), con diagrama Mermaid. Ocho módulos de negocio dentro de un mismo despliegue —ADR-003 fijó "backend modular, no microservicios"—, más dos piezas compartidas de infraestructura.
+
+  **La regla que ordena la sección: cada dato tiene un dueño.** Un módulo es el único que escribe sus tablas; los demás leen a través de él. No es formalismo: con dos personas en paralelo sobre 63 requisitos, es lo que evita que la ventana de 24 horas quede escrita en tres lugares y uno se olvide al cambiarla.
+
+  **Dos módulos que rompen el molde y por qué.** Asignación **no es dueña de ninguna tabla** y aun así es un módulo, porque la regla de `RF-CNV-12` se dispara desde tres lugares distintos —mensaje entrante, autoasignación al responder (`RF-CNV-11`, ADR-012) y escalada del agente (ADR-014)—; si viviera en cada camino serían tres implementaciones que se desincronizan. Métricas **no escribe nada**: ADR-013 eligió vistas SQL, así que no hay resúmenes que puedan desincronizarse.
+
+  **Excepción documentada antes de que parezca un error:** el consumidor escribe mensajes y conversaciones, que son propiedad del módulo de Conversaciones, pero con el rol `app_worker` y la organización del evento en vez de la de una sesión. Es el mismo código con dos contextos de ejecución. La regla que lo mantiene en un solo camino: el módulo recibe el contexto como parámetro y nunca lo deduce. **Señal de desvío: si aparece un `guardarMensajeDesdeWebhook` distinto de `guardarMensaje`, hay dos caminos donde debería haber uno.**
+
+  La sección fija además el criterio para saber si la interfaz de canal es real o decorativa: **agregar Instagram debería tocar el módulo de canal y ninguno más.** Y mapea los nueve requisitos innegociables de `CLAUDE.md` §8 al módulo que responde por cada uno, como insumo de la sección 12.
+
+- **Quedó abierto:** sin cambios respecto de la entrada anterior —los cinco supuestos de §1.8, la corrección de `max_size`, el BAA y las actualizaciones pendientes en `docs/01` a `docs/03`.
+
+- **Siguiente paso:** sección 5, componentes del frontend (C4 nivel 3).
+
+---
+
+## 2026-10-15 — ADR-014 aprobada; sección 3 de la arquitectura
+
+- **Se decidió o produjo:** Franco **aprueba ADR-014**. Las 14 decisiones del tablero quedan Aprobadas. Escrita la **sección 3 de `arquitectura.md`**, contenedores C4 nivel 2, con diagrama Mermaid.
+
+  **Lo que la sección resuelve de entrada** es una confusión que apareció en la sesión al explicar las colas: mirando el diagrama es fácil contar piezas y creer que son servicios. La sección abre con una tabla de qué se despliega y qué no. **Son dos despliegues —el Worker de la aplicación y el de la API— y cero servidores que mantener vivos.** Las tres colas son recursos gestionados; los tres consumidores son funciones exportadas del mismo Worker de la API, no procesos aparte.
+
+  Precisión que corrige una simplificación hecha antes en la conversación: **son dos Workers, no uno.** Lo fija ADR-009 punto 2, y la razón importa: desplegar un cambio de interfaz no arriesga el webhook, que es la pieza con el requisito duro de `RF-TRV-02`.
+
+  La sección deja explícitos **los tres escritores del sistema** —consumidor de eventos, API en el camino de salida, consumidor del agente—, que es donde se concentran los errores de concurrencia, y recuerda que los tres publican avisos con la misma función (ADR-008, regla 4). También documenta por qué las colas son tres y no una: tienen tolerancias incompatibles —100 reintentos, 7 días, dos intentos— y separarlas no agrega operación sino **aislamiento de fallos**.
+
+  Dos observaciones que salen de la tabla de fallos por contenedor: solo una caída larga de Postgres causa pérdida irreversible, por la caducidad a 7 días de los identificadores de archivo de Meta; y **el fallo más disruptivo para el negocio no es el más técnico** —sin Resend no entran clientes nuevos, aunque todo lo demás funcione—.
+
+- **Quedó abierto:**
+  - Los cinco supuestos de §1.8 siguen sin confirmar.
+  - Aplicar la corrección de `max_size` de Hyperdrive al configurar el entorno.
+  - Decidir y firmar el BAA de Anthropic (permanente).
+  - Actualizaciones pendientes en `docs/01` a `docs/03`, listadas en cada ADR; ninguna aplicada todavía.
+
+- **Siguiente paso:** sección 4, componentes del backend (C4 nivel 3): los módulos de identidad, canal, conversaciones, contactos, asignación, métricas, consola, auditoría y agente, con qué datos es dueño cada uno.
+
+---
+
+## 2026-10-15 — Auditoría de escalabilidad; sección 11 escrita
+
+- **Se decidió o produjo:** auditoría de las 14 decisiones contra límites reales, verificados en documentación oficial, y escrita la **sección 11 de `arquitectura.md`** (adelantada en el orden del índice porque responde a la pregunta directa de si el diseño escala). El método: tomar el límite duro de cada pieza y compararlo con el volumen proyectado de §1.1, en vez de confiar en que "Cloudflare escala".
+
+  **Hallazgo 1, y es un defecto real que ningún ADR registraba: Hyperdrive puede abrir más conexiones de las que Supabase acepta.** Hyperdrive en plan de pago admite hasta ~100 conexiones al origen por configuración —y su documentación advierte que el valor es un límite blando que puede excederse—, mientras que **Supabase Micro, el cómputo que incluye el plan Pro que fijó ADR-011, acepta 60 conexiones directas**. ADR-003 fijó usar la cadena Direct. Con suficiente carga, las conexiones que sobran fallan. No pasa en el piloto —0,95 mensajes por segundo en pico no se acerca a 60 conexiones— pero aparecería bajo carga, que es cuando peor se depura. **Corrección: fijar `max_size` en 40**, agregada a la lista de puesta en marcha de ADR-011.
+
+  **Hallazgo 2: el techo de 20 negocios no tiene margen, y es el primer límite del sistema por mucho.** Las conexiones de Postgres ceden hacia las 50 organizaciones, Realtime hacia los 200 asesores, Queues más allá del millón de operaciones. El tope de números por portafolio de Meta se alcanza en 20. Consecuencia de diseño que conviene tener presente: **no tiene sentido optimizar para más de 20 negocios mientras el rol de Tech Provider no exista**, porque es un techo que no se levanta por la vía técnica.
+
+  **Lo que sí sostiene el diseño**, revisadas las 14 decisiones: sin estado en memoria (ADR-003), unicidad en la base y no en el transporte (ADR-005), orden por marca de tiempo de Meta (ADR-005), aislamiento por permisos (ADR-006), el aviso no es el dato (ADR-008) y tres colas con tolerancias distintas (ADR-005, ADR-014). La propiedad más valiosa es que **`organization_id` es la primera columna de cada índice**: el costo de una consulta depende del tamaño de una organización, no del total, así que 100 negocios no consultan más lento que 10.
+
+  **Los cinco puntos donde el sistema cedería se resuelven con configuración o dinero** —subir el cómputo de Supabase cuesta ~15 USD al mes y menos de 2 minutos de interrupción—, ninguno exige rediseño. Eso es lo que distingue un diseño escalable: no que aguante todo, sino que lo que cede se arregle sin reescribir.
+
+- **Quedó abierto:**
+  - Aplicar la corrección de `max_size` al configurar Hyperdrive.
+  - Medir V30 con datos realistas antes del piloto (ya lo exigía ADR-013).
+  - Los cinco supuestos de §1.8 siguen sin confirmar; la sección 11 razona sobre ellos.
+  - Aprobación de ADR-014.
+
+- **Siguiente paso:** sección 3 de `arquitectura.md` (contenedores, C4 nivel 2).
 
 ---
 

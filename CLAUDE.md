@@ -92,7 +92,7 @@ La columna **Depende de** refleja lo que declara el encabezado de cada ADR. Si u
 | D-11 | Secretos y tokens cifrados, correo propio, entornos, despliegue y observabilidad                                                                                                | Técnica            | 001, 003, 005, 007, 008, 009, 010    | Aprobada (ADR-011) |
 | D-12 | Envío de mensajes: ventana de 24 h, estados y reintentos                                                                                                                       | Técnica            | 001, 003, 005, 006, 007, 008         | Aprobada (ADR-012) |
 | D-13 | Cálculo y almacenamiento de las métricas                                                                                                                                        | Técnica            | 003, 006                             | Aprobada (ADR-013) |
-| D-14 | Agente de IA configurable por negocio: activación, escalada, configuración y tratamiento de datos                                                                               | Producto y técnica | 001, 003, 005, 006, 007, 008, 012    | Propuesta (ADR-014) |
+| D-14 | Agente de IA configurable por negocio: activación, escalada, configuración y tratamiento de datos                                                                               | Producto y técnica | 001, 003, 005, 006, 007, 008, 012    | Aprobada (ADR-014) |
 
 **Orden de trabajo:** D-01 → D-02 → D-04 → D-03 → D-05 → D-06 → D-08 → D-07 → D-09 → D-10 → D-11 → D-12 → D-13. D-12 y D-13 se agregaron el 2026-10-15 al auditar el tablero: cubren el envío de mensajes y las métricas, que ninguna de las once decisiones originales resolvía. D-14 se agregó el 2026-10-15 por decisión de Franco: incorpora al MVP el agente de IA que `docs/01_definicion_mvp_v2.2.md` §6 excluía. Si una decisión depende de otra todavía pendiente, Claude lo dice y propone resolver primero la dependencia.
 
@@ -153,7 +153,7 @@ Cuando las decisiones D-01 a D-14 estén aprobadas, se construye `docs/architect
 - **Orden de los mensajes** por la hora de envío, aunque lleguen desordenados (`RF-CNV-06`).
 - **Ventana de 24 horas** de Meta aplicada antes de enviar (`RF-CNV-08`).
 - **Estados del mensaje:** enviando, enviado, entregado, leído y error (`RF-CNV-09`).
-- **Datos sensibles fuera de la consola,** los registros técnicos y las métricas (`RF-TRV-07`, `RF-PLT-USO-04`).
+- **Datos sensibles fuera de la consola,** los registros técnicos y las métricas (`RF-TRV-07`, `RF-PLT-USO-04`). **Única excepción, decidida el 2026-10-15 (ADR-014):** el agente de IA envía el texto de la conversación a la API de Anthropic. No viajan el nombre ni el teléfono del contacto, ni los adjuntos. Exige la preparación para HIPAA habilitada antes de conectar un cliente real.
 - **Tokens cifrados,** nunca en el navegador ni en los registros (`RF-PLT-SEG-02`).
 - **Consola:** acciones en el servidor con verificación del rol en cada petición, y auditoría de cada acción (`RF-PLT-SEG-01`, `RF-PLT-AUD-01`).
 - **Organización suspendida:** nadie entra ni envía, pero los mensajes entrantes se guardan (`RF-AUT-07`, `RF-CNV-16`).
@@ -170,16 +170,23 @@ Cuando las decisiones D-01 a D-14 estén aprobadas, se construye `docs/architect
 
 Propuesto en el brief; las decisiones pueden cambiarlo.
 
-| Capa                    | Propuesta inicial                                                       |
-| ----------------------- | ----------------------------------------------------------------------- |
-| Lenguaje                | Node.js con TypeScript                                                  |
-| Backend                 | Fastify sobre Cloudflare Workers (en revisión, D-04)                    |
-| Frontend                | Next.js en Cloudflare Workers mediante OpenNext (en revisión, D-09)     |
-| Base de datos           | PostgreSQL administrado (Supabase), conectado con Cloudflare Hyperdrive |
-| Autenticación           | Supabase Auth, más validación de permisos en el backend                 |
-| Archivos                | Cloudflare R2, solo si los adjuntos entran (D-10)                       |
-| Procesamiento asíncrono | Cloudflare Queues para webhooks y mensajes (D-05)                       |
-| Código y despliegue     | GitHub, con entornos de desarrollo y producción                         |
+**Stack decidido** (actualizado el 2026-10-15; las 14 decisiones están aprobadas).
+
+| Capa                    | Decidido                                                                       | ADR |
+| ----------------------- | ------------------------------------------------------------------------------ | --- |
+| Lenguaje                | Node.js con TypeScript                                                         | —   |
+| Backend                 | **Hono** en Cloudflare Workers                                                 | 003 |
+| Frontend                | **Página única con React y Vite**, servida desde Workers                       | 009 |
+| Base de datos           | PostgreSQL administrado (Supabase), conectado con Cloudflare Hyperdrive        | 003 |
+| Autenticación           | Supabase Auth **solo como identidad**; la autorización vive en el backend      | 007 |
+| Archivos                | **Cloudflare R2**, servido por el Worker; sin URL firmadas                     | 004, 010 |
+| Procesamiento asíncrono | **Tres colas** de Cloudflare Queues: eventos, archivos y agente                | 005, 014 |
+| Tiempo real             | **Supabase Realtime, Broadcast desde el servidor**                             | 008 |
+| Correo                  | **Resend**, con dominio propio                                                 | 011 |
+| Agente de IA            | **API de Anthropic**, detrás de su propia cola                                 | 014 |
+| Código y despliegue     | GitHub, con entornos de desarrollo y producción                                | 011 |
+
+Costos fijos: 30 USD al mes (Workers 5, Supabase Pro 25), más el costo variable del agente y los mensajes de Meta.
 
 **Hechos ya verificados** (reconfírmalos si una decisión depende de ellos):
 

@@ -8,7 +8,7 @@
 
 ## Contexto
 
-La consola de plataforma es el área interna desde la que el equipo de Numi administra todas las organizaciones (`docs/03_consola_plataforma_v1.1.md` §1). Tiene **52 requisitos** y **13 vistas**. El documento ya trae una priorización: 44 requisitos en P0 y 8 en P1; 11 vistas en P0 y 2 en P1 (P10, panel general, y P30, auditoría global).
+La consola de plataforma es el área interna desde la que el equipo de Numi administra todas las organizaciones (`docs/03_consola_plataforma_v1.1.md` §1). Tiene **52 requisitos** y **13 vistas**. El documento ya trae una priorización: 47 requisitos en P0 y 5 en P1; 11 vistas en P0 y 2 en P1 (P10, panel general, y P30, auditoría global).
 
 Hay que decidir **cuánto de eso se construye para el MVP del 30 de noviembre de 2026**, porque la consola compite por las mismas siete semanas que el CRM, que tiene 63 requisitos y 18 vistas (`docs/02_documento_maestro_v1.1.md`).
 
@@ -37,7 +37,7 @@ Contra eso pesa un argumento real: **la consola es lo que hace al producto multi
 
 ## Opciones consideradas
 
-### Opción A: Consola completa, los 44 requisitos P0 y las 11 vistas P0
+### Opción A: Consola completa, los 47 requisitos P0 y las 11 vistas P0
 
 Se construye la consola tal como está escrita en `docs/03_consola_plataforma_v1.1.md`, dejando fuera solo lo ya marcado P1: P10 (panel general), P30 (auditoría global), `RF-PLT-ORG-12`, `RF-PLT-USO-02`, `RF-PLT-USO-03`, `RF-PLT-AUD-04`, `RF-PLT-WA-08`.
 
@@ -65,7 +65,7 @@ La consola solo lee (lista de organizaciones, salud de WhatsApp) y las acciones 
 
 ## Decisión
 
-**Opción A: la consola se construye completa**, con los 44 requisitos P0 y las 11 vistas P0 de `docs/03_consola_plataforma_v1.1.md`, decidida por Franco y Anthony el 2026-10-15.
+**Opción A: la consola se construye completa**, con los 47 requisitos P0 y las 11 vistas P0 de `docs/03_consola_plataforma_v1.1.md`, decidida por Franco y Anthony el 2026-10-15.
 
 Queda fuera del MVP lo ya marcado P1 en el documento, que no se reabre:
 
@@ -118,7 +118,7 @@ Se confirma la decisión 1 de `docs/03_consola_plataforma_v1.1.md` §2: ruta `/p
 
 ### Más difícil
 
-- Es el compromiso de calendario más grande fuera del CRM. Con 44 requisitos de consola más 63 del CRM en siete semanas y dos personas a tiempo parcial, **el cronograma queda ajustado y hay que vigilarlo en la revisión del 16 de noviembre**.
+- Es el compromiso de calendario más grande fuera del CRM. Con 47 requisitos de consola más 63 del CRM en siete semanas y dos personas a tiempo parcial, **el cronograma queda ajustado y hay que vigilarlo en la revisión del 16 de noviembre**.
 - Hay que construir interfaz que no tiene usuario real al volumen del piloto (buscador, filtros, ordenamiento sobre dos o tres organizaciones).
 
 ### Qué hay que construir

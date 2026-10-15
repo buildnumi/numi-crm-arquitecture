@@ -102,13 +102,18 @@ Cada requisito indica en qué vista se materializa (columna "Vista"; las vistas 
 | RF-CNV-06 | La conversación muestra el historial completo, con mensajes entrantes y salientes diferenciados, hora de cada mensaje y separadores por día. Los mensajes se ordenan por la hora en que se enviaron, aunque lleguen desordenados | V11 |
 | RF-CNV-07 | El usuario escribe y envía mensajes de texto desde el CRM. Enter envía y Mayús+Enter agrega una línea | V11 |
 | RF-CNV-08 | El sistema muestra el estado de la ventana de 24 horas. Si venció, el envío se bloquea y se explica el motivo | V11 |
-| RF-CNV-09 | Cada mensaje enviado muestra su estado: enviando, enviado, entregado, leído o error, según lo informe Meta. Un mensaje puede pasar a error después de figurar como enviado. Un mensaje con error se puede reintentar | V11 |
-| RF-CNV-10 | Si llega un mensaje de un tipo que el MVP no muestra (audio, imagen, documento u otro), la conversación muestra un marcador con el tipo de mensaje y la hora | V11 |
+| RF-CNV-09 | Cada mensaje enviado muestra su estado: enviando, enviado, entregado, leído o error, según lo informe Meta. Un mensaje puede pasar a error después de figurar como enviado. Un mensaje con error se puede reintentar. **Los estados siguen una progresión (enviando → enviado → entregado → leído) y un estado anterior que llega tarde no pisa a uno posterior ya registrado; `error` es la excepción y puede llegar en cualquier momento. El reintento es manual, nunca automático: un envío cuya respuesta se perdió podría duplicarse** (ADR-005, ADR-012) | V11 |
+| RF-CNV-10 | Si llega un mensaje de un tipo que el MVP no muestra —**video, sticker, ubicación, contacto u otro**— la conversación muestra un marcador con el tipo de mensaje y la hora. **Audios, imágenes y documentos sí se muestran** (ADR-004, ver `RF-CNV-10a` a `10e`) | V11 |
+| RF-CNV-10a | Toda imagen, audio, documento, video o sticker recibido **se descarga de Meta y se guarda**, dentro de la ventana de 7 días en que el identificador es válido | — |
+| RF-CNV-10b | Las imágenes se muestran en la conversación; los audios se reproducen; los documentos se descargan con su nombre y tamaño | V11 |
+| RF-CNV-10c | El mensaje se muestra aunque su archivo todavía no esté descargado | V11 |
+| RF-CNV-10d | El acceso a un archivo pasa siempre por la API, que verifica la organización del usuario en cada petición. **Nunca un enlace público** | — |
+| RF-CNV-10e | Si el archivo no se pudo recuperar en 7 días, el mensaje queda marcado como **archivo no recuperado**. Ese estado es visible para el asesor, no un silencio | V11 |
 | RF-CNV-11 | El asesor puede tomar una conversación sin asignar; si responde una conversación sin asignar, queda como su responsable. El administrador puede asignarla o reasignarla a cualquier persona activa | V10, V11 |
 | RF-CNV-12 | Asignación automática: si está activa, una conversación nueva se asigna al asesor activo y disponible con menos conversaciones abiertas | V50 |
 | RF-CNV-13 | El usuario cierra una conversación. Si el contacto vuelve a escribir, se reabre sola | V11 |
 | RF-CNV-14 | Desde la conversación se cambia el estado del contacto y se abre su detalle | V11, V12 |
-| RF-CNV-15 | Los cambios de asignación, estado y mensajes nuevos se reflejan en tiempo real en las pantallas de los usuarios afectados. La navegación y el título de la pestaña muestran el número de conversaciones sin responder | L01, V10 |
+| RF-CNV-15 | Los cambios de asignación, estado y mensajes nuevos se reflejan en tiempo real en las pantallas de los usuarios afectados. La navegación y el título de la pestaña muestran el número de conversaciones sin responder. **El tiempo real notifica y la interfaz recarga desde la API: el aviso no transporta contenido. El contador se recalcula, nunca se incrementa a ciegas** (ADR-008) | L01, V10 |
 | RF-CNV-16 | Mientras la organización está suspendida, no se pueden enviar mensajes; los mensajes entrantes se siguen recibiendo y guardando | V11 |
 
 ### 5.3 Contactos (CON)
@@ -141,13 +146,14 @@ Cada requisito indica en qué vista se materializa (columna "Vista"; las vistas 
 | ID | Requisito | Vista |
 |---|---|---|
 | RF-MET-01 | Conversaciones por mes: cantidad de conversaciones con al menos un mensaje durante el período | V30 |
-| RF-MET-02 | Tiempo de atención: minutos entre un mensaje entrante que espera respuesta y la primera respuesta de una persona, en minutos corridos. Se muestra la mediana como valor principal y el promedio como dato secundario, para que unos pocos mensajes nocturnos no distorsionen el indicador. Las respuestas automáticas no cuentan | V30 |
+| RF-MET-02 | Tiempo de atención: minutos entre un mensaje entrante que espera respuesta y la primera respuesta de una persona, en minutos corridos. Se muestra la mediana como valor principal y el promedio como dato secundario, para que unos pocos mensajes nocturnos no distorsionen el indicador. Las respuestas automáticas no cuentan. **Un mensaje entrante inicia una espera solo si no hay otra abierta en esa conversación; las esperas sin respuesta no entran en el cálculo. Con el agente de IA en primera línea (ADR-014), este indicador mide cuánto tardó una persona en entrar, no cuánto esperó el contacto: el texto de ayuda debe decirlo** | V30 |
 | RF-MET-03 | Nuevos leads por mes: contactos creados durante el período | V30 |
 | RF-MET-04 | Tasa de conversión: de los contactos creados en el período, el porcentaje que está en estado Cliente al consultar | V30 |
 | RF-MET-05 | Cantidad de contactos: total y desglose por estado | V30 |
 | RF-MET-06 | Todas las métricas se pueden ver para todo el negocio y por asesor | V30 |
 | RF-MET-07 | Selector de período: mes actual, mes anterior, últimos 30 días y rango personalizado | V30 |
 | RF-MET-08 | Las métricas son visibles solo para el administrador | V30 |
+| RF-MET-09 | **Porcentaje de conversaciones resueltas por el agente de IA sin escalar a un asesor**, en el período. Es la medida de si el agente aporta; sin ella el piloto no puede evaluar esa función (ADR-014) | V30 |
 
 ### 5.6 Usuarios (USR)
 
@@ -169,6 +175,11 @@ Cada requisito indica en qué vista se materializa (columna "Vista"; las vistas 
 | RF-CFG-01 | El administrador ve y edita el nombre del negocio | V50 |
 | RF-CFG-02 | El administrador ve el estado de la conexión de WhatsApp: número conectado y estado (conectado, desconectado o con error). Es de solo lectura: la conexión la gestiona el equipo de Numi desde la consola de plataforma | V50 |
 | RF-CFG-03 | El administrador activa o desactiva la asignación automática | V50 |
+| RF-CFG-04 | El administrador **activa o desactiva el agente de IA** de su negocio. Apagado por defecto | V50 |
+| RF-CFG-05 | El administrador edita la **información del negocio** que usa el agente: horarios, servicios, precios y dirección, en texto libre | V50 |
+| RF-CFG-06 | El administrador define el **nombre y el tono** con que el agente se presenta. El agente siempre se identifica como agente ante el contacto; eso no es configurable | V50 |
+| RF-CFG-07 | El administrador define **reglas de escalada** a un asesor, más allá de "no sé responder" | V50 |
+| RF-CFG-08 | El administrador define **preguntas y respuestas fijas**, que el agente usa literalmente sin consultar al modelo | V50 |
 
 ### 5.8 Requisitos transversales (TRV)
 

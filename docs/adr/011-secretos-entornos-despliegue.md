@@ -142,6 +142,7 @@ Los de la primera clase no van en variables de entorno del archivo de configurac
 - [ ] `sessions.timebox` en 12 h e `inactivity_timeout` en 30 min (ADR-007)
 - [ ] SMTP propio apuntando a Resend
 - [ ] Rol de base de datos dedicado para Hyperdrive, con privilegios mínimos (ADR-003)
+- [ ] **`max_size` de Hyperdrive fijado en 40**, por debajo de las 60 conexiones directas de Supabase Micro. Sin esto, Hyperdrive puede intentar abrir hasta ~100 conexiones contra una base que acepta 60, y las que sobran fallan bajo carga. Al cambiar el tamaño de cómputo hay que revisar este número en la misma operación (`arquitectura.md` §11.2)
 - [ ] Los tres roles de aplicación, **ninguno con `bypassrls`** (ADR-006)
 
 Esta lista va en el repositorio como documento de puesta en marcha. Es el tipo de cosa que se olvida y que no falla de forma visible: **un canal público no da error, simplemente deja de aislar.**

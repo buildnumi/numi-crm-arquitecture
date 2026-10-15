@@ -1,0 +1,4 @@
+# Temporales de Archify: recibos y bloqueos de entrega
+.archify/**/.archify-finalize-*.json
+.archify/**/.archify-delivery-lock.json
+.archify/**/*.finalize-summary.json

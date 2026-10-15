@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Numi CRM — Contenedores (C4 nivel 2)",
+    "locale": "es",
+    "output": "docs/architecture/numi-crm-contenedores.html",
+    "quality_profile": "showcase"
+  },
+  "components": [
+    { "id": "contacto", "type": "external", "label": "Contacto", "sublabel": "Escribe por WhatsApp", "pos": [40, 40], "size": [150, 60] },
+    { "id": "meta", "type": "external", "label": "Meta", "sublabel": "WhatsApp Cloud API", "pos": [40, 200], "size": [150, 64], "tag": "Webhook firmado" },
+    { "id": "navegador", "type": "frontend", "label": "Aplicación web", "sublabel": "React + Vite · 31 vistas", "pos": [40, 560], "size": [160, 64], "tag": "Nunca toca la base" },
+
+    { "id": "qeventos", "type": "messagebus", "label": "Cola de eventos", "sublabel": "Hasta 100 reintentos", "pos": [430, 40], "size": [180, 60] },
+    { "id": "qarchivos", "type": "messagebus", "label": "Cola de archivos", "sublabel": "Ventana de 7 días", "pos": [680, 40], "size": [180, 60] },
+    { "id": "wapi", "type": "backend", "label": "Worker de la API", "sublabel": "Hono · rutas, webhook\ny los 3 consumidores", "pos": [430, 190], "size": [185, 90], "tag": "Sin estado en memoria" },
+    { "id": "r2", "type": "database", "label": "R2", "sublabel": "Adjuntos", "pos": [700, 190], "size": [160, 60] },
+    { "id": "hyperdrive", "type": "cloud", "label": "Hyperdrive", "sublabel": "Agrupa conexiones", "pos": [700, 300], "size": [160, 60] },
+    { "id": "qagente", "type": "messagebus", "label": "Cola del agente", "sublabel": "2 intentos, luego escala", "pos": [430, 390], "size": [180, 60] },
+    { "id": "wapp", "type": "cloud", "label": "Worker de la aplicación", "sublabel": "Sirve los estáticos", "pos": [430, 560], "size": [185, 64] },
+
+    { "id": "postgres", "type": "database", "label": "Postgres", "sublabel": "Datos · RLS por organización", "pos": [1010, 300], "size": [180, 64], "tag": "3 roles sin bypassrls" },
+    { "id": "auth", "type": "security", "label": "Supabase Auth", "sublabel": "Identidad · TOTP", "pos": [1010, 190], "size": [180, 60], "tag": "No autoriza" },
+    { "id": "realtime", "type": "cloud", "label": "Supabase Realtime", "sublabel": "Canal por organización", "pos": [1010, 420], "size": [180, 60], "tag": "Avisos sin contenido" },
+
+    { "id": "anthropic", "type": "external", "label": "Anthropic", "sublabel": "Modelo del agente", "pos": [430, 700], "size": [170, 60] },
+    { "id": "resend", "type": "external", "label": "Resend", "sublabel": "Invitaciones", "pos": [700, 700], "size": [170, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Cloudflare", "wraps": ["qeventos", "qarchivos", "wapi", "r2", "hyperdrive", "qagente", "wapp"] },
+    { "kind": "region", "label": "Supabase", "wraps": ["auth", "postgres", "realtime"] }
+  ],
+  "connections": [
+    { "id": "contacto-meta", "from": "contacto", "to": "meta", "label": "Mensajes", "variant": "emphasis" },
+    { "id": "meta-webhook", "from": "meta", "to": "wapi", "label": "Webhook: valida firma,\nguarda y responde 200", "variant": "emphasis" },
+    { "id": "api-meta", "from": "wapi", "to": "meta", "label": "Envía y descarga", "fromSide": "top", "toSide": "top" },
+
+    { "id": "nav-wapp", "from": "navegador", "to": "wapp", "label": "Descarga la aplicación" },
+    { "id": "nav-api", "from": "navegador", "to": "wapi", "label": "HTTPS con token\nen cada llamada", "variant": "emphasis", "fromSide": "top", "toSide": "left" },
+    { "id": "nav-auth", "from": "navegador", "to": "auth", "label": "Inicia sesión", "variant": "security", "fromSide": "bottom", "toSide": "bottom" },
+    { "id": "rt-nav", "from": "realtime", "to": "navegador", "label": "Aviso: recarga", "variant": "dashed", "fromSide": "bottom", "toSide": "right" },
+
+    { "id": "api-qeventos", "from": "wapi", "to": "qeventos", "label": "Encola referencia", "variant": "dashed", "fromSide": "top", "toSide": "bottom" },
+    { "id": "api-qarchivos", "from": "wapi", "to": "qarchivos", "label": "Descargas", "variant": "dashed", "fromSide": "right", "toSide": "bottom" },
+    { "id": "api-qagente", "from": "wapi", "to": "qagente", "label": "Si el agente está activo", "variant": "dashed", "fromSide": "bottom", "toSide": "top" },
+
+    { "id": "api-r2", "from": "wapi", "to": "r2", "label": "Adjuntos", "fromSide": "right", "toSide": "left" },
+    { "id": "api-hyperdrive", "from": "wapi", "to": "hyperdrive", "fromSide": "right", "toSide": "left" },
+    { "id": "hyperdrive-pg", "from": "hyperdrive", "to": "postgres", "label": "SQL" },
+    { "id": "api-auth", "from": "wapi", "to": "auth", "label": "Verifica el token\npor JWKS", "variant": "security" },
+    { "id": "api-realtime", "from": "wapi", "to": "realtime", "label": "Publica avisos", "variant": "dashed" },
+    { "id": "api-anthropic", "from": "wapi", "to": "anthropic", "label": "Consulta el modelo", "fromSide": "bottom", "toSide": "top" },
+    { "id": "api-resend", "from": "wapi", "to": "resend", "label": "Invitaciones" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Dos despliegues, cero servidores",
+      "items": [
+        "Se despliegan el Worker de la aplicación y el de la API",
+        "Los tres consumidores son funciones del Worker de la API, no procesos aparte",
+        "Las colas, R2 e Hyperdrive son recursos gestionados"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Las tres invariantes",
+      "items": [
+        "No perder: el evento se guarda crudo antes del 200; Meta reintenta 7 días",
+        "No duplicar: unicidad (organization_id, wamid) en la base, no en el transporte",
+        "Aislar: RLS más filtro explícito; app_platform sin permiso sobre mensajes"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Por qué tres colas",
+      "items": [
+        "Tolerancias incompatibles: 100 reintentos, 7 días, 2 intentos",
+        "Un adjunto de 100 MB o una caída del modelo no atrasan los mensajes entrantes",
+        "Apagar el agente es dejar de consumir una cola"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "La API es el único camino a los datos",
+      "items": [
+        "El navegador nunca consulta la base, ni por el cliente de Supabase",
+        "El aviso de tiempo real no lleva contenido: solo invalida y se recarga por la API",
+        "Auth responde quién eres; la API responde qué puedes hacer, en cada petición"
+      ]
+    }
+  ]
+}

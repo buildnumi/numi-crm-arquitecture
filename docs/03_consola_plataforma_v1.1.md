@@ -23,7 +23,7 @@ Este documento es un anexo del *Documento maestro del MVP v1.0*. Usa la misma id
 | 5 | **Dos estados controlados por Numi: Activa y Suspendida.** La suspensión bloquea el acceso, pero los mensajes de WhatsApp se siguen recibiendo y guardando | Suspender por un tema comercial no debe hacer perder mensajes de los clientes del negocio |
 | 6 | **Preparación visible como lista de verificación** (administrador invitado, invitación aceptada, WhatsApp conectado, primer mensaje recibido) | Muestra de un vistazo qué falta para que un negocio pueda operar |
 | 7 | **Toda acción del operador queda registrada** (quién, qué, cuándo, sobre qué organización) | Trazabilidad de las acciones con más poder del sistema |
-| 8 | **Acceso de operadores con doble factor** (código de una aplicación autenticadora) | La cuenta de un operador da control sobre todos los negocios |
+| 8 | **Acceso de operadores con doble factor** (código de una aplicación autenticadora). **Se resuelve con el TOTP de Supabase Auth —confirmado disponible y gratuito (ADR-007)—, no con un flujo propio de generación de secretos y códigos QR.** La vista P02 conserva su diseño; detrás llama al proveedor | La cuenta de un operador da control sobre todos los negocios |
 | 9 | **Los operadores se crean por fuera de la interfaz** (son dos personas: Franco y Anthony) | Evita construir una gestión de operadores que hoy no se necesita |
 | 10 | **Dos métodos de conexión de WhatsApp:** registro manual por el operador (P0) y registro integrado de Meta, en el que el negocio conecta su propio número (P1). La vista P24 se diseña para ambos. Si se adopta la coexistencia (el negocio sigue usando la app de WhatsApp Business en el mismo número), el registro integrado de Meta pasa a P0 | El método principal depende del modelo de conexión que se adopte; el diseño no debe bloquearse por esa decisión |
 
@@ -95,6 +95,8 @@ La columna "Prioridad" indica qué es indispensable para el MVP (P0) y qué pued
 
 | ID | Requisito | Vista | Prioridad |
 |---|---|---|---|
+**P23 es una vista de soporte, no la vía normal de alta de usuarios** (ADR-002). El operador crea e invita al **primer administrador** de cada negocio (`RF-PLT-ORG-06`); a partir de ahí, los asesores los invita y gestiona el administrador desde el CRM (`RF-USR-*`). P23 existe para desatascar a un negocio cuyo administrador perdió el acceso, reenviar una invitación que no llegó o corregir un rol mal asignado. Su diseño no cambia; lo que cambia es que no es el camino por el que entran los asesores — y eso vuelve `RF-USR-*` del CRM **irrecortable**.
+
 | RF-PLT-USR-01 | El operador ve los usuarios de una organización: nombre, correo, rol, estado (activo, invitación pendiente, invitación vencida, desactivado) y último acceso | P23 | P0 |
 | RF-PLT-USR-02 | El operador invita usuarios a la organización por correo, con rol Administrador o Asesor | P23 | P0 |
 | RF-PLT-USR-03 | El operador reenvía una invitación pendiente o vencida (genera un enlace nuevo e invalida el anterior) | P23 | P0 |
@@ -114,7 +116,7 @@ La columna "Prioridad" indica qué es indispensable para el MVP (P0) y qué pued
 | RF-PLT-WA-05 | La vista muestra la salud del webhook: último evento recibido, eventos de las últimas 24 horas y errores recientes (fecha y descripción técnica, sin contenido de mensajes ni números de teléfono de los contactos) | P24 | P0 |
 | RF-PLT-WA-06 | El operador desconecta el número: el sistema borra el token y deja de procesar eventos de ese número | P24 | P0 |
 | RF-PLT-WA-07 | Un mismo número no puede estar conectado a dos organizaciones | P24 | P0 |
-| RF-PLT-WA-08 | La organización puede conectar su número mediante el registro integrado de Meta (Embedded Signup, versión 4). La consola muestra el resultado con la misma información que una conexión manual. Pasa a P0 si se adopta la coexistencia (decisión 10) | P24 | P1 |
+| RF-PLT-WA-08 | La organización puede conectar su número mediante el registro integrado de Meta (Embedded Signup, **versión vigente: la v2 quedó obsoleta el 2026-10-15**). La consola muestra el resultado con la misma información que una conexión manual. **Sube a P0 al obtener el rol de Tech Provider**, que ADR-001 fijó como modelo objetivo | P24 | P1 |
 
 ### 5.6 Uso y seguimiento (PLT-USO)
 
