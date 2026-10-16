@@ -55,7 +55,27 @@ markdown
 - **Antes del piloto:** la lista de puesta en marcha de ADR-011, probar una restauración de copia de seguridad, y medir V30 con 6.000 conversaciones y 60.000 mensajes (ADR-013).
 - **Durabilidad sin copias del proveedor:** desde ADR-015, el plan gratuito de Supabase no incluye copias. El latido diario en el cron y las copias propias con `pg_dump` hacia R2 son **condición de esa decisión**, no mejoras opcionales.
 
-**Siguiente paso:** elegir la base de componentes accesibles y empezar el desarrollo.
+**Siguiente paso:** crear el repositorio de código y empezar por la fase 0 de `docs/desarrollo/00_arranque.md`. El `CLAUDE.md` de ese repositorio está redactado en `docs/desarrollo/01_claude_md_repo_codigo.md`, listo para copiar.
+
+---
+
+## 2026-10-16 — Contexto en grafo de memoria y `CLAUDE.md` del repositorio de código
+
+- **Se decidió o produjo:** a pedido de Franco, el contexto del proyecto se cargó como **grafo de memorias enlazadas en Engram** (proyecto `numi-crm-arquitecture`), para poder consultarlo desde cualquier sesión sin releer las 7.281 líneas de `docs/`.
+
+  **Once nodos**, cada uno con un `topic_key` estable para actualizarlo sin duplicar: raíz e índice, restricciones, invariantes, stack, los ADR en tres bloques (001-005, 006-010, 011-015), flujos críticos y módulos, estado y bloqueos, plan de construcción, y convenciones de código. Cada nodo declara su padre y cita el archivo fuente, de modo que se puede bajar al detalle desde cualquier punto.
+
+  **Al revisar qué faltaba para arrancar el desarrollo aparecieron tres huecos**, y los tres se cerraron o quedaron registrados:
+
+  1. **El `CLAUDE.md` de este repositorio no sirve para construir:** describe el método de la etapa de arquitectura —una decisión por sesión, opciones antes que respuestas—, no cómo escribir código. Se redactó el del repositorio de código en **`docs/desarrollo/01_claude_md_repo_codigo.md`**, listo para copiar a la raíz de `numi-crm` cuando ese repositorio exista. No decide nada nuevo: deriva de los ADR y cita cuál. Lo que ningún ADR fija —la estructura de carpetas— queda marcado como propuesta.
+
+  2. **Las diez reglas de implementación no estaban en ningún sitio juntas.** Son las que convierten las invariantes en obligaciones de código: la función única de transacción, la organización que nunca viene del cliente, los registros que reciben identificadores y no objetos, `security_invoker` en las vistas, las migraciones solo aditivas. Están en el borrador y en el nodo `grafo/10-convenciones-codigo`.
+
+  3. **El grafo no acompaña automáticamente al repositorio de código.** Engram detecta el proyecto por el remoto de git, así que `numi-crm` será un proyecto distinto y una búsqueda desde allí no verá estos nodos. Queda registrado en el nodo y en §4 del borrador, con la salida recomendada: buscar con `all_projects: true`, que es reversible y no requiere preparación.
+
+- **Quedó abierto:** tres puntos del borrador son de la fase 0 y no se pueden cerrar antes de montar el repositorio — la estructura de carpetas (a validar en la reunión de arranque), los comandos reales, y **el tablero de tareas donde se lleve el avance día a día, que hoy no existe**. El grafo, además, tiene un nodo que caduca rápido: `grafo/08-estado-y-bloqueos` lleva escrito que debe contrastarse con la cabecera de este archivo.
+
+- **Siguiente paso:** crear el repositorio de código, copiar el `CLAUDE.md` y arrancar la fase 0 por las pruebas de aislamiento y la función de transacción.
 
 ---
 
