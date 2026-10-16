@@ -42,20 +42,39 @@ markdown
 | --- | --- | --- |
 | **Verificación de negocio ante Meta** | Ruta crítica del proyecto y no la controla el equipo. Sin ella el piloto queda limitado a 2 clientes | ADR-001 |
 | **Configurar Resend (SPF, DKIM, DMARC)** | Sin correo no hay invitación y **no hay alta de organizaciones**. La propagación de DNS no depende del equipo | ADR-007, ADR-011 |
-| **Confirmar los cinco supuestos de la arquitectura** | Las secciones 3 y 11 razonan sobre ellos. El más influyente son los 20 mensajes por conversación, que multiplica todos los volúmenes | `arquitectura.md` §1.8 |
 | **Elegir la base de componentes accesibles** | Es lo que decide cuánto de las 31 vistas no hay que escribir a mano, con `RF-TRV-06` exigiendo accesibilidad real. Desbloqueado al cerrarse el framework el 2026-10-16 | ADR-009 |
 
-**Revisión independiente: hecha el 2026-10-16** (`CLAUDE.md` §11). Resultado abajo.
+**La etapa de arquitectura está cerrada (2026-10-16).** Las 14 decisiones aprobadas, el documento de arquitectura terminado, la revisión independiente de `CLAUDE.md` §11 hecha y sus siete hallazgos corregidos, los supuestos que importaban confirmados y los documentos fuente sincronizados. **Lo que queda no es trabajo de diseño.**
 
 ### Puntos abiertos
 
-- **ADR-009: cerrado el 2026-10-16.** El framework es React con Vite, confirmado por Franco. Queda por elegir la base de componentes accesibles.
-- **Riesgo de calendario:** 31 vistas más el alcance que agregaron ADR-004 y ADR-012, en siete semanas con dos personas. Cada ADR afectado tiene su orden de repliegue escrito.
+- **Base de componentes accesibles:** sin elegir. Es lo primero antes de construir vistas.
+- **Riesgo de calendario:** 111 requisitos P0 y 31 vistas en siete semanas con dos personas a tiempo parcial. Cada ADR tiene su orden de repliegue, pero **nadie sumó el alcance total ni priorizó entre las listas de ADR-002 y ADR-004** — esa comparación es la que hará falta el 16 de noviembre. Aplazado por decisión de Franco el 2026-10-16.
 - **Concentración en Supabase:** Postgres, Auth y Realtime en un proveedor con antecedentes de caídas. Asumido conscientemente; tabla de modos de falla en ADR-011.
-- **Actualizaciones pendientes en `docs/01` a `docs/03`:** cada ADR lista las suyas en su sección de consecuencias. Ninguna se ha aplicado todavía.
-- **Antes del piloto:** probar una restauración de copia de seguridad, y medir V30 con 6.000 conversaciones y 60.000 mensajes (ADR-013).
+- **Antes del piloto:** la lista de puesta en marcha de ADR-011, probar una restauración de copia de seguridad, y medir V30 con 6.000 conversaciones y 60.000 mensajes (ADR-013).
 
-**Siguiente paso:** elegir la base de componentes accesibles y empezar el desarrollo. La arquitectura está revisada y corregida, y las 14 decisiones están cerradas; no queda trabajo de diseño pendiente.
+**Siguiente paso:** elegir la base de componentes accesibles y empezar el desarrollo.
+
+---
+
+## 2026-10-16 — Etapa de arquitectura cerrada
+
+- **Se decidió o produjo:** confirmados los supuestos que faltaban y **cerrada la etapa de arquitectura** según los criterios de `CLAUDE.md` §7.
+
+  **Franco confirma los dos supuestos que podían invalidar la sección 11:**
+  - **20 mensajes por conversación.** Era el más influyente porque multiplica todos los volúmenes del sistema. Confirmado, los números de la sección 11 quedan intactos: 200.000 mensajes al mes con 20 negocios, 0,95 por segundo en el pico, 84× de margen contra el límite de Meta.
+  - **3 a 10 usuarios por negocio.** Da ~60 asesores concurrentes contra un techo de 200 conexiones de Realtime, 3,3× de margen.
+
+  **Los otros tres "supuestos" no eran tales**, y se reclasificaron en §1.8: los 20 negocios a 12 meses son el **tope duro del portafolio de Meta**, no una proyección; el umbral de 2 s de la vista de métricas se confirma **midiendo** (ADR-013 ya lo exige); y el techo de costo es un **criterio de juicio** para decidir si una pieza nueva se justifica, no un número de diseño.
+
+  **Los cuatro pendientes del documento de arquitectura quedan cerrados:** revisión independiente hecha, supuestos confirmados, framework decidido y documentos fuente actualizados. El estado del documento pasa de *"Completo, pendiente de revisión independiente"* a **Terminado**.
+
+- **Quedó abierto:**
+  - **Elegir la base de componentes accesibles.** Es lo primero antes de construir vistas y lo que decide cuánto trabajo de interfaz hay que hacer a mano.
+  - **El riesgo de calendario, aplazado por decisión de Franco.** Siguen siendo 111 requisitos P0 y 31 vistas en siete semanas con dos personas a tiempo parcial, y **nadie sumó el alcance total ni priorizó una sola lista de repliegue** entre ADR-002 y ADR-004. Es la comparación que hará falta en la revisión del 16 de noviembre.
+  - **La lista de puesta en marcha de ADR-011** y la verificación de negocio ante Meta, que es ruta crítica y no la controla el equipo.
+
+- **Siguiente paso:** elegir la base de componentes y empezar el desarrollo.
 
 ---
 

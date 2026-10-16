@@ -1,6 +1,6 @@
 # Arquitectura de Numi CRM
 
-- **Estado:** Completo, pendiente de revisión independiente
+- **Estado:** **Terminado.** Revisión independiente hecha el 2026-10-16, sin problemas abiertos
 - **Fecha:** 2026-10-15
 - **Base:** ADR-001 a ADR-014, todas aprobadas el 2026-10-15
 - **Alcance:** el MVP con fecha del 30 de noviembre de 2026 y el piloto del 1 de diciembre
@@ -42,11 +42,11 @@ Esta sección fija los números con los que se juzga el diseño. Sin ellos, "esc
 | --- | --- | --- | --- |
 | Negocios en el piloto | **2 a 3** | Exigido | `docs/01_definicion_mvp_v2.2.md` §11 |
 | Conversaciones por negocio al mes | **500** | Exigido | `CLAUDE.md` §8, "volumen de referencia" |
-| Mensajes por conversación | **20** | Supuesto | Ninguna fuente lo fija. Ver cálculo abajo |
+| Mensajes por conversación | **20** | **Confirmado** | Confirmado por Franco el 2026-10-16. Ver cálculo abajo |
 | Mensajes por negocio al mes | **10.000** | Derivado | 500 × 20 |
 | Mensajes por negocio al año | **120.000** | Derivado | 10.000 × 12 |
 | Contactos por negocio | **5.000** | Exigido | `RF-TRV-03` fija ese número como referencia de búsqueda |
-| Usuarios por negocio | **3 a 10** | Supuesto | Un administrador más asesores; ningún documento lo fija |
+| Usuarios por negocio | **3 a 10** | **Confirmado** | Un administrador más asesores. Confirmado por Franco el 2026-10-16 |
 | **Negocios a 12 meses** | **20** | **Supuesto con tope duro** | Ver abajo: el límite no es técnico |
 
 **Sobre los 20 mensajes por conversación.** Es el supuesto más influyente de la tabla, porque multiplica todo lo demás. Una conversación de atención comercial en WhatsApp —consulta, respuesta, un par de aclaraciones, cierre— rara vez baja de 10 ni pasa de 40. Se toma 20 como punto medio. **Si el valor real resultara 50, los volúmenes de esta tabla se multiplican por 2,5** y la sección 11 debe rehacerse; sigue sin ser un problema para Postgres, pero conviene saberlo.
@@ -185,7 +185,17 @@ Repetidas aquí desde `CLAUDE.md` §8 porque explican decisiones que de otro mod
 2. **El primer límite de crecimiento es un permiso de Meta, no una pieza técnica.**
 3. **Tres invariantes absolutas**: no perder mensajes, no duplicarlos, no cruzar datos entre negocios. Todo lo demás admite grados.
 4. **30 USD al mes de infraestructura**, sin escalones abruptos — más el costo variable del agente de IA, la única partida que crece con el uso: de ~6 USD con Claude Haiku 5.5 a ~110 USD con Claude Sonnet 5.5 (ADR-014).
-5. **Cinco supuestos esperan confirmación**: mensajes por conversación, usuarios por negocio, negocios a 12 meses, umbral de la vista de métricas y techo de costo.
+5. **Estado de los cinco supuestos, al 2026-10-16.** Franco confirmó los dos que más pesan:
+
+| Supuesto | Valor | Estado |
+| --- | --- | --- |
+| Mensajes por conversación | 20 | **Confirmado** — es el que multiplica todos los volúmenes |
+| Usuarios por negocio | 3 a 10 | **Confirmado** — ~60 asesores concurrentes contra un techo de 200 |
+| Negocios a 12 meses | 20 | **No es un supuesto a confirmar**: es el tope duro del portafolio de Meta (§11.3) |
+| Umbral de la vista de métricas | < 2 s | Queda como objetivo de diseño; ADR-013 exige **medirlo** con datos realistas antes del piloto, y esa medición es la que lo confirma |
+| Techo de costo | ~100 USD al mes | Queda como referencia para juzgar si una pieza nueva se justifica. Hoy la infraestructura cuesta 30 USD y el margen es amplio |
+
+**Los dos confirmados son los que podían invalidar la sección 11, y la dejan intacta.** Los otros tres no bloquean el desarrollo: uno es un límite externo, otro se resuelve midiendo y el tercero es un criterio de juicio, no un número de diseño.
 
 ---
 
@@ -1834,11 +1844,18 @@ La pregunta inversa de `CLAUDE.md` §11. Revisadas las 14 decisiones, estas piez
 
 ## Estado del documento
 
-**Las 12 secciones están escritas.** Base: ADR-001 a ADR-014, todas aprobadas el 2026-10-15.
+**Documento terminado el 2026-10-16**, según los criterios de `CLAUDE.md` §7: las 14 decisiones aprobadas, las 12 secciones escritas y la revisión independiente hecha sin problemas abiertos.
 
-**Pendientes antes de darlo por terminado** (`CLAUDE.md` §7):
+**Los cuatro pendientes, cerrados:**
 
-1. **Revisión independiente en sesión nueva** (`CLAUDE.md` §11). La sesión que escribió este documento no puede hacerla.
-2. **Confirmar los cinco supuestos de §1.8** — el más influyente son los 20 mensajes por conversación, que multiplica todos los volúmenes.
-3. ~~Resolver la elección de framework del frontend (ADR-009).~~ **Cerrado el 2026-10-16: React con Vite**, confirmado por Franco. Queda elegir la base de componentes accesibles.
-4. **Actualizar `docs/01` a `docs/03`** con lo que cada ADR lista en sus consecuencias. Ninguna aplicada todavía.
+1. ✅ **Revisión independiente** (`CLAUDE.md` §11), hecha el 2026-10-16 en una sesión que no participó del diseño. Encontró siete huecos de especificación —ninguna decisión equivocada— y los siete están corregidos en sus ADR.
+2. ✅ **Supuestos de §1.8.** Franco confirmó los dos que podían invalidar la sección 11; los otros tres no son supuestos a confirmar sino un límite externo, una medición y un criterio de juicio.
+3. ✅ **Framework del frontend:** React con Vite, confirmado por Franco el 2026-10-16. ADR-009 cerrado.
+4. ✅ **`docs/01` a `docs/03` actualizados** con las consecuencias de los 14 ADR y con las correcciones de la revisión.
+
+**Lo que queda no es trabajo de arquitectura:**
+
+- **Elegir la base de componentes accesibles**, que decide cuánto de las 31 vistas hay que escribir a mano (`RF-TRV-06`).
+- **Sumar el alcance y priorizar una sola lista de repliegue** entre ADR-002 y ADR-004, para la revisión del 16 de noviembre. Hoy cada ADR tiene la suya por separado y nadie las comparó.
+- **La lista de puesta en marcha de ADR-011** —`max_size` de Hyperdrive en 40, Resend con SPF/DKIM/DMARC, preparación para HIPAA en Anthropic, canal de Realtime sin acceso público— y la verificación de negocio ante Meta, que es ruta crítica y no la controla el equipo.
+- **Medir V30** con 6.000 conversaciones y 60.000 mensajes antes del piloto (ADR-013).

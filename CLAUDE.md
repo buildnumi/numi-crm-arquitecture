@@ -131,6 +131,8 @@ Cuando las decisiones D-01 a D-14 estén aprobadas, se construye `docs/architect
 
 **Terminado cuando:** las 14 decisiones están aprobadas, el documento tiene las 12 secciones y una revisión independiente (sección 11) no encuentra problemas abiertos.
 
+> **Los tres criterios se cumplieron el 2026-10-16. Esta etapa está cerrada.** Las 14 decisiones aprobadas, las 12 secciones escritas y la revisión independiente hecha en una sesión que no participó del diseño: encontró siete huecos de especificación —ninguna decisión equivocada—, los siete corregidos en sus ADR. El trabajo que sigue es de desarrollo, no de arquitectura; lo que queda pendiente está en la cabecera de `docs/PROGRESO.md`.
+
 ## 8. Restricciones y requisitos que no se negocian
 
 **Restricciones**
