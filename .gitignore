@@ -2,3 +2,6 @@
 .archify/**/.archify-finalize-*.json
 .archify/**/.archify-delivery-lock.json
 .archify/**/*.finalize-summary.json
+
+# Grafo de conocimiento de graphify (se regenera localmente)
+graphify-out/
