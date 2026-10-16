@@ -150,11 +150,16 @@ Se prueba que **funcione**, no solo que compile. Vale especialmente para criptog
 
 ## 6. Estructura del repositorio
 
-> **Propuesta.** Ningún ADR la fija. Conviene cerrarla en la reunión de arranque y actualizar esta sección con lo acordado.
+> **Decidido el 2026-10-16 por Franco.** Un solo repositorio con espacios de trabajo (workspaces) de npm, y un despliegue independiente por cada Worker. No es un ADR nuevo: no cambia ninguna pieza del diseño, solo dónde vive el código. Los dos Workers de ADR-009 punto 2 siguen siendo dos unidades que se despliegan y fallan por separado.
+
+**Por qué un solo repositorio.** El acoplamiento real del proyecto es el contrato de la API: una aplicación de página única que consume toda su superficie en 31 vistas (18 del CRM, 13 de la consola). En un repositorio los tipos del contrato se comparten por importación directa, y un cambio que toca la API y la interfaz va en un commit, un PR y dos despliegues coordinados. Con dos repositorios habría que duplicar los tipos a mano o publicar un paquete; con dos personas y siete semanas, las dos cosas son impuesto puro.
+
+**Por qué con espacios de trabajo y no un `package.json` plano.** Las reglas 3.1 y 3.8 —ningún módulo importa el cliente de Postgres, el código de negocio no importa nada de Hono— pasan a tener frontera técnica en vez de depender de que nadie se olvide. `apps/web` se compila hacia el navegador: un import accidental de `packages/db` es un secreto en el paquete entregado.
 
 ```
 numi-crm/
 ├── CLAUDE.md
+├── package.json          # Raíz: declara los espacios de trabajo y los comandos
 ├── apps/
 │   ├── api/              # Worker de la API (Hono)
 │   └── web/              # Aplicación de página única (React + Vite)
@@ -168,12 +173,60 @@ numi-crm/
 │   │   ├── metrics/
 │   │   ├── console/
 │   │   └── audit/
+│   ├── contract/         # Tipos y esquemas del contrato de la API
 │   └── db/               # Migraciones, roles, la función de transacción
 └── tests/
     └── isolation/        # Las siete pruebas de RF-TRV-01
 ```
 
 Los módulos de `core/` salen de `CLAUDE.md` de arquitectura §7, sección 4. Cada uno declara de qué datos es dueño y qué eventos emite.
+
+**Quién puede importar a quién.** Se declara en las dependencias de cada espacio de trabajo; lo que no está declarado no compila.
+
+| Espacio de trabajo | Puede importar | Nunca importa |
+| --- | --- | --- |
+| `apps/web` | `packages/contract` | `packages/core`, `packages/db` |
+| `apps/api` | `packages/core`, `packages/contract`, `packages/db` | — |
+| `packages/core` | `packages/contract` | `packages/db` (recibe la función de transacción por parámetro, regla 3.1), nada de Hono (regla 3.8) |
+| `packages/contract` | — | Todo lo demás. Solo tipos y esquemas |
+| `packages/db` | — | `packages/core`, `apps/*` |
+
+`packages/contract` es el único punto de contacto entre la interfaz y el servidor. Si el endpoint cambia su respuesta y el componente no se actualiza, `npm run typecheck` falla antes de que nada se despliegue.
+
+### 6.1 Despliegues independientes
+
+Un push dispara solo los despliegues de lo que cambió, filtrando por rutas en el workflow de GitHub Actions. No se decide en tiempo de ejecución: es un filtro estático que se escribe una vez en la fase 0.
+
+| Cambia | Se despliega |
+| --- | --- |
+| `apps/web/**` | Worker de la aplicación |
+| `apps/api/**` | Worker de la API |
+| `packages/**` | Worker de la API |
+| `apps/web/**` y `apps/api/**` | Los dos |
+
+- La rama principal despliega a producción; las ramas de trabajo, a desarrollo (ADR-011 §4).
+- **Las pruebas de aislamiento corren en todo push, toque lo que toque.** Si alguna falla, no se despliega nada (ADR-011).
+- Si el despliegue de la aplicación falla, la API y el webhook siguen en pie. Esa era la garantía que compraba la separación en dos Workers, y se mantiene entera (`arquitectura.md` §3).
+- Cuando un cambio toca los dos, **la API se despliega primero**. El esquema de migraciones es solo aditivo (regla 3.6), así que una interfaz anterior sigue funcionando contra una API nueva; al revés no.
+
+### 6.2 Qué revisar cuando el proyecto crezca
+
+Esta estructura no limita la escalabilidad del sistema: cuántos mensajes por segundo aguanta y dónde está el primer cuello de botella no dependen de dónde vive el código (`arquitectura.md` §11). **Un repositorio único no obliga a un despliegue único:** si hiciera falta separar el webhook de la API, se agrega `apps/webhook/` con su filtro de rutas, sin repositorio nuevo.
+
+Lo que sí puede apretar es el trabajo del equipo. Señales concretas:
+
+| Señal | Qué hacer |
+| --- | --- |
+| La integración continua pasa de unos 15 minutos porque corre todo en cada push | Ejecutar solo los espacios de trabajo afectados, con caché de dependencias. Una herramienta de construcción incremental solo si eso no alcanza |
+| Conflictos de fusión constantes sobre los mismos paquetes | Aparece alrededor de ocho o diez personas tocando `packages/core`. Fronteras más estrictas y dueños por carpeta |
+| Alguien externo necesita acceso a una parte y no al resto | Es el único caso en que partir el repositorio gana de verdad |
+
+**La decisión es reversible en la dirección barata.** Extraer una carpeta a su propio repositorio conservando el historial es mecánico; fusionar dos repositorios que divergieron, con tipos duplicados que dejaron de coincidir, es el camino caro.
+
+**Dos riesgos de disciplina**, que el repositorio único facilita y conviene vigilar desde el primer día:
+
+1. **`packages/core` como cajón de sastre.** Los ocho módulos tienen frontera declarada en `arquitectura.md` §4. Las relaciones entre módulos pasan por eventos, no por llamadas directas; si se empiezan a importar libremente, el acoplamiento crece en silencio.
+2. **Lógica dentro de `packages/contract`.** Solo tipos y esquemas. Una función de negocio ahí termina compilada en el navegador.
 
 ## 7. Comandos
 
@@ -186,7 +239,7 @@ Los módulos de `core/` salen de `CLAUDE.md` de arquitectura §7, sección 4. Ca
 | **Pruebas de aislamiento** | `npm run test:isolation` |
 | Tipos | `npm run typecheck` |
 | Migraciones | `npm run db:migrate` |
-| Despliegue | Automático desde GitHub. La rama principal va a producción |
+| Despliegue | Automático desde GitHub, por espacio de trabajo (§6.1). La rama principal va a producción |
 
 **Las pruebas de aislamiento corren antes de cada despliegue. Si alguna falla, no se despliega** (ADR-011).
 

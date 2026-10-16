@@ -49,6 +49,7 @@ markdown
 
 ### Puntos abiertos
 
+- **Estructura del repositorio: decidida el 2026-10-16**, un solo repositorio con espacios de trabajo y despliegues independientes por Worker. Detalle en `docs/desarrollo/01_claude_md_repo_codigo.md` §6.
 - **Base de componentes: decidida el 2026-10-16**, shadcn/ui sobre Radix. El plan de construcción está en `docs/desarrollo/00_arranque.md`.
 - **Riesgo de calendario:** 111 requisitos P0 y 31 vistas en siete semanas con dos personas a tiempo parcial. Cada ADR tiene su orden de repliegue, pero **nadie sumó el alcance total ni priorizó entre las listas de ADR-002 y ADR-004** — esa comparación es la que hará falta el 16 de noviembre. Aplazado por decisión de Franco el 2026-10-16.
 - **Concentración en Supabase:** Postgres, Auth y Realtime en un proveedor con antecedentes de caídas. Asumido conscientemente; tabla de modos de falla en ADR-011.
@@ -56,6 +57,26 @@ markdown
 - **Durabilidad sin copias del proveedor:** desde ADR-015, el plan gratuito de Supabase no incluye copias. El latido diario en el cron y las copias propias con `pg_dump` hacia R2 son **condición de esa decisión**, no mejoras opcionales.
 
 **Siguiente paso:** crear el repositorio de código y empezar por la fase 0 de `docs/desarrollo/00_arranque.md`. El `CLAUDE.md` de ese repositorio está redactado en `docs/desarrollo/01_claude_md_repo_codigo.md`, listo para copiar.
+
+---
+
+## 2026-10-16 — Un solo repositorio con espacios de trabajo, despliegues independientes
+
+- **Se decidió o produjo:** Franco cerró la estructura del repositorio de código, que estaba marcada como propuesta en `docs/desarrollo/01_claude_md_repo_codigo.md` §6: **un solo repositorio con espacios de trabajo (workspaces) de npm, y un despliegue independiente por Worker.**
+
+  **No es un ADR nuevo ni reabre la etapa de arquitectura:** no cambia ninguna pieza del diseño. ADR-009 punto 2 fija dos Workers —uno sirve la aplicación, otro es la API, se despliegan y fallan por separado—, pero eso es la unidad de ejecución, no el lugar donde vive el código. Las dos cosas son independientes y la separación se mantiene entera.
+
+  **La razón del repositorio único es el contrato de la API.** La aplicación de página única consume toda su superficie en 31 vistas (18 del CRM, 13 de la consola). En un repositorio los tipos del contrato se comparten por importación directa y `npm run typecheck` falla antes de desplegar si el endpoint y el componente dejan de coincidir. Con dos repositorios habría que duplicar los tipos a mano o publicar un paquete: con dos personas y siete semanas, las dos cosas son impuesto puro, y cada cambio de extremo a extremo serían dos PR coordinados.
+
+  **Los espacios de trabajo, frente a un `package.json` plano,** le dan frontera técnica a las reglas 3.1 y 3.8 del borrador —ningún módulo importa el cliente de Postgres, el código de negocio no importa nada de Hono—, que si no dependen de que nadie se olvide. Pesa sobre todo en `apps/web`, que se compila hacia el navegador: un import accidental de `packages/db` sería un secreto en el paquete entregado.
+
+  Se agregó `packages/contract` a la estructura, con los tipos y esquemas compartidos, como único punto de contacto entre la interfaz y el servidor; y una tabla de qué espacio de trabajo puede importar a cuál.
+
+  **Los despliegues se filtran por rutas** en el workflow de GitHub Actions: `apps/web/**` despliega la aplicación, `apps/api/**` y `packages/**` despliegan la API. Es un filtro estático, no una decisión en tiempo de ejecución. Las pruebas de aislamiento corren en todo push, toque lo que toque (ADR-011). Cuando un cambio toca los dos, **la API va primero**: las migraciones son solo aditivas (regla 3.6), así que una interfaz anterior funciona contra una API nueva, pero no al revés.
+
+- **Quedó abierto:** los comandos reales de la sección 7 del borrador siguen siendo propuesta hasta montar el repositorio; el gestor de espacios de trabajo concreto (npm, pnpm) no se eligió, y el tablero de tareas del día a día sigue sin existir.
+
+- **Siguiente paso:** crear el repositorio `numi-crm` con esta estructura, copiar el `CLAUDE.md`, y arrancar la fase 0 por las pruebas de aislamiento y la función de transacción.
 
 ---
 
