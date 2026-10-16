@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Numi CRM · Arquitectura y flujo completo",
+    "locale": "es",
+    "output": ".archify/architecture-numi-crm-flujo-20261016-1105/numi-crm-flujo.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/buildnumi/numi-crm-arquitecture",
+      "provider": "github",
+      "link_mode": "local-only",
+      "revision": "5e9de3bcb29d09635ce5014be3d0a506cbea1b50"
+    }
+  },
+  "components": [
+    { "id": "asesor", "type": "external", "icon": "person", "label": "Usuarios del negocio", "sublabel": "asesor y administrador", "pos": [820, 40], "size": [160, 64],
+      "sources": [{ "path": "docs/architecture/arquitectura.md", "line": 240, "end_line": 241, "label": "§2.2 actores" }] },
+    { "id": "operador", "type": "external", "icon": "person", "label": "Operador de Numi", "sublabel": "consola en /plataforma", "pos": [1340, 40], "size": [160, 64],
+      "sources": [{ "path": "docs/architecture/arquitectura.md", "line": 242, "label": "§2.2 actores" }] },
+
+    { "id": "wapp", "type": "backend", "label": "Worker de la app", "sublabel": "sirve la SPA estática", "tag": "Cloudflare", "pos": [820, 190], "size": [160, 64],
+      "sources": [{ "path": "docs/architecture/arquitectura.md", "line": 386, "label": "§3.3" }] },
+    { "id": "app", "type": "frontend", "label": "Aplicación web", "sublabel": "React + Vite · CRM y consola", "pos": [1080, 190], "size": [160, 64],
+      "sources": [{ "path": "docs/architecture/arquitectura.md", "line": 385, "label": "§3.3" }, { "path": "docs/adr/009-arquitectura-frontend.md", "line": 1, "label": "ADR-009" }] },
+    { "id": "auth", "type": "security", "label": "Supabase Auth", "sublabel": "solo identidad · TOTP", "pos": [1580, 190], "size": [160, 64],
+      "sources": [{ "path": "docs/architecture/arquitectura.md", "line": 393, "label": "§3.3" }, { "path": "docs/adr/007-identidad-y-roles.md", "line": 1, "label": "ADR-007" }] },
+
+    { "id": "contacto", "type": "external", "icon": "person", "label": "Contacto", "sublabel": "escribe por WhatsApp", "pos": [40, 340], "size": [160, 64],
+      "sources": [{ "path": "docs/architecture/arquitectura.md", "line": 244, "label": "§2.2" }] },
+    { "id": "meta_in", "type": "external", "label": "Meta · webhooks", "sublabel": "WhatsApp Cloud API", "pos": [300, 340], "size": [160, 64],
+      "sources": [{ "path": "docs/architecture/arquitectura.md", "line": 252, "label": "§2.3" }] },
+    { "id": "webhook", "type": "security", "label": "Webhook", "sublabel": "valida HMAC · responde 200", "tag": "Worker de la API", "pos": [820, 340], "size": [160, 64],
+      "sources": [{ "path": "docs/architecture/arquitectura.md", "line": 806, "end_line": 862, "label": "§6.1 entrante" }, { "path": "docs/adr/005-procesamiento-webhook.md", "line": 1, "label": "ADR-005" }] },
+    { "id": "api", "type": "backend", "label": "API · Hono", "sublabel": "rutas CRM, /plataforma y envío", "tag": "Worker de la API", "pos": [1080, 340], "size": [160, 64],
+      "sources": [{ "path": "docs/architecture/arquitectura.md", "line": 387, "label": "§3.3" }, { "path": "docs/adr/003-runtime-backend.md", "line": 1, "label": "ADR-003" }] },
+    { "id": "resend", "type": "external", "label": "Resend", "sublabel": "invitaciones por correo", "pos": [1580, 340], "size": [160, 64],
+      "sources": [{ "path": "docs/architecture/arquitectura.md", "line": 259, "label": "§2.3" }, { "path": "docs/adr/011-secretos-entornos-despliegue.md", "line": 1, "label": "ADR-011" }] },
+
+    { "id": "q_ev", "type": "messagebus", "label": "Cola de eventos", "sublabel": "hasta 100 reintentos", "pos": [560, 490], "size": [160, 64],
+      "sources": [{ "path": "docs/architecture/arquitectura.md", "line": 388, "label": "§3.3" }, { "path": "docs/architecture/arquitectura.md", "line": 403, "label": "§3.4" }] },
+    { "id": "pg", "type": "database", "label": "Postgres · Supabase", "sublabel": "vía Hyperdrive · RLS y tres roles sin bypassrls", "pos": [820, 490], "size": [420, 64],
+      "sources": [{ "path": "docs/architecture/arquitectura.md", "line": 391, "end_line": 392, "label": "§3.3" }, { "path": "docs/architecture/arquitectura.md", "line": 427, "end_line": 435, "label": "§3.6 roles" }] },
+
+    { "id": "q_ar", "type": "messagebus", "label": "Cola de archivos", "sublabel": "reintenta dentro de 7 días", "pos": [300, 640], "size": [160, 64],
+      "sources": [{ "path": "docs/architecture/arquitectura.md", "line": 389, "label": "§3.3" }, { "path": "docs/architecture/arquitectura.md", "line": 404, "label": "§3.4" }] },
+    { "id": "cons_ev", "type": "backend", "label": "Consumidor de eventos", "sublabel": "único por (org, wamid)", "tag": "Worker de la API", "pos": [560, 640], "size": [160, 64],
+      "sources": [{ "path": "docs/architecture/arquitectura.md", "line": 417, "label": "§3.5 escritores" }, { "path": "docs/architecture/arquitectura.md", "line": 836, "end_line": 845, "label": "§6.1" }] },
+    { "id": "rt", "type": "messagebus", "label": "Supabase Realtime", "sublabel": "Broadcast · canal por org.", "pos": [1340, 640], "size": [160, 64],
+      "sources": [{ "path": "docs/architecture/arquitectura.md", "line": 394, "label": "§3.3" }, { "path": "docs/adr/008-tiempo-real.md", "line": 1, "label": "ADR-008" }] },
+
+    { "id": "meta_media", "type": "external", "label": "Meta · medios", "sublabel": "id de archivo caduca a 7 días", "pos": [40, 790], "size": [160, 64],
+      "sources": [{ "path": "docs/architecture/arquitectura.md", "line": 453, "label": "§3.7" }] },
+    { "id": "cons_ar", "type": "backend", "label": "Consumidor de archivos", "sublabel": "descarga y guarda", "tag": "Worker de la API", "pos": [300, 790], "size": [160, 64],
+      "sources": [{ "path": "docs/architecture/arquitectura.md", "line": 299, "label": "§3.1" }, { "path": "docs/architecture/arquitectura.md", "line": 570, "label": "§4.5" }] },
+    { "id": "q_ag", "type": "messagebus", "label": "Cola del agente", "sublabel": "dos reintentos y escala", "pos": [560, 790], "size": [160, 64],
+      "sources": [{ "path": "docs/architecture/arquitectura.md", "line": 390, "label": "§3.3" }, { "path": "docs/architecture/arquitectura.md", "line": 405, "label": "§3.4" }] },
+    { "id": "cons_ag", "type": "backend", "label": "Consumidor del agente", "sublabel": "responde o escala", "tag": "Worker de la API", "pos": [820, 790], "size": [160, 64],
+      "sources": [{ "path": "docs/architecture/arquitectura.md", "line": 419, "label": "§3.5 escritores" }, { "path": "docs/adr/014-agente-ia.md", "line": 1, "label": "ADR-014" }] },
+
+    { "id": "r2", "type": "database", "label": "Cloudflare R2", "sublabel": "adjuntos · sin URL firmadas", "pos": [300, 940], "size": [160, 64],
+      "sources": [{ "path": "docs/architecture/arquitectura.md", "line": 395, "label": "§3.3" }, { "path": "docs/adr/010-archivos-r2.md", "line": 1, "label": "ADR-010" }] },
+    { "id": "meta_send", "type": "external", "label": "Meta · envío", "sublabel": "WhatsApp Cloud API", "pos": [820, 940], "size": [160, 64],
+      "sources": [{ "path": "docs/architecture/arquitectura.md", "line": 252, "label": "§2.3" }, { "path": "docs/adr/012-envio-de-mensajes.md", "line": 1, "label": "ADR-012" }] },
+    { "id": "anth", "type": "external", "label": "Anthropic", "sublabel": "sin nombre ni teléfono", "pos": [1080, 940], "size": [160, 64],
+      "sources": [{ "path": "docs/architecture/arquitectura.md", "line": 260, "label": "§2.3" }, { "path": "docs/architecture/arquitectura.md", "line": 266, "label": "HIPAA" }] }
+  ],
+  "connections": [
+    { "id": "contacto-escribe", "from": "contacto", "to": "meta_in", "label": "escribe", "variant": "emphasis" },
+    { "id": "webhook-post", "from": "meta_in", "to": "webhook", "label": "POST firmado", "variant": "emphasis" },
+    { "id": "webhook-crudo", "from": "webhook", "to": "pg", "label": "INSERT crudo", "variant": "emphasis" },
+    { "id": "webhook-encola", "from": "webhook", "to": "q_ev", "label": "referencia", "variant": "dashed" },
+    { "id": "eventos-entrega", "from": "q_ev", "to": "cons_ev", "label": "entrega", "variant": "dashed" },
+    { "id": "consumidor-guarda", "from": "cons_ev", "to": "pg", "label": "app_worker" },
+    { "id": "consumidor-aviso", "from": "cons_ev", "to": "rt", "label": "aviso" },
+    { "id": "encola-descarga", "from": "cons_ev", "to": "q_ar", "label": "adjunto", "variant": "dashed" },
+    { "id": "encola-agente", "from": "cons_ev", "to": "q_ag", "label": "si agente activo", "variant": "dashed" },
+    { "id": "archivos-entrega", "from": "q_ar", "to": "cons_ar", "label": "entrega", "variant": "dashed" },
+    { "id": "descarga-medio", "from": "cons_ar", "to": "meta_media", "label": "descarga" },
+    { "id": "guarda-adjunto", "from": "cons_ar", "to": "r2", "label": "guarda" },
+    { "id": "agente-entrega", "from": "q_ag", "to": "cons_ag", "label": "entrega", "variant": "dashed" },
+    { "id": "agente-guarda", "from": "cons_ag", "to": "pg", "label": "app_worker" },
+    { "id": "agente-consulta", "from": "cons_ag", "to": "anth", "label": "consulta", "variant": "security" },
+    { "id": "agente-envia", "from": "cons_ag", "to": "meta_send", "label": "envía respuesta" },
+    { "id": "agente-aviso", "from": "cons_ag", "to": "rt", "label": "aviso" },
+    { "id": "usuarios-app", "from": "asesor", "to": "app", "label": "atiende" },
+    { "id": "operador-app", "from": "operador", "to": "app", "label": "administra" },
+    { "id": "app-estaticos", "from": "app", "to": "wapp", "label": "SPA" },
+    { "id": "app-login", "from": "app", "to": "auth", "label": "login · TOTP", "variant": "security" },
+    { "id": "app-api", "from": "app", "to": "api", "label": "HTTPS + JWT", "variant": "emphasis" },
+    { "id": "api-datos", "from": "api", "to": "pg", "label": "app_user · app_platform", "variant": "security" },
+    { "id": "api-aviso", "from": "api", "to": "rt", "label": "avisos" },
+    { "id": "api-invita", "from": "api", "to": "resend", "label": "invitaciones" },
+    { "id": "api-envia", "from": "api", "to": "meta_send", "label": "envía · ventana 24 h" },
+    { "id": "api-adjuntos", "from": "api", "to": "r2", "label": "sirve adjuntos" },
+    { "id": "aviso-app", "from": "rt", "to": "app", "label": "aviso sin contenido" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Dos despliegues", "items": [
+      "Worker de la app: solo archivos estáticos",
+      "Worker de la API: webhook, rutas y los tres consumidores",
+      "Colas, R2, Hyperdrive y Supabase son gestionados"
+    ] },
+    { "dot": "emerald", "title": "Entrada sin pérdidas", "items": [
+      "Firma HMAC-SHA256 sobre el cuerpo crudo",
+      "Evento crudo guardado antes del 200; Meta reintenta 7 días",
+      "Unicidad (organization_id, wamid); orden por hora de Meta",
+      "La suspensión bloquea la salida, nunca la entrada"
+    ] },
+    { "dot": "rose", "title": "Aislamiento y secretos", "items": [
+      "Auth solo identifica; la API autoriza cada petición y verifica el JWT por JWKS",
+      "app_platform no tiene permiso sobre las tablas de mensajes",
+      "Tokens de WhatsApp cifrados con AES-GCM; nunca en el navegador"
+    ] },
+    { "dot": "violet", "title": "Tiempo real", "items": [
+      "Tres escritores publican con una sola función",
+      "El aviso no lleva contenido: la app invalida y recarga por la API",
+      "Sin Realtime, la bandeja se actualiza cada 60 s"
+    ] },
+    { "dot": "amber", "title": "Envío y agente", "items": [
+      "Envío síncrono: guarda «enviando», luego llama a Meta",
+      "Ventana de 24 h verificada antes de llamar a Meta",
+      "El agente reutiliza el camino de salida y escala tras dos fallos",
+      "Anthropic recibe el texto, no el nombre, el teléfono ni adjuntos; exige HIPAA"
+    ] },
+    { "dot": "slate", "title": "Cola de archivos", "items": [
+      "Los documentos no fijan quién encola la descarga: ADR-004 dice el webhook; con ADR-005 el webhook solo guarda el evento crudo, por eso se dibuja desde el consumidor"
+    ] }
+  ]
+}
