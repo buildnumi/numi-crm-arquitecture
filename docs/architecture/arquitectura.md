@@ -384,7 +384,8 @@ Las flechas que salen de las colas y vuelven al Worker de la API representan la 
 | --- | --- | --- | --- |
 | **Aplicación web** | Renderizar las 31 vistas, manejar sesión, suscribirse al canal | No accede a la base, ni directo ni por el cliente de Supabase. No decide permisos: los refleja | ADR-009 |
 | **Worker de la aplicación** | Servir los archivos estáticos | No tiene acceso a datos ni a secretos | ADR-009 |
-| **Worker de la API** | Rutas del CRM y la consola, webhook, envío, y los tres consumidores | No guarda estado en memoria entre peticiones | ADR-003 |
+| **Worker de la API** | Rutas del CRM y la consola, webhook, envío, los tres consumidores **y el trabajo programado** | No guarda estado en memoria entre peticiones | ADR-003 |
+| **Trabajo programado** | Un Cron Trigger: limpieza por retención, borrado de archivos y barrido de mensajes atascados en `enviando` | No procesa mensajes ni participa de ningún camino crítico | ADR-005, ADR-012 |
 | **Cola de eventos** | Desacoplar el webhook del procesamiento | No garantiza orden — el orden vive en la base | ADR-005 |
 | **Cola de archivos** | Descargas de adjuntos, con su propio ritmo | No bloquea el procesamiento de mensajes | ADR-005 |
 | **Cola del agente** | Disparar al agente sin acoplarlo al camino de entrada | No participa en `RF-TRV-02` | ADR-014 |
@@ -428,7 +429,7 @@ Los tres publican con **la misma función** (ADR-008, regla 4). Es lo que impide
 | --- | --- | --- |
 | API, peticiones de un negocio | `app_user` | Solo la organización del contexto de la transacción |
 | API, rutas de `/plataforma` | `app_platform` | Todas las organizaciones, **sin permiso sobre las tablas de mensajes** |
-| Los tres consumidores | `app_worker` | Escribe en cualquier organización; lectura mínima |
+| Los tres consumidores y el trabajo programado | `app_worker` | Escribe en cualquier organización **a lo largo del tiempo, encerrado en una sola por transacción**; lectura mínima |
 
 La fila del medio es la que hace que `RF-TRV-07` sea estructural: una consulta de la consola contra la tabla de mensajes **falla**, no devuelve datos filtrados. No depende de que nadie escriba la consulta equivocada.
 
@@ -825,8 +826,9 @@ sequenceDiagram
         W-->>M: 403 · no procesa
     end
     W->>DB: Resuelve organización<br/>por phone_number_id
-    alt Número desconocido
-        W-->>M: 200 · registra y descarta
+    alt Número todavía no conectado
+        W->>DB: Guarda el evento<br/>sin organización · no encola
+        W-->>M: 200
     end
     W->>DB: INSERT evento crudo
     W->>Q: Encola referencia
@@ -862,7 +864,9 @@ sequenceDiagram
 
 **El detalle que más falla en la práctica:** la firma se calcula sobre el **cuerpo crudo**, con unicode escapado y hexadecimal en minúsculas. ADR-005 lo advierte: hay que probarlo con un mensaje con tildes o emoji antes de darlo por bueno. Es un error silencioso.
 
-**Si el número no corresponde a ninguna organización, se responde 200**, no error. Reintentar algo que nunca va a resolverse solo acumula ruido.
+**Si el número no corresponde a ninguna organización, el evento se guarda igual** —con la organización sin resolver y sin encolar— y se responde 200. *(Corregido el 2026-10-16: antes se registraba y se descartaba.)* En el modo transitorio de ADR-001 los números se conectan a mano desde la consola, así que existe una ventana entre que el número empieza a recibir mensajes en Meta y que el operador lo conecta; **un 200 le dice a Meta que no reintente, de modo que descartar ahí perdía esos mensajes** y eso viola `RF-TRV-02`. Al conectar el número, esos eventos se reprocesan (`RF-PLT-WA-02`).
+
+**La regla general: el webhook nunca descarta un evento cuya firma es válida.** La firma ya demuestra que viene de Meta; que todavía no sepamos de quién es no lo vuelve descartable.
 
 ### 6.2 Envío de un mensaje, con ventana de 24 horas
 
@@ -1836,5 +1840,5 @@ La pregunta inversa de `CLAUDE.md` §11. Revisadas las 14 decisiones, estas piez
 
 1. **Revisión independiente en sesión nueva** (`CLAUDE.md` §11). La sesión que escribió este documento no puede hacerla.
 2. **Confirmar los cinco supuestos de §1.8** — el más influyente son los 20 mensajes por conversación, que multiplica todos los volúmenes.
-3. **Resolver la elección de framework del frontend** (ADR-009), que depende de qué conoce Anthony.
+3. ~~Resolver la elección de framework del frontend (ADR-009).~~ **Cerrado el 2026-10-16: React con Vite**, confirmado por Franco. Queda elegir la base de componentes accesibles.
 4. **Actualizar `docs/01` a `docs/03`** con lo que cada ADR lista en sus consecuencias. Ninguna aplicada todavía.

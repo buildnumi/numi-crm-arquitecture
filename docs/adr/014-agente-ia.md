@@ -180,6 +180,12 @@ ADR-012 señaló el problema: en el camino de salida **no hay identificador de M
 
 La solución: **una clave de unicidad por `(organization_id, conversation_id, inbound_message_id)`** en los mensajes generados por el agente. Antes de llamar al modelo, el consumidor inserta la fila de intención con esa clave; si ya existe, el evento se descarta sin llamar al modelo ni enviar. Así un reintento de la cola no produce una segunda respuesta al contacto, que es el peor fallo visible posible de esta función.
 
+**Qué pasa si el envío falla después de insertar la fila** *(precisado el 2026-10-16)*. La fila de intención se inserta antes de llamar al modelo, así que un reintento la encuentra y descarta. Si el envío a Meta falló —o expiró, el caso incierto de ADR-012—, descartar sin más dejaría al contacto **sin respuesta y en silencio**. Por eso lo que decide no es la existencia de la fila, sino **su estado**:
+
+- La fila de intención se descarta en el reintento **solo si ya llegó a un estado final** —enviada, o escalada—. Es el caso normal: el trabajo ya se hizo.
+- Si la fila sigue en un estado intermedio, el reintento **la retoma** en lugar de descartarla, sin volver a llamar al modelo si ya hay respuesta guardada.
+- **El caso incierto de ADR-012 no se reintenta**: el agente no puede decidir, como sí hace un asesor, si vale la pena arriesgar un duplicado. La conversación **escala a una persona**, que ve el historial y decide. Es coherente con el punto 10: ante lo que el agente no puede resolver, responde una persona.
+
 **4. Una organización suspendida no tiene agente activo.**
 
 `RF-CNV-16` y `RF-AUT-07`: la suspensión se verifica al enviar. El agente pasa por la misma verificación que un asesor en ADR-012, paso 1. Los mensajes entrantes se siguen guardando; el agente simplemente no responde.
@@ -198,6 +204,28 @@ El consumidor del agente usa el rol `app_worker` de ADR-006, con el contexto de 
 | | Datos de otras conversaciones o de otros negocios |
 
 **El identificador del contacto no viaja.** El modelo recibe el texto de la conversación, no la identidad de quien escribe. Es una reducción barata de la superficie: si el contenido ya es sensible, al menos no se envía asociado a un nombre y un teléfono.
+
+**6a. El agente ante entrada adversaria.**
+
+*(Agregado el 2026-10-16 tras la revisión independiente. Este ADR aislaba bien el agente —cola propia, repliegue limpio, no toca `RF-TRV-02`— pero no decía nada sobre su comportamiento ante entrada hostil o anómala. El agente es la única pieza del sistema que **actúa sobre texto que escribe un desconocido**: el contacto no está autenticado, no tiene contrato con Numi y puede escribir lo que quiera.)*
+
+**El texto del contacto es dato, nunca instrucción.** Es la regla que ordena el resto. El agente puede enviar mensajes a WhatsApp (punto 1) y cerrar conversaciones (punto 11); un contacto que logre que el modelo trate su mensaje como instrucción obtiene esas dos capacidades. Lo que se hace para evitarlo:
+
+- **La configuración del negocio va en las instrucciones del sistema; el mensaje del contacto va como contenido del turno del usuario, delimitado y marcado como no confiable.** Nunca se concatenan en un mismo bloque de texto.
+- **La configuración del negocio es confidencial.** Si el contacto pide ver las instrucciones, los precios internos o la configuración, el agente no los revela: se tratan como contexto operativo, no como información publicable.
+- **El agente no tiene herramientas.** No ejecuta acciones por decisión del modelo: responde texto, o indica que escala. Cerrar y escalar son decisiones del **consumidor**, tomadas sobre la salida del modelo según las reglas del punto 10, no acciones que el modelo invoque por su cuenta. Esto acota el daño de una inyección exitosa a "el agente dijo algo inadecuado", que es recuperable, en lugar de "el agente hizo algo", que no siempre lo es.
+- **La salida se valida antes de enviarse a Meta:** longitud acotada y, ante una respuesta vacía o malformada, se escala en lugar de enviar.
+
+**Tope de turnos consecutivos del agente.** El punto 11 establece que una conversación cerrada **se reabre sola si el contacto vuelve a escribir**, y cada mensaje entrante encola al agente. La clave de idempotencia del punto 3 impide que un *reintento* duplique una respuesta, pero **no acota un intercambio largo**, porque cada vuelta trae un `inbound_message_id` nuevo y legítimo. Frente a un contestador automático del otro lado, o a alguien que decide jugar con el agente, eso es un intercambio que no termina y que se factura entero.
+
+**El agente responde como máximo 10 veces consecutivas sin intervención humana en una conversación.** Alcanzado el tope, escala a un asesor por la vía del punto 10. El contador se reinicia cuando una persona escribe en la conversación. Diez es holgado para la atención comercial que describe el punto 9 —una consulta, respuesta, aclaraciones, cierre— y corta en seco el caso patológico.
+
+**Tope de gasto por organización.** El costo estimado de la sección de investigación (unos 6 USD al mes) supone uso normal. No hay nada entre ese supuesto y la factura: un contacto que envíe mil mensajes produce mil llamadas al modelo, pagadas por Numi, y el negocio no asume ese costo. Se fija:
+
+- **Un tope de mensajes del agente por organización y por día**, configurable, con un valor por defecto prudente para el piloto. Alcanzado el tope, el agente deja de responder y **las conversaciones escalan a asesores** — el mismo comportamiento que cuando Anthropic está caído, que ya está diseñado y probado.
+- **El tope que se alcanza se registra y se alerta** (ADR-011). Un negocio que lo alcanza a diario necesita otro límite o es un caso de abuso; las dos cosas se quieren ver.
+
+**La verificación de la suspensión ocurre antes de llamar al modelo.** El punto 4 dice que el agente pasa por la verificación de ADR-012 paso 1, que ocurre **al enviar**. Tomado literalmente, una organización suspendida ya habría pagado la llamada y —lo que importa más— **su contenido ya habría viajado a un tercero**. El consumidor verifica el estado de la organización y que el agente esté activo **al empezar a procesar el evento**, antes de cualquier llamada externa. La verificación de ADR-012 al enviar se mantiene como segunda red.
 
 **7. Retención cero obligatoria antes de usar datos reales.**
 
@@ -225,6 +253,7 @@ Decidido por Franco y Anthony. Todo vive en una tabla por organización, editabl
 | **Nombre y tono** | Cómo se presenta el agente ante el contacto |
 | **Reglas de escalada** | Cuándo pasar a un asesor, más allá de "no sé responder" |
 | **Preguntas y respuestas fijas** | Pares que el agente usa literalmente, sin generar |
+| **Tope de mensajes al día** | Límite de gasto de la organización; alcanzado, las conversaciones escalan (punto 6a) |
 
 **Las preguntas y respuestas fijas se consultan antes que el modelo.** Si el mensaje coincide con una, se responde con el texto exacto y **no se llama al modelo**: es más predecible, más rápido y más barato. Es también la vía por la que un negocio fija una respuesta que no admite improvisación —un precio, una dirección—.
 
@@ -301,12 +330,15 @@ Si en la revisión del 16 de noviembre el avance no alcanza, se apaga en este or
 6. Distinción visual del autor en la bandeja.
 7. Indicador `RF-MET-09`.
 8. Pruebas de aislamiento para la configuración del agente.
+9. **Contador de turnos consecutivos del agente por conversación**, con su tope y la escalada al alcanzarlo (punto 6a).
+10. **Contador de gasto por organización y por día**, con su tope, el repliegue a escalada y su alerta (punto 6a).
+11. **Pruebas de entrada adversaria**: un mensaje del contacto que intente hacerse pasar por instrucción no cambia el comportamiento del agente ni revela la configuración del negocio (punto 6a).
 
 **Qué documentos hay que actualizar**
 
 - `docs/01_definicion_mvp_v2.2.md` §6: **quitar los agentes de IA de "Fuera del MVP"**, y §8.1: agregar la API de Anthropic al stack y su costo variable a §8.
 - `docs/02_documento_maestro_v1.1.md`: requisitos nuevos de configuración del agente (`RF-CFG-*`), `RF-MET-09`, la aclaración de `RF-MET-02`, el autor del mensaje en `RF-CNV-*`, y una vista de configuración del agente.
-- `CLAUDE.md` §5: agregar D-14 al tablero; §8: registrar que el contenido sale hacia un tercero bajo ZDR.
+- `CLAUDE.md` §5: agregar D-14 al tablero; §8: registrar que el contenido sale hacia un tercero **bajo preparación para HIPAA**. (Corregido el 2026-10-16: este punto decía "bajo ZDR" y contradecía la conclusión de la investigación de este mismo ADR —*"If your organization handles PHI, HIPAA readiness is the arrangement to use; you do not also need ZDR"*—. `CLAUDE.md` §8 ya registra HIPAA correctamente.)
 - `docs/architecture/arquitectura.md`: §1.6 (costo variable), §2 (Anthropic como sistema externo), y las secciones pendientes.
 - ADR-013: nota sobre el efecto del agente en `RF-MET-02` y el nuevo `RF-MET-09`.
 

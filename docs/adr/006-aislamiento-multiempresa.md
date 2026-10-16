@@ -130,6 +130,28 @@ Puntos que hacen que esto no sea decorativo:
 - **`app_worker` existe porque el consumidor no tiene usuario** y debe escribir aunque la organización esté suspendida (`RF-CNV-16`). Su política es por organización del evento, no por sesión.
 - El rol `postgres` y cualquier rol con `bypassrls` quedan reservados para migraciones y administración. **La API nunca se conecta con ellos.**
 
+### Qué política tiene exactamente cada rol
+
+*(Agregado el 2026-10-16 tras la revisión independiente. El ADR decía que la política de `app_worker` es "por organización del evento, no por sesión" sin decir **cómo** llega esa organización a la política. Escrito así, la implementación natural es `USING (true)` — que vuelve a `app_worker` funcionalmente equivalente a `bypassrls` justo en el camino por el que pasan todos los mensajes entrantes. Esto se fija ahora porque es esquema: no se retrofitea.)*
+
+**Los tres roles usan la misma variable de contexto, `app.organization_id`, fijada con `set_local` por la función única de la sección anterior.** La diferencia no está en el mecanismo, está en quién fija la variable y con qué valor:
+
+| Rol | Quién fija el contexto | Con qué valor | Política |
+| --- | --- | --- | --- |
+| `app_user` | La API | La organización de la **membresía verificada** del usuario | `organization_id = current_setting('app.organization_id')::uuid` |
+| `app_worker` | El consumidor | La organización **del evento que está procesando** | La misma política, idéntica |
+| `app_platform` | La API | No aplica | Sin acceso a tablas de negocio: **permisos**, no política |
+
+**`app_worker` no tiene una política más permisiva: tiene una fuente de contexto distinta.** Puede escribir en cualquier organización a lo largo del tiempo, pero **en una transacción dada está encerrado en una sola**, igual que `app_user`. La organización sale del evento ya guardado, no de un parámetro del mensaje de la cola. Esto es lo que mantiene viva la segunda capa en el camino de entrada.
+
+**`app_platform` no tiene política permisiva sobre las tablas de negocio: no tiene `GRANT`.** Su alcance "todas las organizaciones" se refiere a las tablas que sí administra —organizaciones, operadores, auditoría—, que no llevan `organization_id` y para las que RLS no aplica. Sobre mensajes, conversaciones y contactos su consulta **falla por permisos antes de llegar a RLS**.
+
+**Consecuencia que hay que decir con todas las letras:** la prueba 3 de la lista de verificación —"RLS sola basta"— se ejecuta contra `app_user` y `app_worker`. Para `app_platform` la prueba equivalente es la 5, que verifica que la consulta **falle**. Son dos garantías distintas y se prueban distinto.
+
+**La política debe fallar cerrado.** Se escribe `current_setting('app.organization_id', true)` —con el segundo argumento en `true`—, de modo que **sin contexto fijado la comparación da NULL y no devuelve ninguna fila**, en lugar de lanzar una excepción. Entre "falla segura" y "falla ruidosa" se elige la segura, y se agrega una prueba explícita: **sin contexto, cero filas.**
+
+**Toda tabla con datos de negocio se crea con `FORCE ROW LEVEL SECURITY`**, no solo `ENABLE`. `ENABLE` no aplica al dueño de la tabla; si una migración crea una tabla y el dueño coincidiera alguna vez con un rol de aplicación, la política quedaría sin efecto en silencio. Es una palabra más en la migración y entra en la prueba 6, que ya consulta el catálogo.
+
 ### Cómo se fija el contexto
 
 Por Hyperdrive, en **cada transacción**, con alcance local:
@@ -142,6 +164,8 @@ Por Hyperdrive, en **cada transacción**, con alcance local:
 ### Qué fija esta decisión para el diseño
 
 1. **Toda tabla con datos de negocio lleva `organization_id` y tiene RLS activo**, sin excepción. Esto incluye la **tabla de eventos crudos** de ADR-005, que contiene contenido de conversaciones y es fácil de olvidar porque no es una tabla "de producto".
+
+   **Excepción acotada, agregada el 2026-10-16:** en esa tabla el `organization_id` **admite nulo**, porque ADR-005 guarda también los eventos de un número que todavía no está conectado a ninguna organización (sin eso se perderían mensajes durante el modo transitorio de ADR-001). Una fila sin organización **no la puede leer ningún rol de negocio**: la política `organization_id = current_setting(...)` nunca empareja con NULL, así que quedan invisibles para `app_user` y para `app_worker` hasta que el reprocesado les asigna organización. Es el comportamiento deseado y sale gratis de cómo se evalúa NULL en SQL, pero **debe estar cubierto por una prueba** —una fila sin organización no aparece para nadie— porque depende de un detalle del lenguaje, no de una decisión explícita.
 2. **Las políticas se aplican también a `INSERT` y `UPDATE`**, no solo a `SELECT`. Una política de lectura sola permitiría escribir una fila en otra organización.
 3. **Las vistas se declaran con `security_invoker`.** Las vistas saltan RLS por defecto al crearse con el dueño; una vista de métricas sin esta precaución sería una fuga. Dado que `CLAUDE.md` §9 propone resolver las métricas con vistas SQL, este punto es directamente relevante.
 4. **La organización sale siempre de la sesión y de la membresía del usuario**, nunca de un parámetro del cliente (`docs/01_definicion_mvp_v2.2.md` §8.3). Si una ruta recibe un identificador de organización, se verifica contra la membresía antes de usarlo.
@@ -156,10 +180,12 @@ El requisito exige pruebas automáticas. Deben cubrir, como mínimo:
 
 1. **Aislamiento de lectura:** un usuario de A no ve ninguna fila de B, en cada tabla con datos de negocio.
 2. **Aislamiento de escritura:** un usuario de A no puede insertar ni modificar filas en B.
-3. **RLS sola basta:** las mismas consultas **sin el filtro explícito** siguen sin devolver datos ajenos. Es la prueba que valida la red de seguridad; sin ella, la segunda capa es una suposición.
+3. **RLS sola basta:** las mismas consultas **sin el filtro explícito** siguen sin devolver datos ajenos. Es la prueba que valida la red de seguridad; sin ella, la segunda capa es una suposición. **Se ejecuta contra `app_user` y contra `app_worker`** — para `app_platform` la garantía equivalente es la prueba 5, porque su aislamiento es por permisos, no por política.
+3a. **Sin contexto, cero filas.** Una consulta con `app_user` o `app_worker` sin haber fijado `app.organization_id` no devuelve ninguna fila. Verifica que la política falla cerrado.
+3b. **`app_worker` encerrado en una organización por transacción.** Procesando un evento de A, no puede leer ni escribir filas de B. Es la prueba que distingue "contexto desde el evento" de `USING (true)`.
 4. **Ningún rol de aplicación tiene `bypassrls`.** Se consulta el catálogo del sistema. Es una prueba de una línea que atrapa el error más grave posible.
 5. **`app_platform` no puede leer mensajes.** Intentar leerlos debe fallar (`RF-TRV-07`).
-6. **Toda tabla con `organization_id` tiene RLS activo.** Se consulta el catálogo y se compara. Esto atrapa la tabla nueva que alguien agregue en noviembre sin acordarse de la política —que es exactamente como ocurren estos fallos.
+6. **Toda tabla con `organization_id` tiene RLS activo y forzado.** Se consulta el catálogo y se compara, verificando `ENABLE` **y `FORCE`**. Esto atrapa la tabla nueva que alguien agregue en noviembre sin acordarse de la política —que es exactamente como ocurren estos fallos— y el caso en que el dueño de la tabla elude su propia política.
 7. **Las vistas usan `security_invoker`.**
 
 Las pruebas 4, 6 y 7 son las más valiosas por relación entre esfuerzo y protección: son consultas al catálogo del sistema, no escenarios, y detectan la clase de error que no aparece en ninguna prueba funcional.

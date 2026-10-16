@@ -134,6 +134,20 @@ El paso 3 y el paso 8 resuelven el mismo requisito en dos momentos: **la verific
 
 **El caso del tiempo límite merece atención.** Si la llamada a Meta expira, el sistema no sabe si el mensaje salió. Reintentar puede duplicarlo; no reintentar puede perderlo. **La decisión la toma el asesor, informado**: el mensaje queda en error con un texto que dice que puede haberse enviado. Es la opción honesta, y es preferible a que el sistema adivine por él.
 
+### El mensaje atascado en `enviando`
+
+*(Agregado el 2026-10-16 tras la revisión independiente. La tabla de arriba cubre lo que pasa cuando Meta **responde algo** —incluido un error o un tiempo límite—, pero no el caso en que el sistema **no llega a procesar ninguna respuesta**.)*
+
+Entre guardar el mensaje como `enviando` y actualizar su estado hay una ventana en la que el proceso puede desaparecer: el Worker se reinicia, la invocación se corta, el despliegue ocurre justo ahí. Nadie escribe el estado final. **El mensaje queda en `enviando` para siempre**: la interfaz muestra un indicador de envío indefinido, y como `enviando` no es un estado de error, el asesor **ni siquiera puede reintentar**. Es el peor resultado posible: el sistema no falla, se queda callado.
+
+`RF-CNV-09` enumera los estados pero no fija que `enviando` sea **transitorio por definición**. Se fija aquí:
+
+- **`enviando` tiene plazo.** Un mensaje que lleve más de **2 minutos** en ese estado se considera de resultado desconocido. El plazo es holgado contra los 10 segundos de tiempo límite de la llamada: si se cumple, es que nadie escribió el estado final.
+- **Un barrido periódico pasa esos mensajes a `error`**, con el mismo texto de resultado incierto que el caso del tiempo límite —porque es la misma situación: no se sabe si Meta lo recibió—. El asesor recupera la decisión y el botón de reintentar.
+- **El barrido es un Cron Trigger de Cloudflare**, que ADR-003 ya hace necesario al no haber procesos largos en Workers. Es el mismo mecanismo que la limpieza por retención de la tabla de eventos de ADR-005 y el borrado de archivos de ADR-004: **un solo trabajo programado atiende los tres**, no es una pieza nueva por cada caso.
+
+**Por qué no se resuelve guardando el estado con `waitUntil`:** ese mecanismo extiende el trabajo hasta 30 segundos después de responder, pero tampoco sobrevive a que la instancia desaparezca. Mueve la ventana, no la cierra. La garantía tiene que venir de fuera del proceso que puede morir.
+
 ### La ventana de 24 horas en la interfaz
 
 - El aviso sobre el campo de escritura muestra si la ventana está abierta, con el tiempo restante cuando quedan pocas horas (§6, V11).
@@ -185,10 +199,11 @@ El paso 3 y el paso 8 resuelven el mismo requisito en dos momentos: **la verific
 - Reintento manual desde la interfaz.
 - Cálculo y presentación de la ventana en el cliente, con bloqueo automático al vencer.
 - Reflejo del token inválido en la salud de la conexión (`RF-PLT-WA-05`).
+- **Barrido de mensajes atascados en `enviando`**, dentro del trabajo programado común (Cron Trigger) que comparte con la limpieza por retención de ADR-005.
 
 ### Qué documentos hay que actualizar
 
-- `docs/02_documento_maestro_v1.1.md` §5.2: precisar en `RF-CNV-09` que el reintento es manual y que un mensaje puede quedar en error con estado de envío incierto.
+- `docs/02_documento_maestro_v1.1.md` §5.2: precisar en `RF-CNV-09` que el reintento es manual y que un mensaje puede quedar en error con estado de envío incierto, **y que `enviando` es un estado transitorio con plazo: pasado el plazo se convierte en error de resultado incierto**.
 - `docs/02_documento_maestro_v1.1.md` §9: agregar el texto para el caso de envío con resultado incierto tras un tiempo límite.
 - `docs/01_definicion_mvp_v2.2.md` §6: registrar explícitamente que las plantillas quedan fuera del MVP, y que por tanto una conversación con la ventana vencida no se puede retomar desde el CRM.
 

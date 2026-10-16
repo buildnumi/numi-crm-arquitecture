@@ -43,17 +43,61 @@ markdown
 | **Verificación de negocio ante Meta** | Ruta crítica del proyecto y no la controla el equipo. Sin ella el piloto queda limitado a 2 clientes | ADR-001 |
 | **Configurar Resend (SPF, DKIM, DMARC)** | Sin correo no hay invitación y **no hay alta de organizaciones**. La propagación de DNS no depende del equipo | ADR-007, ADR-011 |
 | **Confirmar los cinco supuestos de la arquitectura** | Las secciones 3 y 11 razonan sobre ellos. El más influyente son los 20 mensajes por conversación, que multiplica todos los volúmenes | `arquitectura.md` §1.8 |
-| **Revisión independiente en sesión nueva** | La pide `CLAUDE.md` §11. La auditoría del 15 de octubre la hizo la misma sesión que escribió los ADR, así que no la sustituye | — |
+| **Elegir la base de componentes accesibles** | Es lo que decide cuánto de las 31 vistas no hay que escribir a mano, con `RF-TRV-06` exigiendo accesibilidad real. Desbloqueado al cerrarse el framework el 2026-10-16 | ADR-009 |
+
+**Revisión independiente: hecha el 2026-10-16** (`CLAUDE.md` §11). Resultado abajo.
 
 ### Puntos abiertos
 
-- **ADR-009:** la elección de framework de frontend no está justificada en el ADR; depende de qué conoce Anthony, que tiene asignada la interfaz.
+- **ADR-009: cerrado el 2026-10-16.** El framework es React con Vite, confirmado por Franco. Queda por elegir la base de componentes accesibles.
 - **Riesgo de calendario:** 31 vistas más el alcance que agregaron ADR-004 y ADR-012, en siete semanas con dos personas. Cada ADR afectado tiene su orden de repliegue escrito.
 - **Concentración en Supabase:** Postgres, Auth y Realtime en un proveedor con antecedentes de caídas. Asumido conscientemente; tabla de modos de falla en ADR-011.
 - **Actualizaciones pendientes en `docs/01` a `docs/03`:** cada ADR lista las suyas en su sección de consecuencias. Ninguna se ha aplicado todavía.
 - **Antes del piloto:** probar una restauración de copia de seguridad, y medir V30 con 6.000 conversaciones y 60.000 mensajes (ADR-013).
 
-**Siguiente paso:** sección 3 de `docs/architecture/arquitectura.md` (contenedores, C4 nivel 2). La revisión independiente de `CLAUDE.md` §11 queda para cuando el documento esté completo.
+**Siguiente paso:** elegir la base de componentes accesibles y empezar el desarrollo. La arquitectura está revisada y corregida, y las 14 decisiones están cerradas; no queda trabajo de diseño pendiente.
+
+---
+
+## 2026-10-16 — ADR-009 cerrado: React con Vite
+
+- **Se decidió o produjo:** **Franco confirma React con Vite** para el frontend. Era el último punto abierto de las 14 decisiones: ADR-009 se había aprobado el 15 de octubre comparando arquitecturas sin comparar frameworks, y la revisión independiente de esta misma fecha lo marcó como inconsistencia porque `CLAUDE.md` §9 ya afirmaba React mientras el ADR lo dejaba sin resolver. **Las dos fuentes vuelven a coincidir.**
+
+  El razonamiento que ya estaba escrito en el ADR y que la decisión confirma: con 31 vistas, siete semanas y `RF-TRV-06` exigiendo accesibilidad real, lo que pesa no es el framework sino **cuántos componentes se pueden no escribir**, y React es donde más oferta hay de bases de componentes accesibles ya resueltas.
+
+  Actualizados `docs/adr/009-arquitectura-frontend.md` (el punto abierto se reemplaza por la decisión), `arquitectura.md` y las referencias vigentes de esta bitácora.
+
+- **Quedó abierto:** **elegir la base de componentes accesibles**, que pasa a ser lo primero antes de construir las vistas. Es ahora lo que decide cuánto trabajo de interfaz hay que hacer a mano.
+
+- **Siguiente paso:** elegir la base de componentes y empezar el desarrollo.
+
+---
+
+## 2026-10-16 — Revisión independiente y corrección de siete huecos en los ADR
+
+- **Se decidió o produjo:** la **revisión independiente que pedía `CLAUDE.md` §11**, hecha en una sesión que no participó en el diseño, sobre los 14 ADR, `arquitectura.md` y el diagrama de Archify. Se revisaron los ADR en tres bloques por revisores separados, y cada hallazgo grave se verificó contra el texto de los documentos antes de darlo por válido.
+
+  **Veredicto: la arquitectura es sólida y escalable. No hay rediseño pendiente.** Los hallazgos son huecos de especificación —cosas que el ADR no decía, no cosas que decidiera mal—. **Ninguna decisión se cambió en esta sesión.**
+
+  **Las siete correcciones aplicadas:**
+
+  1. **ADR-005, pérdida de mensajes (`RF-TRV-02`).** El webhook descartaba con 200 los eventos de un número no asociado a ninguna organización. En el modo transitorio de ADR-001 los números se conectan a mano, así que existe una ventana entre que el número recibe mensajes en Meta y que el operador lo conecta: **un 200 le dice a Meta que no reintente, y esos mensajes se perdían**. Ahora el evento se guarda con la organización sin resolver y se reprocesa al conectar el número. Regla nueva: **el webhook nunca descarta un evento cuya firma es válida.**
+  2. **ADR-006, política de RLS de cada rol.** El ADR decía que `app_worker` filtra "por organización del evento" sin decir cómo llega esa organización a la política; escrito así, la implementación natural es `USING (true)`, que lo vuelve equivalente a `bypassrls` **en el camino por el que pasan todos los mensajes entrantes**. Se especifica que los tres roles usan la misma variable de contexto y que la diferencia es la fuente del valor, que la política falla cerrado, y que las tablas llevan `FORCE ROW LEVEL SECURITY`. Se agregaron tres pruebas. **Era el hallazgo que no se podía retrofitear**: es esquema.
+  3. **ADR-014, agente ante entrada adversaria.** El ADR aislaba bien el agente pero no decía nada sobre su comportamiento ante entrada hostil, y el agente es la única pieza que **actúa sobre texto que escribe un desconocido no autenticado**. Se agrega el punto 6a: el texto del contacto es dato y nunca instrucción, el agente no tiene herramientas, tope de 10 turnos consecutivos (antes un intercambio con otro automatismo no terminaba nunca), tope de gasto por organización (antes nada separaba los 6 USD estimados de una factura abierta), y la verificación de suspensión **antes** de llamar al modelo, no al enviar — si no, una organización suspendida ya habría mandado su contenido a un tercero.
+  4. **ADR-012, mensajes atascados en `enviando`.** Si el Worker moría entre guardar el estado y actualizarlo, el mensaje quedaba en `enviando` para siempre: indicador infinito y, como no es un estado de error, **el asesor ni siquiera podía reintentar**. Se fija que `enviando` es transitorio con plazo de 2 minutos y un barrido lo pasa a error de resultado incierto.
+  5. **ADR-010, límite de memoria de Workers.** Era el único punto de la arquitectura que asumía comportamiento de un proveedor **sin cita**, contra `CLAUDE.md` §4 regla 4. Verificado: **128 MB por isolate, no por invocación**, así que un documento de 100 MB cargado en memoria puede tumbar invocaciones vecinas. Se fija que todo archivo se mueve en flujo y que un `arrayBuffer()` en ese camino es un error de corrección.
+  6. **ADR-005, reintentos de archivos.** "Se reintenta dentro de los 7 días" no salía de los 100 reintentos: con el retroceso por defecto se agotan en horas y el archivo se perdía con seis días de margen sin usar. Se fija retención de 7 días y retroceso con tope. Se agregaron tres límites verificados de Queues (espera de lote 60 s, 250 invocaciones concurrentes, 15 min de duración).
+  7. **ADR-014, contradicción interna.** La lista de actualizaciones pedía registrar "bajo ZDR" mientras la investigación del mismo ADR concluía que el arreglo correcto es **preparación para HIPAA, no ZDR**. Corregido para que no se implemente el arreglo equivocado.
+
+  **Pieza transversal que apareció:** las correcciones 4 y 6, más la retención de ADR-005 y el borrado de archivos de ADR-004, necesitan todas un **trabajo programado (Cron Trigger)**, que ningún ADR mencionaba — Workers no tiene procesos largos. **Es uno solo para los cuatro casos**, no una pieza por cada uno.
+
+- **Quedó abierto:**
+  - **La elección de framework de ADR-009** fue la única corrección que la revisión no pudo aplicar sola, porque dependía de un dato que no está en el repositorio. **Franco la cerró el mismo día: React con Vite** (ver la entrada siguiente). El ADR queda cerrado y `CLAUDE.md` §9 deja de ir por delante de su decisión.
+  - **El riesgo de calendario sigue sin cuantificar:** ningún ADR suma el alcance total ni prioriza entre las listas de repliegue de ADR-002 y ADR-004. Son 111 requisitos P0 con dos personas a tiempo parcial, y esa comparación es justo la que hará falta el 16 de noviembre.
+  - Las correcciones de esta sesión agregan trabajo a `docs/01` a `docs/03` (estado transitorio de eventos sin organización, `enviando` con plazo, topes del agente). No aplicadas.
+  - Sin cambios en lo demás: los cinco supuestos de §1.8, la corrección de `max_size`, el BAA de Anthropic y la verificación de negocio ante Meta.
+
+- **Siguiente paso:** elegir la base de componentes accesibles y empezar el desarrollo.
 
 ---
 

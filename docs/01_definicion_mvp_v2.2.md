@@ -204,12 +204,13 @@ El MVP está listo cuando el flujo principal funciona de extremo a extremo, de f
 | Autenticación | Supabase Auth **solo como identidad**; toda la autorización en el backend, verificada en cada petición | ADR-007 |
 | Archivos | **Cloudflare R2**, servido por el Worker con verificación de permisos; sin URL firmadas | ADR-004, ADR-010 |
 | Procesamiento asíncrono | **Cloudflare Queues: tres colas** —eventos, archivos y agente— con tolerancias distintas | ADR-005, ADR-014 |
+| Trabajos programados | **Un Cron Trigger de Cloudflare**, que atiende la limpieza por retención, el borrado de archivos y el barrido de mensajes atascados. Workers no tiene procesos largos, así que sin él nada de eso ocurre | ADR-005, ADR-012 |
 | Tiempo real | **Supabase Realtime, Broadcast desde el servidor**; el aviso no transporta contenido | ADR-008 |
 | Correo | **Resend**, con dominio propio de Numi | ADR-011 |
 | Agente de IA | **API de Anthropic**, detrás de su propia cola | ADR-014 |
 | Código y despliegue | GitHub, con entornos de desarrollo y producción | ADR-011 |
 
-La arquitectura es serverless, con un backend modular, no microservicios. **Se despliegan dos Workers** —la aplicación y la API—; las colas, R2 e Hyperdrive son recursos gestionados, y los tres consumidores son funciones del Worker de la API.
+La arquitectura es serverless, con un backend modular, no microservicios. **Se despliegan dos Workers** —la aplicación y la API—; las colas, R2 e Hyperdrive son recursos gestionados, y los tres consumidores **y el trabajo programado** son funciones del Worker de la API.
 
 **Costos fijos mensuales:** Workers plan de pago 5 USD, Supabase Pro en producción 25 USD. Más el costo variable del agente de IA —estimado en unos 6 USD al mes con Claude Haiku 5.5— y los mensajes de Meta.
 
@@ -238,7 +239,9 @@ Arquitectura multiempresa (*multi-tenant*) con una base de datos PostgreSQL comp
 |---|---|---|
 | `app_user` | La API, para peticiones de usuarios de un negocio | Solo la organización fijada en el contexto de la transacción |
 | `app_platform` | La API, para acciones de la consola | Todas las organizaciones, **pero sin permiso sobre las tablas con contenido de conversaciones** |
-| `app_worker` | Los consumidores de cola | Escribe en cualquier organización; sin lectura más allá de lo necesario |
+| `app_worker` | Los consumidores de cola | Escribe en cualquier organización **a lo largo del tiempo, pero encerrado en una sola dentro de cada transacción**; sin lectura más allá de lo necesario |
+
+**Los tres roles usan la misma variable de contexto; lo que cambia es de dónde sale su valor** (ADR-006, precisado el 2026-10-16): para `app_user`, de la membresía verificada del usuario; para `app_worker`, de la organización del evento que está procesando. `app_worker` **no** tiene una política más permisiva —eso lo volvería equivalente a saltarse RLS justo en el camino por el que entran todos los mensajes—. Las políticas fallan cerrado: sin contexto fijado, cero filas.
 
 **La consola no accede al contenido de las conversaciones por permisos, no por disciplina.** `app_platform` no obtiene su alcance saltando RLS, sino careciendo de permiso sobre las tablas de mensajes: una consulta de la consola contra ellas **falla**, no devuelve datos filtrados. Es lo que vuelve estructural el requisito de que los datos sensibles no lleguen a la consola.
 
@@ -256,7 +259,7 @@ Se evita una base de datos por cliente para reducir costos. Si algún cliente re
 | Conversaciones | Canal, contacto, responsable, estado y fechas | 12 meses como período inicial, sujeto a validación |
 | Mensajes | Contenido, dirección, identificadores externos y marcas de tiempo | 12 meses como período inicial, sujeto a validación |
 | Adjuntos | Archivos asociados a mensajes, en Cloudflare R2 | El mismo período del mensaje. Al borrar un mensaje se borra su archivo (ADR-004) |
-| Eventos recibidos del webhook | Cuerpo crudo del evento, organización y hora de recepción | **30 días.** Es una red de seguridad para reprocesar, no un archivo histórico. Contiene contenido de conversaciones (ADR-005) |
+| Eventos recibidos del webhook | Cuerpo crudo del evento, organización y hora de recepción. **La organización admite nulo**: un evento de un número todavía no conectado se guarda igual y se reprocesa al conectarlo (ADR-005) | **30 días.** Es una red de seguridad para reprocesar, no un archivo histórico. Contiene contenido de conversaciones (ADR-005) |
 | Métricas | Volúmenes, tiempos de respuesta y conversiones | 12 meses en detalle; los datos agregados pueden conservarse más tiempo |
 | Auditoría | Accesos relevantes y cambios de estado o permisos | 6 a 12 meses como propuesta inicial |
 | Credenciales de integraciones | Tokens y referencias de conexión | Mientras la integración esté activa, con revocación al desconectarla. **Cifrados con AES-GCM; la clave es un secreto del Worker, no está en la base** (ADR-011) |

@@ -183,7 +183,17 @@ El criterio que debería decidirlo, dado el calendario, no es el rendimiento ni 
 
 Hay además un dato del proyecto que decide por encima de todo lo anterior: **qué conoce ya Anthony**, que tiene asignada la interfaz (`docs/01_definicion_mvp_v2.2.md` §9). Aprender un framework nuevo en noviembre no se compensa con ninguna ventaja técnica de esta lista.
 
-**Este punto queda abierto y debe resolverse antes de empezar la interfaz.** Todo lo demás de este ADR —aplicación de página única, dos Workers, una aplicación con dos áreas, sesión, obtención de datos, tiempo real— **no depende del framework elegido** y se mantiene igual con Vue o Svelte.
+Todo lo demás de este ADR —aplicación de página única, dos Workers, una aplicación con dos áreas, sesión, obtención de datos, tiempo real— **no depende del framework elegido** y se habría mantenido igual con Vue o Svelte.
+
+### Punto cerrado: React con Vite
+
+**Decidido por Franco el 2026-10-16.** El framework es **React, con Vite** como herramienta de construcción. Con esto el ADR queda cerrado y `CLAUDE.md` §9, que ya registraba *"Página única con React y Vite"*, deja de estar por delante de la decisión que lo respaldaba.
+
+*(Contexto de por qué estuvo abierto: este ADR se aprobó el 2026-10-15 comparando **arquitecturas** —página única frente a Next.js, Workers frente a Pages— sin comparar frameworks, y la revisión independiente del 2026-10-16 lo marcó como inconsistencia porque el stack ya afirmaba React mientras el ADR lo dejaba sin resolver.)*
+
+**Lo que esto confirma, y que ya estaba razonado arriba:** con 31 vistas, siete semanas y `RF-TRV-06` exigiendo accesibilidad real, lo que decide no es el framework sino **cuántos componentes se pueden no escribir**. React es donde más oferta hay de bases de componentes accesibles ya resueltas —tablas con orden y paginación, selectores, ventanas modales con foco atrapado—, que es exactamente el trabajo que no conviene hacer a mano en este calendario.
+
+**Consecuencia inmediata:** la elección de la base de componentes deja de estar bloqueada y pasa a ser lo primero que hay que cerrar antes de construir las vistas.
 
 ### Qué fija esta decisión para el diseño
 

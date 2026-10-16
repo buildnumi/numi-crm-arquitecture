@@ -48,6 +48,22 @@ Cita del dato que más pesa:
 
 > "Egress directly from R2 through the Workers API, S3 API, or r2.dev domains does not incur data transfer (egress) charges and is free."
 
+**Límites de Workers que condicionan servir archivos por el Worker** — verificados el 2026-10-16 contra [Workers limits](https://developers.cloudflare.com/workers/platform/limits/). *(Agregados tras la revisión independiente: este ADR decidía servir los archivos por el Worker y tolerar documentos de hasta 100 MB —ADR-004— sin citar ningún límite del runtime. Era el único punto de la arquitectura que asumía comportamiento de un proveedor sin fuente, contra `CLAUDE.md` §4 regla 4.)*
+
+| Dato | Valor | Por qué importa aquí |
+| --- | --- | --- |
+| **Memoria** | **128 MB por isolate**, no por invocación | Es el dato decisivo. Ver abajo |
+| CPU por invocación, plan de pago | 30 s por defecto, configurable hasta 5 min | Suficiente: servir en flujo casi no consume CPU |
+| CPU por invocación, plan gratuito | 10 ms | Otra razón para el plan de pago (ADR-003, ADR-005) |
+| Subpeticiones, plan de pago | 10.000 | El consumidor encadena pedir URL, descargar y guardar por mensaje |
+| Duración de un consumidor de cola | 15 min | Acota la descarga de un archivo grande |
+
+**La regla que sale de los 128 MB: todo archivo se mueve en flujo, nunca en memoria.**
+
+El límite es **por isolate y no por invocación**, y un isolate atiende varias peticiones a la vez. Eso significa que cargar un documento de 100 MB con `arrayBuffer()` no solo mata esa invocación: **puede tumbar invocaciones vecinas que comparten el isolate**. Con dos archivos grandes simultáneos se supera el límite aunque cada uno por separado quepa.
+
+Por eso, tanto al guardar como al servir, el cuerpo se pasa como flujo —`put(key, response.body)` al guardar, y el cuerpo del objeto de R2 directo a la respuesta al servir—. La [API de R2 en Workers](https://developers.cloudflare.com/r2/api/workers/workers-api-usage/) está diseñada para esto. **No es una optimización: es la condición para que la decisión de este ADR funcione.** Un `arrayBuffer()` en este camino es un error de corrección, no de rendimiento, y debe quedar prohibido explícitamente en la revisión de código.
+
 **URL firmadas** — [Presigned URLs](https://developers.cloudflare.com/r2/api/s3/presigned-urls/)
 
 | Dato | Valor |

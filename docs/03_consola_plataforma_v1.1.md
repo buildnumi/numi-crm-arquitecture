@@ -110,7 +110,7 @@ La columna "Prioridad" indica qué es indispensable para el MVP (P0) y qué pued
 | ID | Requisito | Vista | Prioridad |
 |---|---|---|---|
 | RF-PLT-WA-01 | El operador ve la conexión de WhatsApp de la organización: método de conexión, número visible, nombre verificado, identificadores de Meta (número y cuenta de WhatsApp Business), estado y fecha de conexión | P24 | P0 |
-| RF-PLT-WA-02 | El operador registra o actualiza la conexión de forma manual: identificador del número, identificador de la cuenta de WhatsApp Business y token de acceso | P24 | P0 |
+| RF-PLT-WA-02 | El operador registra o actualiza la conexión de forma manual: identificador del número, identificador de la cuenta de WhatsApp Business y token de acceso. **Al conectar un número, los eventos que ya habían llegado a ese número antes de conectarlo se reprocesan y sus mensajes aparecen en la bandeja del negocio** (ADR-005) | P24 | P0 |
 | RF-PLT-WA-03 | El token se puede escribir pero nunca se vuelve a mostrar; la vista solo indica que está guardado y cuándo se actualizó | P24 | P0 |
 | RF-PLT-WA-04 | El operador prueba la conexión: el sistema consulta a Meta y muestra si el número responde y si el webhook está suscrito | P24 | P0 |
 | RF-PLT-WA-05 | La vista muestra la salud del webhook: último evento recibido, eventos de las últimas 24 horas y errores recientes (fecha y descripción técnica, sin contenido de mensajes ni números de teléfono de los contactos) | P24 | P0 |

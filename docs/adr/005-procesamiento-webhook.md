@@ -53,6 +53,11 @@ Verificados el 2026-10-15 contra la documentación oficial.
 | Lote máximo del consumidor | 100 mensajes |
 | Reintentos | 100 |
 | Lotes | Por defecto todo o nada: si falla un mensaje del lote, se reintenta el lote entero, salvo que se confirmen o reintenten mensajes de forma individual |
+| **Espera máxima de lote** | **60 s** (`max_batch_timeout`) |
+| **Invocaciones concurrentes del consumidor** | **250**, máximo del proveedor |
+| **Duración máxima de un consumidor** | **15 min** |
+
+*(Las tres últimas filas se agregaron el 2026-10-16, verificadas en [Queues limits](https://developers.cloudflare.com/queues/platform/limits/). La de concurrencia importa porque la sección "Qué revisar cuando el sistema crezca" propone ajustar `max_concurrency` sin decir cuál es el techo; la de duración acota la descarga de un archivo grande de ADR-004.)*
 
 ### El hallazgo que define la decisión
 
@@ -103,7 +108,7 @@ Esto implica además **confirmar el plan de pago de Workers**, que ADR-003 habí
 El webhook hace **solo esto**, en este orden, y nada más:
 
 1. **Verifica la firma** `X-Hub-Signature-256` con HMAC-SHA256 sobre el **cuerpo crudo**, antes de interpretarlo. Si no coincide, responde 403 y no procesa nada. Atención al detalle documentado: Meta calcula la firma sobre el cuerpo con unicode escapado y hexadecimal en minúsculas; **esto hay que probarlo con un mensaje que contenga tildes o emoji antes de darlo por bueno**, porque es el error típico y silencioso.
-2. **Resuelve la organización** a partir del identificador del número que trae el evento (`phone_number_id`). Si no corresponde a ninguna organización, registra el hecho y responde 200 —no reintentar algo que nunca va a resolverse.
+2. **Resuelve la organización** a partir del identificador del número que trae el evento (`phone_number_id`). **Si no corresponde a ninguna organización, el evento se guarda igual, con la organización sin resolver**, y se responde 200. No se encola: no hay a quién atribuirlo todavía.
 3. **Inserta el evento crudo** en una tabla de eventos recibidos, con su organización, el cuerpo completo y la hora de recepción.
 4. **Encola** una referencia a ese evento.
 5. **Responde 200.**
@@ -111,6 +116,16 @@ El webhook hace **solo esto**, en este orden, y nada más:
 No interpreta el evento, no crea conversaciones, no descarga archivos, no envía nada. Todo eso es trabajo del consumidor.
 
 La razón de este corte: **lo único que Meta castiga es no recibir un 200**. Si el webhook responde 200 y el evento está guardado, el mensaje ya no se puede perder, pase lo que pase después. Todo lo demás es recuperable desde la tabla de eventos.
+
+**Por qué el evento de un número desconocido también se guarda** (corregido el 2026-10-16; antes este paso registraba el hecho y descartaba el evento). El modo transitorio de ADR-001 conecta los números **a mano desde la consola** (`RF-PLT-WA-02`). Eso abre una ventana real entre el momento en que el número ya existe en Meta y empieza a recibir mensajes, y el momento en que el operador lo conecta en la consola. Un evento descartado con 200 en esa ventana **se pierde para siempre, porque un 200 le dice a Meta que no reintente** — y `RF-TRV-02` no admite pérdidas.
+
+De ahí la regla: **el webhook nunca descarta un evento cuya firma es válida.** La firma ya demuestra que viene de Meta; que todavía no sepamos de quién es no lo vuelve descartable.
+
+- El evento se guarda con la organización **sin resolver** y no se encola.
+- **Al conectar un número en la consola, se reprocesan los eventos pendientes de ese `phone_number_id`**: se les asigna la organización y se encolan. La unicidad `(organization_id, wamid)` hace que reprocesar sea seguro aunque el evento llegue por otro camino.
+- Los eventos sin resolver que superen la retención de 30 días se borran como cualquier otro. Un número que nunca se conecta no acumula nada indefinidamente.
+
+**Lo que esto cuesta:** la tabla de eventos admite filas sin organización, así que su política de aislamiento debe contemplar ese caso —son filas que **ningún rol de negocio puede leer**, solo el camino de reprocesado—. Es el precio de no perder mensajes durante el modo transitorio, y es barato comparado con la alternativa.
 
 ### Cómo se cumple cada requisito duro
 
@@ -132,6 +147,14 @@ Dos precisiones necesarias:
 **`RF-CNV-16`, organización suspendida.** La suspensión se verifica **al enviar**, nunca al recibir. El webhook y el consumidor procesan y guardan igual que siempre. Es una propiedad del camino de salida, no del de entrada.
 
 **`RF-CNV-10a`, archivos (ADR-004).** La descarga es un trabajo encolado aparte del procesamiento del mensaje. El mensaje se guarda y se muestra aunque el archivo todavía no esté. La descarga se reintenta dentro de los 7 días; agotado ese plazo, el mensaje queda marcado como archivo no recuperado (`RF-CNV-10e`).
+
+**Cómo se estiran los reintentos hasta los 7 días** *(agregado el 2026-10-16)*. "Se reintenta dentro de los 7 días" no sale solo de los 100 reintentos: con el retroceso por defecto, los 100 intentos se agotan en horas, y el mensaje moriría con seis días de margen sin usar. Hay que configurarlo explícitamente:
+
+- **Retención de la cola de archivos fijada en 7 días**, dentro de los 14 que admite el plan de pago.
+- **Retroceso exponencial con tope**, de modo que los últimos intentos queden espaciados en horas y no en segundos. Cien intentos con tope de unas pocas horas cubren la ventana completa.
+- Lo que marca el archivo como no recuperado es **la caducidad del identificador de Meta a los 7 días**, no el conteo de intentos. Si los intentos se agotan antes, el archivo se pierde con la ventana todavía abierta — que es exactamente el fallo que esta configuración evita.
+
+Es un parámetro de configuración, no código, y entra en la lista de puesta en marcha de ADR-011.
 
 ### Qué fija esta decisión para el diseño
 
@@ -173,7 +196,9 @@ Dos precisiones necesarias:
 - Endpoint de verificación del webhook (el `GET` con `hub.challenge` que Meta exige al suscribir).
 - Verificación de firma HMAC-SHA256 sobre el cuerpo crudo, con prueba de texto no ASCII.
 - Resolución de organización por `phone_number_id`.
-- Tabla de eventos recibidos, con retención de 30 días.
+- Tabla de eventos recibidos, con retención de 30 días, **con `organization_id` nulo admitido** para los eventos de un número todavía no conectado.
+- **Reprocesado de los eventos pendientes de un `phone_number_id`** cuando el operador conecta ese número en la consola.
+- **Trabajo programado (Cron Trigger) común**, que atiende la limpieza por retención de esta tabla, el borrado de archivos de ADR-004 y el barrido de mensajes atascados de ADR-012. Workers no tiene procesos largos (ADR-003), así que sin esto nada de eso ocurre.
 - Dos colas con sus colas de mensajes fallidos.
 - Consumidor idempotente que interpreta eventos, crea o actualiza conversaciones y mensajes, y dispara la asignación automática (`RF-CNV-12`).
 - Restricción de unicidad `(organization_id, wamid)`.

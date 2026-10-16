@@ -102,7 +102,7 @@ Cada requisito indica en qué vista se materializa (columna "Vista"; las vistas 
 | RF-CNV-06 | La conversación muestra el historial completo, con mensajes entrantes y salientes diferenciados, hora de cada mensaje y separadores por día. Los mensajes se ordenan por la hora en que se enviaron, aunque lleguen desordenados | V11 |
 | RF-CNV-07 | El usuario escribe y envía mensajes de texto desde el CRM. Enter envía y Mayús+Enter agrega una línea | V11 |
 | RF-CNV-08 | El sistema muestra el estado de la ventana de 24 horas. Si venció, el envío se bloquea y se explica el motivo | V11 |
-| RF-CNV-09 | Cada mensaje enviado muestra su estado: enviando, enviado, entregado, leído o error, según lo informe Meta. Un mensaje puede pasar a error después de figurar como enviado. Un mensaje con error se puede reintentar. **Los estados siguen una progresión (enviando → enviado → entregado → leído) y un estado anterior que llega tarde no pisa a uno posterior ya registrado; `error` es la excepción y puede llegar en cualquier momento. El reintento es manual, nunca automático: un envío cuya respuesta se perdió podría duplicarse** (ADR-005, ADR-012) | V11 |
+| RF-CNV-09 | Cada mensaje enviado muestra su estado: enviando, enviado, entregado, leído o error, según lo informe Meta. Un mensaje puede pasar a error después de figurar como enviado. Un mensaje con error se puede reintentar. **Los estados siguen una progresión (enviando → enviado → entregado → leído) y un estado anterior que llega tarde no pisa a uno posterior ya registrado; `error` es la excepción y puede llegar en cualquier momento. El reintento es manual, nunca automático: un envío cuya respuesta se perdió podría duplicarse. `enviando` es un estado transitorio con plazo: un mensaje que lleve más de 2 minutos en ese estado pasa a error de resultado incierto, para que nunca quede un envío colgado sin opción de reintentar** (ADR-005, ADR-012) | V11 |
 | RF-CNV-10 | Si llega un mensaje de un tipo que el MVP no muestra —**video, sticker, ubicación, contacto u otro**— la conversación muestra un marcador con el tipo de mensaje y la hora. **Audios, imágenes y documentos sí se muestran** (ADR-004, ver `RF-CNV-10a` a `10e`) | V11 |
 | RF-CNV-10a | Toda imagen, audio, documento, video o sticker recibido **se descarga de Meta y se guarda**, dentro de la ventana de 7 días en que el identificador es válido | — |
 | RF-CNV-10b | Las imágenes se muestran en la conversación; los audios se reproducen; los documentos se descargan con su nombre y tamaño | V11 |
@@ -180,13 +180,14 @@ Cada requisito indica en qué vista se materializa (columna "Vista"; las vistas 
 | RF-CFG-06 | El administrador define el **nombre y el tono** con que el agente se presenta. El agente siempre se identifica como agente ante el contacto; eso no es configurable | V50 |
 | RF-CFG-07 | El administrador define **reglas de escalada** a un asesor, más allá de "no sé responder" | V50 |
 | RF-CFG-08 | El administrador define **preguntas y respuestas fijas**, que el agente usa literalmente sin consultar al modelo | V50 |
+| RF-CFG-09 | El agente tiene un **tope de mensajes al día** por negocio. Alcanzado el tope, el agente deja de responder y las conversaciones escalan a un asesor, igual que cuando el modelo no está disponible. Protege el costo frente a un uso anómalo (ADR-014) | V50 |
 
 ### 5.8 Requisitos transversales (TRV)
 
 | ID | Requisito |
 |---|---|
 | RF-TRV-01 | **Aislamiento entre negocios:** ninguna pantalla ni consulta muestra datos de otro negocio. Se verifica con pruebas automáticas |
-| RF-TRV-02 | **Seguridad del canal:** cada evento de WhatsApp se valida con la firma de Meta y no se duplica si Meta lo reenvía |
+| RF-TRV-02 | **Seguridad del canal:** cada evento de WhatsApp se valida con la firma de Meta y no se duplica si Meta lo reenvía. **Un evento con firma válida nunca se descarta**: si su número todavía no está conectado a ninguna organización, se guarda igual y se reprocesa al conectarlo, porque responder a Meta sin guardarlo haría que no lo reintente y el mensaje se perdería (ADR-005) |
 | RF-TRV-03 | **Rendimiento de referencia:** un mensaje entrante aparece en la bandeja en pocos segundos (objetivo: 5 segundos o menos); la búsqueda responde en menos de 1 segundo con 5.000 contactos |
 | RF-TRV-04 | **Estados de interfaz:** toda vista maneja los estados de carga, vacío y error (sección 8) |
 | RF-TRV-05 | **Formato regional:** fechas y horas en zona horaria de Bogotá; textos en español (Colombia) |
@@ -482,9 +483,10 @@ Se usa la identidad de Numi (Violeta Autoridad):
 
 El documento cubre exactamente el alcance del MVP definido en la v2.2. Los siguientes elementos se definen en etapas posteriores y no forman parte de las vistas de este documento:
 
-- Visualización de audios, imágenes y documentos (en el MVP se muestra el marcador con el tipo de mensaje).
-- Plantillas de WhatsApp para escribir pasadas las 24 horas.
-- Otros canales, versión móvil, agentes de IA, automatizaciones y reportes avanzados.
+> **Actualizado el 2026-10-16.** Esta lista excluía **la visualización de audios, imágenes y documentos** y **los agentes de IA**, y las dos cosas entraron al MVP por decisión posterior: ADR-004 (multimedia, con los requisitos `RF-CNV-10a` a `10e`) y ADR-014 (agente de IA, con `RF-CFG-04` a `08` y `RF-MET-09`). Se quitan de aquí para que la lista no contradiga a los requisitos del propio documento.
+
+- Plantillas de WhatsApp para escribir pasadas las 24 horas. **Consecuencia:** una conversación con la ventana vencida no se puede retomar desde el CRM; el sistema explica que venció y no ofrece salida (ADR-012).
+- Otros canales, versión móvil, automatizaciones y reportes avanzados.
 - Notas internas, campos personalizados, importación de contactos y permisos configurables.
 - Varias organizaciones por usuario y auditoría de las acciones de los usuarios del negocio. La auditoría de las acciones del equipo de Numi sí entra en el MVP (ver el anexo de la consola).
 
