@@ -195,6 +195,14 @@ Todo lo demás de este ADR —aplicación de página única, dos Workers, una ap
 
 **Consecuencia inmediata:** la elección de la base de componentes deja de estar bloqueada y pasa a ser lo primero que hay que cerrar antes de construir las vistas.
 
+### Base de componentes: shadcn/ui sobre Radix
+
+**Decidido por Franco el 2026-10-16.** El código se copia al repositorio en lugar de instalarse como dependencia, lo que da la accesibilidad de Radix ya resuelta —foco atrapado, navegación con teclado, ARIA, que es lo que `RF-TRV-06` exige y lo más caro de construir a mano— con control total del marcado para adaptarlo.
+
+**Lo que cubre y lo que no**, contra la lista de `docs/02` §11.3: resuelve Acciones, Formularios, Navegación, Datos, Superposiciones y Estados; **no cubre los grupos Conversación (8 piezas) ni Métricas (3)**, que son propios del producto y no los trae ninguna librería del mercado. Esa es la observación que ordena el trabajo de interfaz: la base resuelve lo genérico para que el tiempo se gaste en las once piezas que sí son de Numi.
+
+El plan de construcción está en `docs/desarrollo/00_arranque.md`.
+
 ### Qué fija esta decisión para el diseño
 
 1. **El frontend no tiene acceso a la base de datos.** Ni directo, ni por el cliente de Supabase, ni por el canal de tiempo real.

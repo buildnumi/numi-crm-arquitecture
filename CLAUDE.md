@@ -179,6 +179,7 @@ Propuesto en el brief; las decisiones pueden cambiarlo.
 | Lenguaje                | Node.js con TypeScript                                                         | —   |
 | Backend                 | **Hono** en Cloudflare Workers                                                 | 003 |
 | Frontend                | **Página única con React y Vite**, servida desde Workers                       | 009 |
+| Base de componentes     | **shadcn/ui sobre Radix**, copiado al repositorio                              | 009 |
 | Base de datos           | PostgreSQL administrado (Supabase), conectado con Cloudflare Hyperdrive        | 003 |
 | Autenticación           | Supabase Auth **solo como identidad**; la autorización vive en el backend      | 007 |
 | Archivos                | **Cloudflare R2**, servido por el Worker; sin URL firmadas                     | 004, 010 |
@@ -270,9 +271,13 @@ numi-crm/
     ├── 03_consola_plataforma_v1.1.md
     ├── PROGRESO.md
     ├── adr/
-    └── architecture/
-        └── arquitectura.md
+    ├── architecture/
+    │   └── arquitectura.md
+    └── desarrollo/
+        └── 00_arranque.md
 ```
+
+`docs/desarrollo/` aparece el 2026-10-16, al cerrarse la etapa de arquitectura: contiene el plan de construcción —orden de las vistas, lista de puesta en marcha, definición de "terminado" y la lista de repliegue priorizada—. No decide nada técnico; traduce los ADR en orden de trabajo.
 
 ## 13. Glosario
 

@@ -42,18 +42,39 @@ markdown
 | --- | --- | --- |
 | **Verificación de negocio ante Meta** | Ruta crítica del proyecto y no la controla el equipo. Sin ella el piloto queda limitado a 2 clientes | ADR-001 |
 | **Configurar Resend (SPF, DKIM, DMARC)** | Sin correo no hay invitación y **no hay alta de organizaciones**. La propagación de DNS no depende del equipo | ADR-007, ADR-011 |
-| **Elegir la base de componentes accesibles** | Es lo que decide cuánto de las 31 vistas no hay que escribir a mano, con `RF-TRV-06` exigiendo accesibilidad real. Desbloqueado al cerrarse el framework el 2026-10-16 | ADR-009 |
+| **Preparación para HIPAA en Anthropic** | Condición para conectar cualquier cliente real con el agente activo. Se habilita por autoservicio con efecto inmediato, pero es **permanente** | ADR-014 |
 
 **La etapa de arquitectura está cerrada (2026-10-16).** Las 14 decisiones aprobadas, el documento de arquitectura terminado, la revisión independiente de `CLAUDE.md` §11 hecha y sus siete hallazgos corregidos, los supuestos que importaban confirmados y los documentos fuente sincronizados. **Lo que queda no es trabajo de diseño.**
 
 ### Puntos abiertos
 
-- **Base de componentes accesibles:** sin elegir. Es lo primero antes de construir vistas.
+- **Base de componentes: decidida el 2026-10-16**, shadcn/ui sobre Radix. El plan de construcción está en `docs/desarrollo/00_arranque.md`.
 - **Riesgo de calendario:** 111 requisitos P0 y 31 vistas en siete semanas con dos personas a tiempo parcial. Cada ADR tiene su orden de repliegue, pero **nadie sumó el alcance total ni priorizó entre las listas de ADR-002 y ADR-004** — esa comparación es la que hará falta el 16 de noviembre. Aplazado por decisión de Franco el 2026-10-16.
 - **Concentración en Supabase:** Postgres, Auth y Realtime en un proveedor con antecedentes de caídas. Asumido conscientemente; tabla de modos de falla en ADR-011.
 - **Antes del piloto:** la lista de puesta en marcha de ADR-011, probar una restauración de copia de seguridad, y medir V30 con 6.000 conversaciones y 60.000 mensajes (ADR-013).
 
 **Siguiente paso:** elegir la base de componentes accesibles y empezar el desarrollo.
+
+---
+
+## 2026-10-16 — Base de componentes y plan de arranque del desarrollo
+
+- **Se decidió o produjo:** cerradas las tres decisiones que faltaban para empezar a construir, y escrito **`docs/desarrollo/00_arranque.md`**, el plan que traduce la arquitectura en orden de construcción.
+
+  **1. Base de componentes: shadcn/ui sobre Radix** (decidido por Franco). El código se copia al repositorio en lugar de instalarse como dependencia: da la accesibilidad de Radix ya resuelta —foco atrapado, teclado, ARIA, que es lo que `RF-TRV-06` exige y lo más caro de hacer a mano— con control total del marcado.
+
+  **Hallazgo al cruzar la librería con `docs/02` §11.3:** de los ~45 componentes que pide el maestro, la base cubre Acciones, Formularios, Navegación, Datos, Superposiciones y Estados, pero **no cubre los grupos Conversación (8 piezas) ni Métricas (3)** — y ninguna librería del mercado los trae, porque son propios del producto. La base resuelve lo genérico para que el tiempo se gaste en las once piezas que sí son de Numi.
+
+  **2. Orden de construcción: camino crítico primero.** El criterio es construir primero lo que valida el piloto, de modo que **lo recortable quede naturalmente al final**: si el 16 de noviembre hay que recortar, se corta lo último que se empezó en vez de negociar bajo presión. Al terminar la fase 2 el producto ya se puede demostrar de punta a punta: alta de un negocio, login, mensaje entrante, respuesta.
+
+  **3. El plan incluye** la lista de puesta en marcha como checklist accionable, la definición de "terminado" por vista (los tres estados de `RF-TRV-04`, accesibilidad, formato regional y aislamiento) y **una sola lista de repliegue priorizada**, que es lo que el riesgo de calendario pedía y hasta ahora no existía — pendiente de validar con Anthony.
+
+- **Quedó abierto:**
+  - **Validar con Anthony** el orden de construcción y el reparto del trabajo. Tiene asignada la interfaz y no participó de estas decisiones.
+  - **Los fundamentos visuales** (colores, tipografía, espaciado) de `docs/02` §11.2, para la reunión de arranque del design system.
+  - Sin cambios en los riesgos: verificación ante Meta, Resend y el calendario.
+
+- **Siguiente paso:** reunión de arranque del design system, y la fase 0 del plan (repositorio, entornos, tres roles de base y las siete pruebas de aislamiento en CI).
 
 ---
 
