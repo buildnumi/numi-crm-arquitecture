@@ -93,6 +93,7 @@ La columna **Depende de** refleja lo que declara el encabezado de cada ADR. Si u
 | D-12 | Envío de mensajes: ventana de 24 h, estados y reintentos                                                                                                                       | Técnica            | 001, 003, 005, 006, 007, 008         | Aprobada (ADR-012) |
 | D-13 | Cálculo y almacenamiento de las métricas                                                                                                                                        | Técnica            | 003, 006                             | Aprobada (ADR-013) |
 | D-14 | Agente de IA configurable por negocio: activación, escalada, configuración y tratamiento de datos                                                                               | Producto y técnica | 001, 003, 005, 006, 007, 008, 012    | Aprobada (ADR-014) |
+| D-15 | Plan de Supabase para el MVP: gratuito o Pro                                                                                                                                    | Técnica            | 003, 008, 011                        | Aprobada (ADR-015) |
 
 **Orden de trabajo:** D-01 → D-02 → D-04 → D-03 → D-05 → D-06 → D-08 → D-07 → D-09 → D-10 → D-11 → D-12 → D-13. D-12 y D-13 se agregaron el 2026-10-15 al auditar el tablero: cubren el envío de mensajes y las métricas, que ninguna de las once decisiones originales resolvía. D-14 se agregó el 2026-10-15 por decisión de Franco: incorpora al MVP el agente de IA que `docs/01_definicion_mvp_v2.2.md` §6 excluía. Si una decisión depende de otra todavía pendiente, Claude lo dice y propone resolver primero la dependencia.
 
@@ -132,6 +133,8 @@ Cuando las decisiones D-01 a D-14 estén aprobadas, se construye `docs/architect
 **Terminado cuando:** las 14 decisiones están aprobadas, el documento tiene las 12 secciones y una revisión independiente (sección 11) no encuentra problemas abiertos.
 
 > **Los tres criterios se cumplieron el 2026-10-16. Esta etapa está cerrada.** Las 14 decisiones aprobadas, las 12 secciones escritas y la revisión independiente hecha en una sesión que no participó del diseño: encontró siete huecos de especificación —ninguna decisión equivocada—, los siete corregidos en sus ADR. El trabajo que sigue es de desarrollo, no de arquitectura; lo que queda pendiente está en la cabecera de `docs/PROGRESO.md`.
+>
+> **D-15 se agregó después del cierre**, el 2026-10-16, por restricción de presupuesto: revisa el plan de Supabase que había fijado ADR-011. No reabre la etapa —no cambia ninguna pieza del diseño, solo el plan contratado y quién provee las copias de seguridad—.
 
 ## 8. Restricciones y requisitos que no se negocian
 
@@ -180,7 +183,7 @@ Propuesto en el brief; las decisiones pueden cambiarlo.
 | Backend                 | **Hono** en Cloudflare Workers                                                 | 003 |
 | Frontend                | **Página única con React y Vite**, servida desde Workers                       | 009 |
 | Base de componentes     | **shadcn/ui sobre Radix**, copiado al repositorio                              | 009 |
-| Base de datos           | PostgreSQL administrado (Supabase), conectado con Cloudflare Hyperdrive        | 003 |
+| Base de datos           | PostgreSQL administrado (Supabase, **plan gratuito en el MVP**), conectado con Cloudflare Hyperdrive | 003, 015 |
 | Autenticación           | Supabase Auth **solo como identidad**; la autorización vive en el backend      | 007 |
 | Archivos                | **Cloudflare R2**, servido por el Worker; sin URL firmadas                     | 004, 010 |
 | Procesamiento asíncrono | **Tres colas** de Cloudflare Queues: eventos, archivos y agente                | 005, 014 |
@@ -189,7 +192,7 @@ Propuesto en el brief; las decisiones pueden cambiarlo.
 | Agente de IA            | **API de Anthropic**, detrás de su propia cola                                 | 014 |
 | Código y despliegue     | GitHub, con entornos de desarrollo y producción                                | 011 |
 
-Costos fijos: 30 USD al mes (Workers 5, Supabase Pro 25), más el costo variable del agente y los mensajes de Meta.
+Costos fijos: **5 USD al mes** (Workers 5; Supabase en plan gratuito por ADR-015), más el costo variable del agente y los mensajes de Meta. Sube a 30 USD al migrar a Supabase Pro, cuando el piloto valide la idea.
 
 **Hechos ya verificados** (reconfírmalos si una decisión depende de ellos):
 

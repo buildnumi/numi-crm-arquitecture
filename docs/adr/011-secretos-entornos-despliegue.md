@@ -6,6 +6,7 @@
 - **Requisitos relacionados:** RF-PLT-SEG-02, RF-PLT-SEG-05, RF-TRV-08, RF-TRV-02, RF-PLT-WA-05, RF-PLT-ORG-06, RF-AUT-03, RF-AUT-04
 - **Depende de:** ADR-001, ADR-003, ADR-005, ADR-007, ADR-008, ADR-009, ADR-010
 - **Condiciona a:** —
+- **Revisado por:** [ADR-015](015-plan-supabase-mvp.md) el 2026-10-16, **únicamente en la elección de plan de Supabase** (punto 3) y en lo que de ella se deriva: el costo mensual y el origen de las copias de seguridad. Todo lo demás de este ADR sigue vigente sin cambios.
 
 ## Contexto
 
@@ -133,6 +134,8 @@ Los de la primera clase no van en variables de entorno del archivo de configurac
 
 **El plan de Supabase:**
 
+> **Revisado por [ADR-015](015-plan-supabase-mvp.md) el 2026-10-16.** Lo que sigue en este punto 3 es la decisión original, que ya no está vigente. **El MVP usa el plan gratuito en ambos entornos**, con dos mitigaciones obligatorias —latido diario en el cron y copias propias con `pg_dump` hacia R2—, y migra a Pro cuando el piloto valide la idea. El razonamiento de abajo se conserva porque explica qué compraba el plan Pro.
+
 - **Producción: plan Pro, 25 USD al mes.** Razón decisiva: el plan gratuito **pausa el proyecto tras una semana de inactividad** (ADR-008). Para un piloto que empieza el 1 de diciembre, con días previos de poca actividad, eso es un fallo en el peor momento posible. Además el plan Pro da copias de seguridad y los informes de tiempo de RLS que ADR-008 mencionó.
 - **Desarrollo: plan gratuito.** Que se pause es irrelevante.
 
@@ -153,7 +156,7 @@ Esta lista va en el repositorio como documento de puesta en marcha. Es el tipo d
 - **Antes de desplegar se ejecutan las pruebas de aislamiento** (ADR-006). Si alguna falla, no se despliega. Es el único requisito de `CLAUDE.md` §8 que se puede verificar automáticamente en cada cambio, y desperdiciarlo sería absurdo.
 - **Las migraciones de base de datos son archivos versionados**, aplicados antes del despliegue del código, y **solo aditivas** durante el MVP: agregar columnas y tablas, no renombrar ni borrar. Con dos personas y siete semanas, una migración destructiva mal aplicada en producción es una pérdida de datos sin vuelta atrás.
 - **Reversión:** Cloudflare permite volver a un despliegue anterior del Worker. Eso cubre el código. **No cubre las migraciones**, y por eso solo se hacen aditivas: un código anterior sigue funcionando sobre un esquema con columnas de más, pero no sobre uno al que le falta algo.
-- **Las copias de seguridad de la base las provee el plan Pro.** Hay que verificar al menos una vez que una restauración funciona; una copia que nunca se probó no es una copia.
+- **Las copias de seguridad son propias** (revisado por [ADR-015](015-plan-supabase-mvp.md)): `pg_dump` programado desde GitHub Actions hacia un bucket de R2. El plan gratuito de Supabase **no incluye ninguna copia**. Hay que verificar al menos una vez que una restauración funciona; una copia que nunca se probó no es una copia.
 
 ### 5. Observabilidad
 
@@ -214,14 +217,13 @@ Dos observaciones que salen de esta tabla:
 | --- | --- |
 | Cloudflare Workers (plan de pago) | 5 USD |
 | Cloudflare Queues, R2, Hyperdrive | Incluidos |
-| Supabase Pro (producción) | 25 USD |
-| Supabase gratuito (desarrollo) | 0 USD |
+| Supabase gratuito (producción y desarrollo) | 0 USD |
 | Resend (plan gratuito) | 0 USD |
-| **Total** | **30 USD al mes** |
+| **Total** | **5 USD al mes** |
 
 Más el costo de los mensajes de WhatsApp a Meta, que depende del volumen y de las conversaciones iniciadas por el negocio, y del dominio.
 
-**30 USD al mes cumple la restricción de "pocos costos fijos"** de `CLAUDE.md` §8.
+**5 USD al mes cumple la restricción de "pocos costos fijos"** de `CLAUDE.md` §8. Sube a 30 USD al migrar a Supabase Pro, cuando el piloto valide la idea ([ADR-015](015-plan-supabase-mvp.md)).
 
 ## Consecuencias
 
@@ -253,7 +255,7 @@ Más el costo de los mensajes de WhatsApp a Meta, que depende del volumen y de l
 
 ### Qué documentos hay que actualizar
 
-- `docs/01_definicion_mvp_v2.2.md` §8.1: agregar Resend, y registrar los costos fijos (Workers 5 USD, Supabase Pro 25 USD).
+- `docs/01_definicion_mvp_v2.2.md` §8.1: agregar Resend, y registrar los costos fijos (Workers 5 USD; Supabase gratuito durante el MVP por [ADR-015](015-plan-supabase-mvp.md), 25 USD al migrar a Pro). **Aplicado el 2026-10-16.**
 - `docs/01_definicion_mvp_v2.2.md` §8: la fila "Credenciales de integraciones" de la tabla de retención, precisando el cifrado con clave fuera de la base.
 - `docs/01_definicion_mvp_v2.2.md` §13: agregar el riesgo de concentración en Supabase, con su mitigación.
 

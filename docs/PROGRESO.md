@@ -33,8 +33,9 @@ markdown
 | [011](adr/011-secretos-entornos-despliegue.md) | D-11 Secretos y despliegue | AES-GCM, Resend, dos entornos, Supabase Pro |
 | [012](adr/012-envio-de-mensajes.md) | D-12 Envío de mensajes | Síncrono, con persistencia previa y reintento manual |
 | [013](adr/013-metricas.md) | D-13 Métricas | Consultas SQL directas con `security_invoker` |
+| [015](adr/015-plan-supabase-mvp.md) | D-15 Plan de Supabase | Gratuito en el MVP; Pro cuando el piloto valide la idea |
 
-**Costo fijo mensual:** 30 USD (Workers 5 + Supabase Pro 25), más los mensajes de Meta y el dominio.
+**Costo fijo mensual:** **5 USD** (Workers 5; Supabase gratuito por ADR-015), más los mensajes de Meta y el dominio. Sube a 30 USD al migrar a Pro.
 
 ### Lo que bloquea o urge
 
@@ -52,8 +53,25 @@ markdown
 - **Riesgo de calendario:** 111 requisitos P0 y 31 vistas en siete semanas con dos personas a tiempo parcial. Cada ADR tiene su orden de repliegue, pero **nadie sumó el alcance total ni priorizó entre las listas de ADR-002 y ADR-004** — esa comparación es la que hará falta el 16 de noviembre. Aplazado por decisión de Franco el 2026-10-16.
 - **Concentración en Supabase:** Postgres, Auth y Realtime en un proveedor con antecedentes de caídas. Asumido conscientemente; tabla de modos de falla en ADR-011.
 - **Antes del piloto:** la lista de puesta en marcha de ADR-011, probar una restauración de copia de seguridad, y medir V30 con 6.000 conversaciones y 60.000 mensajes (ADR-013).
+- **Durabilidad sin copias del proveedor:** desde ADR-015, el plan gratuito de Supabase no incluye copias. El latido diario en el cron y las copias propias con `pg_dump` hacia R2 son **condición de esa decisión**, no mejoras opcionales.
 
 **Siguiente paso:** elegir la base de componentes accesibles y empezar el desarrollo.
+
+---
+
+## 2026-10-16 — Plan gratuito de Supabase para el MVP (ADR-015)
+
+- **Se decidió o produjo:** Franco planteó que el presupuesto del MVP no admite los 25 USD del plan Pro que había fijado ADR-011. Se verificaron los límites vigentes del plan gratuito contra la documentación oficial y se escribió **ADR-015**, que revisa únicamente la elección de plan.
+
+  **La capacidad nunca fue el problema:** con 2 a 3 negocios, el plan gratuito deja margen de 7× en conexiones de Realtime, 65× en mensajes y 10× en tamaño de base. Dos hallazgos contraintuitivos que quedaron registrados: **las conexiones directas son 60 en ambos planes**, así que `max_size` de Hyperdrive sigue en 40 sin cambio; y el egress de Supabase casi no se usa porque ADR-010 puso los adjuntos en R2.
+
+  Lo que el plan gratuito no da son la ausencia de pausa y las copias de seguridad. Se tratan distinto: **la pausa se evita con un `SELECT 1` diario** en el Cron Trigger que ya existe —Franco aportó que el equipo usará el sistema a diario, pero se mecanizó para no depender de eso—; **las copias hay que construirlas**, con `pg_dump` desde GitHub Actions hacia R2 y una restauración probada antes del piloto.
+
+  Costo fijo del proyecto: **de 30 a 5 USD al mes**.
+
+- **Quedó abierto:** la ausencia de copias del proveedor durante el piloto, con datos de salud bajo la Ley 1581, es un **riesgo asumido conscientemente**. Queda cubierto solo si las copias propias existen y su restauración está probada. La regla de migraciones solo aditivas de ADR-011 pesa más que antes: sin copias, una migración destructiva no tiene vuelta atrás.
+
+- **Siguiente paso:** al construir el Cron Trigger, incluir el latido; al montar el despliegue, incluir el flujo de `pg_dump`. Migrar a Pro cuando el piloto valide la idea —ADR-015 tiene los demás disparadores: 300 MB de base, un incidente que no se pueda depurar con 1 día de registros, o una sola pausa con datos reales dentro—.
 
 ---
 

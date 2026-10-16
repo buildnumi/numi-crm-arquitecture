@@ -212,7 +212,7 @@ El MVP está listo cuando el flujo principal funciona de extremo a extremo, de f
 
 La arquitectura es serverless, con un backend modular, no microservicios. **Se despliegan dos Workers** —la aplicación y la API—; las colas, R2 e Hyperdrive son recursos gestionados, y los tres consumidores **y el trabajo programado** son funciones del Worker de la API.
 
-**Costos fijos mensuales:** Workers plan de pago 5 USD, Supabase Pro en producción 25 USD. Más el costo variable del agente de IA —estimado en unos 6 USD al mes con Claude Haiku 5.5— y los mensajes de Meta.
+**Costos fijos mensuales:** Workers plan de pago 5 USD; **Supabase en plan gratuito durante el MVP** (ADR-015), con migración a Pro —25 USD— cuando el piloto valide la idea. Más el costo variable del agente de IA —estimado en unos 6 USD al mes con Claude Haiku 5.5— y los mensajes de Meta.
 
 **Los cuatro puntos técnicos del brief, resueltos:**
 

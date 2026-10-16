@@ -144,15 +144,16 @@ Tomada de `docs/01_definicion_mvp_v2.2.md` §8.4. **Toda la columna está sujeta
 | --- | --- | --- |
 | Cloudflare Workers, plan de pago | 5 USD | ADR-003, ADR-005 |
 | Cloudflare Queues, R2, Hyperdrive | Incluidos | ADR-005, ADR-010 |
-| Supabase Pro, producción | 25 USD | ADR-011 |
-| Supabase gratuito, desarrollo | 0 USD | ADR-011 |
+| Supabase gratuito, producción y desarrollo | 0 USD | ADR-015 |
 | Resend, plan gratuito | 0 USD | ADR-011 |
-| **Total de infraestructura** | **30 USD** | ADR-011 |
+| **Total de infraestructura** | **5 USD** | ADR-011, ADR-015 |
 | Anthropic, agente de IA | **Variable: ~6 USD con Claude Haiku 5.5, ~110 USD con Claude Sonnet 5.5** | ADR-014 |
 
 Aparte, y variables: los mensajes de Meta y el dominio.
 
-**El agente de IA rompe la propiedad de costo fijo** que tenía el resto del diseño. Con Claude Haiku 5.5 su costo es despreciable frente a los 30 USD de infraestructura; con Claude Sonnet 5.5 pasa a ser el componente más caro del sistema y cuadruplica el total. ADR-014 tiene el cálculo. **La elección de modelo es una decisión de costo además de una de calidad**, y es la única variable de este documento que crece con el uso.
+**El agente de IA rompe la propiedad de costo fijo** que tenía el resto del diseño. Con Claude Haiku 5.5 su costo es despreciable; con Claude Sonnet 5.5 pasa a ser, por un margen enorme, **el componente más caro del sistema**: 110 USD contra 5 USD de infraestructura. ADR-014 tiene el cálculo. **La elección de modelo es una decisión de costo además de una de calidad**, y es la única variable de este documento que crece con el uso.
+
+**El plan gratuito de Supabase es una decisión del MVP, no permanente.** ADR-015 lo fijó para la etapa de construcción y el piloto, con dos mitigaciones obligatorias —latido diario en el cron y copias propias con `pg_dump`—, y dejó escrito el disparador de la migración: **cuando el piloto valide la idea**, el costo sube a 30 USD.
 
 **Techo de costo aceptable: supuesto, a confirmar.** `CLAUDE.md` §8 dice "pocos costos fijos" sin dar una cifra. Este documento asume que **30 USD al mes es cómodo y que el umbral de incomodidad está alrededor de 100 USD**. El número importa porque es el que decide si una pieza nueva se justifica. Si el techo real fuera otro, conviene decirlo ahora.
 
@@ -184,7 +185,7 @@ Repetidas aquí desde `CLAUDE.md` §8 porque explican decisiones que de otro mod
 1. **Menos de 1 mensaje por segundo en el pico, con 20 negocios.** El sistema está sobredimensionado y eso es deliberado.
 2. **El primer límite de crecimiento es un permiso de Meta, no una pieza técnica.**
 3. **Tres invariantes absolutas**: no perder mensajes, no duplicarlos, no cruzar datos entre negocios. Todo lo demás admite grados.
-4. **30 USD al mes de infraestructura**, sin escalones abruptos — más el costo variable del agente de IA, la única partida que crece con el uso: de ~6 USD con Claude Haiku 5.5 a ~110 USD con Claude Sonnet 5.5 (ADR-014).
+4. **5 USD al mes de infraestructura** durante el MVP, sin escalones abruptos —30 USD tras migrar a Supabase Pro (ADR-015)— más el costo variable del agente de IA, la única partida que crece con el uso: de ~6 USD con Claude Haiku 5.5 a ~110 USD con Claude Sonnet 5.5 (ADR-014).
 5. **Estado de los cinco supuestos, al 2026-10-16.** Franco confirmó los dos que más pesan:
 
 | Supuesto | Valor | Estado |
@@ -193,7 +194,7 @@ Repetidas aquí desde `CLAUDE.md` §8 porque explican decisiones que de otro mod
 | Usuarios por negocio | 3 a 10 | **Confirmado** — ~60 asesores concurrentes contra un techo de 200 |
 | Negocios a 12 meses | 20 | **No es un supuesto a confirmar**: es el tope duro del portafolio de Meta (§11.3) |
 | Umbral de la vista de métricas | < 2 s | Queda como objetivo de diseño; ADR-013 exige **medirlo** con datos realistas antes del piloto, y esa medición es la que lo confirma |
-| Techo de costo | ~100 USD al mes | Queda como referencia para juzgar si una pieza nueva se justifica. Hoy la infraestructura cuesta 30 USD y el margen es amplio |
+| Techo de costo | ~100 USD al mes | Queda como referencia para juzgar si una pieza nueva se justifica. Hoy la infraestructura cuesta 5 USD —30 USD tras migrar a Supabase Pro (ADR-015)— y el margen es amplio |
 
 **Los dos confirmados son los que podían invalidar la sección 11, y la dejan intacta.** Los otros tres no bloquean el desarrollo: uno es un límite externo, otro se resuelve midiendo y el tercero es un criterio de juicio, no un número de diseño.
 
@@ -1370,12 +1371,12 @@ Honestidad sobre los límites:
 
 | No cubierto | Por qué |
 | --- | --- |
-| Recuperación ante desastre con objetivo de tiempo | No hay requisito. Las copias del plan Pro son el punto de partida |
+| Recuperación ante desastre con objetivo de tiempo | No hay requisito. Las copias propias con `pg_dump` son el punto de partida (ADR-015) |
 | Conmutación automática entre proveedores | Desproporcionado para el volumen y el equipo |
 | Degradación de solo lectura si Postgres falla | Sin base no hay nada que leer: todo vive ahí |
 | Reintento automático de un envío con tiempo límite | Deliberado: duplicaría mensajes. Lo decide el asesor |
 
-**Una copia de seguridad que nunca se probó no es una copia.** ADR-011 ya lo exige: hay que verificar al menos una restauración antes del piloto.
+**Una copia de seguridad que nunca se probó no es una copia.** ADR-011 ya lo exige: hay que verificar al menos una restauración antes del piloto. **Con el plan gratuito esto pesa más**, porque Supabase no provee ninguna copia: las únicas que habrá son las que construya el equipo (ADR-015).
 
 ---
 
@@ -1389,7 +1390,7 @@ Qué entornos existen, qué hay en cada uno, cómo se despliega y cómo se revie
 
 | Recurso | Desarrollo | Producción |
 | --- | --- | --- |
-| Proyecto de Supabase | Propio, plan gratuito | Propio, **plan Pro** |
+| Proyecto de Supabase | Propio, plan gratuito | Propio, **plan gratuito** (ADR-015) |
 | Workers (aplicación y API) | Propios | Propios |
 | Las tres colas | Propias | Propias |
 | Bucket de R2 | Propio | Propio |
@@ -1401,7 +1402,18 @@ Qué entornos existen, qué hay en cada uno, cómo se despliega y cómo se revie
 
 **Por qué no hay entorno de pruebas intermedio.** Sería una pieza sin problema que resolver con dos personas (`CLAUDE.md` §4, regla 9). ADR-011 dejó la señal para revisarlo: **cuando haya un cliente de pago**, probar en producción deja de ser aceptable.
 
-**Por qué producción usa el plan Pro.** La razón decisiva no es el rendimiento: el plan gratuito **pausa el proyecto tras una semana de inactividad**. Para un piloto que empieza el 1 de diciembre, con días previos de poca actividad, eso es un fallo en el peor momento posible. Además da copias de seguridad.
+**Por qué producción usa el plan gratuito** (ADR-015, que revisa a ADR-011). La capacidad nunca fue el problema: con 2 a 3 negocios en el piloto, el plan gratuito deja un margen de 7× en conexiones de Realtime, 65× en mensajes y 10× en tamaño de base. **Las conexiones directas son 60 en ambos planes**, así que `max_size` de Hyperdrive sigue en 40 por la misma razón de §11.2.
+
+Lo que el plan gratuito no da son dos cosas, y se tratan distinto:
+
+| Qué falta | Cómo se cubre |
+| --- | --- |
+| **Pausa tras 7 días de poca actividad** | Un `SELECT 1` diario en el Cron Trigger que ya existe. Mecánico, no depende de que alguien se acuerde de entrar |
+| **Copias de seguridad** | `pg_dump` desde GitHub Actions hacia R2, **con una restauración probada antes del piloto** |
+
+La segunda es la que importa. La pausa se evita con actividad; **la ausencia de copias no se evita con nada**, y el piloto maneja datos de salud bajo la Ley 1581. Por eso ADR-015 trata las copias propias como condición de la decisión, no como recomendación, y por eso la regla de migraciones **solo aditivas** de §9.3 pesa más que antes: sin copias del proveedor, una migración destructiva no tiene vuelta atrás.
+
+**Cuándo deja de ser gratuito:** cuando el piloto valide la idea y entre el primer cliente de pago. ADR-015 tiene los demás disparadores —300 MB de base, un incidente que no se pueda depurar con 1 día de registros, o una sola pausa con datos reales dentro.
 
 ### 9.2 Cómo se despliega
 

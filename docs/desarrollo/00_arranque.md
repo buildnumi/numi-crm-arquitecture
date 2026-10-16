@@ -108,11 +108,12 @@ Configuración que **no está en el código** y que, si se olvida, falla en sile
 
 ### Antes de escribir código
 
-- [ ] **`max_size` de Hyperdrive en 40.** Hyperdrive admite ~100 conexiones y Supabase Micro acepta 60: sin fijarlo, las que sobran fallan bajo carga (`arquitectura.md` §11.2). Al cambiar el tamaño de cómputo, revisar este número en la misma operación.
+- [ ] **`max_size` de Hyperdrive en 40.** Hyperdrive admite ~100 conexiones y Supabase acepta 60 directas —**el mismo número en el plan gratuito y en Micro**, así que ADR-015 no cambia este valor—: sin fijarlo, las que sobran fallan bajo carga (`arquitectura.md` §11.2). Al cambiar el tamaño de cómputo, revisar este número en la misma operación.
 - [ ] **Canal de Realtime sin acceso público.** Es un interruptor manual; un canal público no da error, simplemente deja de aislar.
 - [ ] **Los tres roles de base creados sin `bypassrls`**, verificado por la prueba que consulta el catálogo.
 - [ ] **Plan de pago de Workers.** El gratuito da 10 ms de CPU y retención de cola de 24 h, inaceptable para `RF-TRV-02`.
-- [ ] **Supabase Pro en producción.** El plan gratuito pausa el proyecto tras una semana de inactividad — un fallo justo antes del piloto.
+- [ ] **Latido diario contra la base**, dentro del Cron Trigger que ya existe. El plan gratuito de Supabase pausa el proyecto tras 7 días de poca actividad; un `SELECT 1` al día lo evita sin depender de que alguien entre (ADR-015).
+- [ ] **Copias propias con `pg_dump`** desde GitHub Actions hacia R2. El plan gratuito **no incluye ninguna copia de seguridad** (ADR-015).
 
 ### Ruta crítica, no la controla el equipo
 
@@ -123,7 +124,7 @@ Configuración que **no está en el código** y que, si se olvida, falla en sile
 ### Antes del piloto
 
 - [ ] **Medir V30** con 6.000 conversaciones y 60.000 mensajes en una organización (ADR-013).
-- [ ] **Probar una restauración** de copia de seguridad.
+- [ ] **Probar una restauración** de copia de seguridad. Con el plan gratuito, las únicas copias son las propias: si la restauración no funciona, **no hay segunda red** (ADR-015).
 - [ ] **Calibrar el umbral de la alerta de webhook** con tráfico real durante la primera semana.
 
 ---
@@ -147,6 +148,7 @@ Una vista no está terminada hasta que cumple las cuatro:
 | **Calendario** | 111 requisitos P0 y 31 vistas en siete semanas con dos personas a tiempo parcial. **Nadie sumó el alcance total ni priorizó una sola lista de repliegue**; la sección 2 de este documento propone una, pendiente de validar con Anthony |
 | **Configuración de Resend** | Bloquea el alta de organizaciones; depende de propagación de DNS |
 | **Concentración en Supabase** | Postgres, identidad y tiempo real en un proveedor con antecedentes de caídas. Asumido conscientemente (ADR-011) |
+| **Durabilidad sin copias del proveedor** | El plan gratuito no incluye copias de seguridad. Durante el piloto se opera con datos de salud y solo las copias que construya el equipo. Asumido conscientemente (ADR-015); las copias propias y su restauración probada son condición, no recomendación |
 
 ---
 
