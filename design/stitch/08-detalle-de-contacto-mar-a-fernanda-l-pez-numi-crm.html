@@ -1,0 +1,561 @@
+<!DOCTYPE html><html lang="es" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Contactos - Numi CRM</title>
+<!-- Google Fonts: Plus Jakarta Sans & Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script data-purpose="tailwind-config" id="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              violet: '#7C3AED',
+              violetHover: '#6D28D9',
+              indigo: '#6366F1',
+              purple: '#A855F7',
+              dark: '#0A0A12',
+              tint: '#F3EEFE',
+              canvas: '#F1EEFB',
+              sidebarDark: '#43329E',
+              sidebarLight: '#5342B3'
+            },
+            status: {
+              nuevoText: '#6366F1',
+              nuevoBg: '#EEF2FF',
+              contactoText: '#D97706',
+              contactoBg: '#FEF3C7',
+              calificadoText: '#9333EA',
+              calificadoBg: '#F3E8FF',
+              clienteText: '#16A34A',
+              clienteBg: '#DCFCE7',
+              pausaText: '#6B7280',
+              pausaBg: '#F3F4F6',
+              perdidoText: '#DC2626',
+              perdidoBg: '#FEE2E2'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            heading: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          boxShadow: {
+            card: '0 10px 30px -5px rgba(124, 58, 237, 0.07)',
+            floating: '0 12px 28px -6px rgba(124, 58, 237, 0.2)',
+          }
+        }
+      }
+    }
+  </script>
+<!-- Custom Typography & Global Styles -->
+<style data-purpose="custom-layout">
+    body {
+      background-color: #E2DEF0;
+      font-family: 'Inter', sans-serif;
+      color: #0A0A12;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    .font-heading {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    /* Scrollbar styling for smooth table & filter scrolls */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #D9D6E8;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #BCB8D2;
+    }
+
+    /* Table row transition */
+    .table-row-item {
+      transition: all 0.18s ease-in-out;
+    }
+  </style>
+<meta content="web_dashboard" name="shell-type"></head>
+<body class="p-3 md:p-6 min-h-screen flex items-center justify-center">
+<!-- BEGIN: AppShellContainer -->
+<!-- Outer framed desktop container mimicking dashboard frame from specifications -->
+<div class="w-full max-w-[1440px] bg-[#F1EEFB] rounded-[36px] shadow-2xl p-3 md:p-4 flex flex-col md:flex-row gap-4 border border-white/60 min-h-[880px] overflow-hidden" data-purpose="crm-app-shell">
+<!-- BEGIN: LeftSidebar -->
+<!-- Expanded sidebar with Atica-style gradient matching Screen 12 -->
+<aside class="w-full md:w-[240px] shrink-0 bg-gradient-to-b from-[#5342B3] to-[#43329E] rounded-[28px] p-5 flex flex-col justify-between text-white shadow-lg" data-purpose="main-sidebar">
+<!-- Top Section: Logo & Navigation Items -->
+<div class="flex flex-col space-y-6">
+<!-- Brand Logo Block -->
+<div class="flex items-center space-x-3 px-1 pt-1" data-purpose="sidebar-brand">
+<img alt="Numi CRM Logo" class="w-9 h-9 rounded-xl object-cover shadow-sm bg-black/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRwB77yTjdshSmPvW9IxWzbWTV9aYbMoCYcnTjHZeB83L5XQh3UQMMwjrWgpKcg2eFXdrpOGHWd8uqCEXu2h6Ao_3Ogaj4lK5850hEjedtL8iLh1AhCd1ayHmEezK_AMCDIrbZKp_q2nSQQd9BgB9RYTxGmzHvFR2Bp24Q6UKk5snbA0KDaGkL5oRpgA03Z2NUj6ZrT2qC66T8oWd89Nn-MIYVeBlQ1Wj0z6xxVVeLSw54lfQbpp7JxK2e9Q0ZaYluGw">
+<div class="flex items-center gap-1.5">
+<span class="font-heading font-extrabold text-xl tracking-tight text-white">numi</span>
+<span class="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-white/20 text-white/95">CRM</span>
+</div>
+</div>
+<!-- Navigation Menu -->
+<nav aria-label="Navegación principal" class="flex flex-col space-y-1.5">
+<!-- Item: Dashboard -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-white/80 hover:bg-white/10 hover:text-white transition group text-sm font-medium" data-purpose="nav-dashboard" href="#">
+<div class="flex items-center space-x-3">
+<svg class="w-4 h-4 text-white/70 group-hover:text-white transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<rect height="7" rx="1.5" width="7" x="3" y="3"></rect>
+<rect height="7" rx="1.5" width="7" x="14" y="3"></rect>
+<rect height="7" rx="1.5" width="7" x="14" y="14"></rect>
+<rect height="7" rx="1.5" width="7" x="3" y="14"></rect>
+</svg>
+<span class="">Dashboard</span>
+</div>
+<svg class="w-3.5 h-3.5 text-white/50 group-hover:translate-x-0.5 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</a>
+<!-- Item: Bandeja -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-white/80 hover:bg-white/10 hover:text-white transition group text-sm font-medium" data-purpose="nav-inbox" href="#">
+<div class="flex items-center space-x-3">
+<svg class="w-4 h-4 text-white/70 group-hover:text-white transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="">Bandeja</span>
+</div>
+<svg class="w-3.5 h-3.5 text-white/50 group-hover:translate-x-0.5 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</a>
+<!-- Item: Contactos (ACTIVE ITEM) -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-white/80 hover:bg-white/10 hover:text-white transition group text-sm font-medium" data-purpose="nav-contacts-active" href="#">
+<div class="flex items-center space-x-3">
+<svg class="w-4 h-4 text-brand-violet" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+<path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="tracking-tight">Contactos</span>
+</div>
+<!-- Active indicator dot -->
+<span class="w-2 h-2 rounded-full bg-brand-violet"></span>
+</a>
+<!-- Item: Usuarios -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-white/80 hover:bg-white/10 hover:text-white transition group text-sm font-medium" data-purpose="nav-users" href="#">
+<div class="flex items-center space-x-3">
+<svg class="w-4 h-4 text-white/70 group-hover:text-white transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="">Usuarios</span>
+</div>
+<svg class="w-3.5 h-3.5 text-white/50 group-hover:translate-x-0.5 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</a>
+<!-- Item: Configuración -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-white/80 hover:bg-white/10 hover:text-white transition group text-sm font-medium" data-purpose="nav-settings" href="#">
+<div class="flex items-center space-x-3">
+<svg class="w-4 h-4 text-white/70 group-hover:text-white transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="">Configuración</span>
+</div>
+<svg class="w-3.5 h-3.5 text-white/50 group-hover:translate-x-0.5 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</a>
+</nav>
+</div>
+<!-- Bottom Section: Cerrar Sesión & Status Info -->
+<div class="pt-6 border-t border-white/10 space-y-4" data-purpose="sidebar-footer">
+<button class="flex items-center space-x-2.5 text-sm font-medium text-white/80 hover:text-white transition w-full px-2 py-1.5 rounded-lg hover:bg-white/5">
+<svg class="w-4 h-4 text-white/70" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="">Cerrar sesión</span>
+</button>
+<div class="flex items-center justify-between px-2 text-xs text-white/70">
+<span class="">Powered by <span class="font-bold text-white">numi</span></span>
+<span class="inline-flex items-center gap-1 text-[11px] bg-white/10 px-2 py-0.5 rounded-full font-medium text-emerald-300">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            Online
+          </span>
+</div>
+</div>
+</aside>
+<!-- END: LeftSidebar -->
+<!-- BEGIN: MainContentArea -->
+<!-- Central workspace containing Top Bar, Toolbar, Filter Bar, and Contacts Table -->
+<main class="flex-1 flex flex-col space-y-4 overflow-y-auto px-1 md:px-2" data-purpose="main-content-layout"><div class="flex flex-col w-full">
+<!-- TOP HEADER & CONTEXT BAR -->
+<header class="w-full flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-2 mb-2">
+<!-- Breadcrumb Pathway -->
+<nav aria-label="Ruta de navegación" class="flex items-center space-x-2">
+<a class="font-label-md text-outline hover:text-primary transition-colors flex items-center gap-1.5 group" href="#">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" style="font-size: 18px;">contacts</span>
+<span class="">Contactos</span>
+</a>
+<span class="text-outline-variant font-label-md select-none">›</span>
+<span class="font-label-md text-on-surface font-semibold tracking-tight">María Fernanda López</span>
+</nav>
+<!-- Context Chips & Profile Toolbar -->
+<div class="flex items-center flex-wrap gap-2.5">
+<!-- Business Selector Pill -->
+<button class="h-9 px-3.5 bg-surface-container-lowest shadow-sm rounded-full flex items-center gap-2 hover:bg-surface-container-low transition-all">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-label-sm text-on-surface">Clínica Bella Piel</span>
+<span class="material-symbols-outlined text-outline" style="font-size: 16px;">expand_more</span>
+</button>
+<!-- Connection Status Badge -->
+<div class="h-9 px-3.5 bg-surface-container-lowest shadow-sm rounded-full flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+<span class="font-label-sm text-emerald-700 font-medium">WhatsApp conectado</span>
+</div>
+<!-- Notifications Icon Button -->
+<div class="relative">
+<button aria-label="Notificaciones" class="w-9 h-9 bg-surface-container-lowest shadow-sm rounded-full flex items-center justify-center text-on-surface hover:text-primary hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined" style="font-size: 20px;">notifications</span>
+</button>
+<span class="absolute top-1 right-1 w-2.5 h-2.5 bg-primary rounded-full ring-2 ring-surface-container-lowest"></span>
+</div>
+<!-- Administrator Profile Capsule -->
+<div class="h-9 pl-1 pr-3.5 bg-surface-container-lowest shadow-sm rounded-full flex items-center gap-2.5">
+<div class="w-7 h-7 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed font-headline-sm font-bold text-caption">
+          LG
+        </div>
+<div class="flex flex-col text-left">
+<span class="font-label-sm text-on-surface leading-tight">Laura Gómez</span>
+<span class="font-caption text-outline leading-none">Administrador</span>
+</div>
+</div>
+</div>
+</header>
+<!-- CONTACT HERO / PROFILE IDENTITY CARD -->
+<section class="w-full bg-surface-container-lowest rounded-[20px] shadow-card p-6 md:p-8 mb-6 relative overflow-hidden">
+<!-- Atmospheric Ambient Glow -->
+<div class="absolute -right-20 -top-20 w-80 h-80 rounded-full bg-primary/5 blur-3xl pointer-events-none"></div>
+<div class="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
+<!-- Identity & Basic Metadata -->
+<div class="flex items-center gap-5">
+<!-- Monogrammed Avatar -->
+<div class="w-[72px] h-[72px] rounded-2xl bg-surface-container-low flex items-center justify-center shrink-0 shadow-inner">
+<span class="font-headline-lg font-bold text-primary tracking-tight">ML</span>
+</div>
+<div class="flex flex-col space-y-1">
+<div class="flex flex-wrap items-center gap-3">
+<h1 class="font-headline-md font-bold text-on-surface">María Fernanda López</h1>
+<!-- Current Status Badge -->
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-tertiary-fixed text-tertiary font-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+              Calificado
+            </span>
+</div>
+<p class="font-body-md text-outline flex items-center gap-2">
+<span class="">+57 312 555 0198</span>
+<span class="text-outline-variant font-bold">·</span>
+<span class="">mafe.lopez@gmail.com</span>
+</p>
+</div>
+</div>
+<!-- Primary Action Buttons -->
+<div class="flex items-center flex-wrap gap-3 shrink-0">
+<!-- Secondary Button: Editar -->
+<button class="h-11 px-5 rounded-full bg-surface-container-low text-primary font-label-md flex items-center gap-2 hover:bg-primary-fixed transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined" style="font-size: 18px;">edit</span>
+<span class="">Editar</span>
+</button>
+<!-- Primary Button: Abrir conversación -->
+<button class="h-11 px-6 rounded-full bg-primary text-on-primary font-label-md flex items-center gap-2 shadow-floating hover:bg-primary-container transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined" style="font-size: 20px;">chat</span>
+<span class="">Abrir conversación</span>
+</button>
+</div>
+</div>
+</section>
+<!-- TWO-COLUMN WORKSPACE LAYOUT -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+<!-- LEFT COLUMN: Contact Properties & Conversation Ledger (~62%) -->
+<div class="lg:col-span-7 flex flex-col space-y-6">
+<!-- 1. Card: Datos del contacto -->
+<section class="bg-surface-container-lowest rounded-[20px] shadow-card p-6 md:p-7">
+<div class="flex items-center justify-between pb-5">
+<h2 class="font-headline-sm font-bold text-on-surface">Datos del contacto</h2>
+<span class="font-caption text-outline uppercase tracking-wider">Detalles sincronizados</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-y-5 gap-x-6">
+<!-- Nombre -->
+<div class="flex flex-col space-y-0.5">
+<span class="font-body-sm text-outline">Nombre</span>
+<span class="font-body-md font-medium text-on-surface">María Fernanda López</span>
+</div>
+<!-- Teléfono -->
+<div class="flex flex-col space-y-0.5">
+<span class="font-body-sm text-outline">Teléfono</span>
+<span class="font-body-md font-medium text-on-surface">+57 312 555 0198</span>
+</div>
+<!-- Correo -->
+<div class="flex flex-col space-y-0.5">
+<span class="font-body-sm text-outline">Correo</span>
+<span class="font-body-md font-medium text-on-surface">mafe.lopez@gmail.com</span>
+</div>
+<!-- Creado -->
+<div class="flex flex-col space-y-0.5">
+<span class="font-body-sm text-outline">Creado</span>
+<span class="font-body-md font-medium text-on-surface">02 oct 2026</span>
+</div>
+<!-- Origen -->
+<div class="flex flex-col space-y-0.5">
+<span class="font-body-sm text-outline">Origen</span>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-emerald-600" style="font-size: 16px;">forum</span>
+<span class="font-body-md font-medium text-on-surface">WhatsApp (automático)</span>
+</div>
+</div>
+<!-- Último mensaje -->
+<div class="flex flex-col space-y-0.5">
+<span class="font-body-sm text-outline">Último mensaje</span>
+<span class="font-body-md font-medium text-on-surface">Hoy, 10:42</span>
+</div>
+<div class="flex flex-col space-y-0.5"><span class="font-body-sm text-outline">Identificación</span><span class="font-body-md font-medium text-on-surface">CC 1.020.345.678</span></div></div>
+</section>
+<!-- 2. Card: Conversaciones -->
+<section class="bg-surface-container-lowest rounded-[20px] shadow-card p-6 md:p-7">
+<div class="flex items-center justify-between pb-4">
+<div class="flex items-center gap-2.5">
+<h2 class="font-headline-sm font-bold text-on-surface">Conversaciones</h2>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high font-label-sm text-outline font-semibold">3</span>
+</div>
+<span class="font-body-sm text-outline">Canal WhatsApp Oficial</span>
+</div>
+<!-- Conversation Item List -->
+<div class="flex flex-col space-y-3">
+<!-- Row 1 (Active/Open) -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-2xl bg-surface-container-low hover:bg-surface-container transition-all gap-3">
+<div class="flex items-center gap-3.5">
+<div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined" style="font-size: 20px;">forum</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-label-md font-bold text-on-surface">13 oct 2026 – hoy</span>
+<!-- Abierta Badge -->
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                    Abierta
+                  </span>
+</div>
+<div class="flex items-center gap-2.5 mt-0.5">
+<div class="flex items-center gap-1">
+<span class="w-4 h-4 rounded-full bg-primary-fixed text-primary font-caption flex items-center justify-center font-bold">LG</span>
+<span class="font-body-sm text-outline">Laura</span>
+</div>
+<span class="text-outline-variant font-bold">·</span>
+<span class="font-body-sm text-outline">14 mensajes</span>
+</div>
+</div>
+</div>
+<a class="self-end sm:self-center font-label-md text-primary font-semibold hover:underline flex items-center gap-1 px-3 py-1.5 rounded-full hover:bg-primary-fixed/40 transition-colors" href="#">
+<span class="">Ver</span>
+<span class="material-symbols-outlined" style="font-size: 16px;">chevron_right</span>
+</a>
+</div>
+<!-- Row 2 (Closed) -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-2xl bg-surface-container-lowest hover:bg-surface-container-low transition-all gap-3">
+<div class="flex items-center gap-3.5">
+<div class="w-10 h-10 rounded-xl bg-surface-container text-outline flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined" style="font-size: 20px;">chat_bubble</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-label-md font-bold text-on-surface">02 oct – 04 oct 2026</span>
+<!-- Cerrada Badge -->
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container-highest text-outline font-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+                    Cerrada
+                  </span>
+</div>
+<div class="flex items-center gap-2.5 mt-0.5">
+<div class="flex items-center gap-1">
+<span class="w-4 h-4 rounded-full bg-primary-fixed text-primary font-caption flex items-center justify-center font-bold">LG</span>
+<span class="font-body-sm text-outline">Laura</span>
+</div>
+<span class="text-outline-variant font-bold">·</span>
+<span class="font-body-sm text-outline">22 mensajes</span>
+</div>
+</div>
+</div>
+<a class="self-end sm:self-center font-label-md text-outline hover:text-primary font-semibold hover:underline flex items-center gap-1 px-3 py-1.5 rounded-full hover:bg-surface-container-low transition-colors" href="#">
+<span class="">Ver</span>
+<span class="material-symbols-outlined" style="font-size: 16px;">chevron_right</span>
+</a>
+</div>
+<!-- Row 3 (Closed) -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-2xl bg-surface-container-lowest hover:bg-surface-container-low transition-all gap-3">
+<div class="flex items-center gap-3.5">
+<div class="w-10 h-10 rounded-xl bg-surface-container text-outline flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined" style="font-size: 20px;">chat_bubble</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-label-md font-bold text-on-surface">25 sep 2026</span>
+<!-- Cerrada Badge -->
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container-highest text-outline font-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+                    Cerrada
+                  </span>
+</div>
+<div class="flex items-center gap-2.5 mt-0.5">
+<div class="flex items-center gap-1">
+<span class="w-4 h-4 rounded-full bg-secondary-fixed text-secondary font-caption flex items-center justify-center font-bold">CA</span>
+<span class="font-body-sm text-outline">Camilo</span>
+</div>
+<span class="text-outline-variant font-bold">·</span>
+<span class="font-body-sm text-outline">5 mensajes</span>
+</div>
+</div>
+</div>
+<a class="self-end sm:self-center font-label-md text-outline hover:text-primary font-semibold hover:underline flex items-center gap-1 px-3 py-1.5 rounded-full hover:bg-surface-container-low transition-colors" href="#">
+<span class="">Ver</span>
+<span class="material-symbols-outlined" style="font-size: 16px;">chevron_right</span>
+</a>
+</div>
+</div>
+</section>
+</div>
+<!-- RIGHT COLUMN: Status Selector & Timeline History (~38%) -->
+<div class="lg:col-span-5 flex flex-col space-y-6">
+<!-- 1. Card: Estado del contacto -->
+<section class="bg-surface-container-lowest rounded-[20px] shadow-card p-6 md:p-7">
+<h2 class="font-headline-sm font-bold text-on-surface mb-4">Estado del contacto</h2>
+<!-- Interactive Custom State Selector Trigger -->
+<div class="relative">
+<button class="w-full h-12 px-4 rounded-2xl bg-tertiary-fixed text-tertiary flex items-center justify-between font-label-md font-bold shadow-sm hover:opacity-95 transition-all focus:outline-none" id="statusDropdownBtn" type="button">
+<div class="flex items-center gap-2.5">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+<span class="">Calificado</span>
+</div>
+<span class="material-symbols-outlined transition-transform duration-200" id="statusChevron" style="font-size: 20px;">expand_more</span>
+</button>
+<!-- Hidden Selector Contextual Panel -->
+<div class="hidden absolute top-14 left-0 w-full bg-surface-container-lowest rounded-2xl shadow-xl p-2 z-30 flex flex-col space-y-1" id="statusMenu">
+<button class="w-full h-10 px-3 rounded-xl flex items-center gap-2 hover:bg-surface-container-low transition-colors text-left font-label-sm text-on-surface" type="button">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="">Nuevo</span>
+</button>
+<button class="w-full h-10 px-3 rounded-xl flex items-center gap-2 hover:bg-surface-container-low transition-colors text-left font-label-sm text-on-surface" type="button">
+<span class="w-2 h-2 rounded-full bg-amber-500"></span>
+<span class="">En contacto</span>
+</button>
+<button class="w-full h-10 px-3 rounded-xl bg-tertiary-fixed/60 flex items-center justify-between text-left font-label-sm text-tertiary font-bold" type="button">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="">Calificado</span>
+</div>
+<span class="material-symbols-outlined" style="font-size: 16px;">check</span>
+</button>
+<button class="w-full h-10 px-3 rounded-xl flex items-center gap-2 hover:bg-surface-container-low transition-colors text-left font-label-sm text-on-surface" type="button">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+<span class="">Cliente</span>
+</button>
+<button class="w-full h-10 px-3 rounded-xl flex items-center gap-2 hover:bg-surface-container-low transition-colors text-left font-label-sm text-on-surface" type="button">
+<span class="w-2 h-2 rounded-full bg-outline"></span>
+<span class="">En pausa</span>
+</button>
+<button class="w-full h-10 px-3 rounded-xl flex items-center gap-2 hover:bg-surface-container-low transition-colors text-left font-label-sm text-error" type="button">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<span class="">Perdido</span>
+</button>
+</div>
+</div>
+<p class="font-body-sm text-outline mt-3 flex items-center gap-1.5">
+<span class="material-symbols-outlined" style="font-size: 16px;">info</span>
+<span class="">Cualquier asesor o administrador puede cambiarlo.</span>
+</p>
+</section>
+<!-- 2. Card: Historial de estados -->
+<section class="bg-surface-container-lowest rounded-[20px] shadow-card p-6 md:p-7">
+<div class="flex items-center justify-between pb-6">
+<h2 class="font-headline-sm font-bold text-on-surface">Historial de estados</h2>
+<span class="material-symbols-outlined text-outline" style="font-size: 18px;">history</span>
+</div>
+<!-- Vertical State Progression Timeline -->
+<div class="relative pl-6 space-y-8 before:absolute before:left-2 before:top-2 before:bottom-3 before:w-0.5 before:bg-surface-container-high">
+<!-- Event 1 (Latest) -->
+<div class="relative flex flex-col space-y-1">
+<!-- Colored Pulse Dot -->
+<div class="absolute -left-6 top-1 w-4 h-4 rounded-full bg-surface-container-lowest flex items-center justify-center">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+</div>
+<div class="flex items-center gap-2">
+<h3 class="font-body-md font-semibold text-on-surface">En contacto → Calificado</h3>
+</div>
+<p class="font-body-sm text-outline">
+              Laura Gómez · 10 oct 2026, 3:12 p. m.
+            </p>
+</div>
+<!-- Event 2 -->
+<div class="relative flex flex-col space-y-1">
+<!-- Amber Dot -->
+<div class="absolute -left-6 top-1 w-4 h-4 rounded-full bg-surface-container-lowest flex items-center justify-center">
+<span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+</div>
+<div class="flex items-center gap-2">
+<h3 class="font-body-md font-semibold text-on-surface">Nuevo → En contacto</h3>
+</div>
+<p class="font-body-sm text-outline">
+              Laura Gómez · 03 oct 2026, 9:40 a. m.
+            </p>
+</div>
+<!-- Event 3 (Creation) -->
+<div class="relative flex flex-col space-y-1">
+<!-- Indigo Dot -->
+<div class="absolute -left-6 top-1 w-4 h-4 rounded-full bg-surface-container-lowest flex items-center justify-center">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+</div>
+<div class="flex items-center gap-2">
+<h3 class="font-body-md font-semibold text-on-surface">Contacto creado como Nuevo</h3>
+</div>
+<p class="font-body-sm text-outline">
+              Automático · 02 oct 2026, 8:05 p. m.
+            </p>
+</div>
+</div>
+</section>
+</div>
+</div>
+<!-- Interactive State Dropdown Handler -->
+<script>
+    (function() {
+      const btn = document.getElementById('statusDropdownBtn');
+      const menu = document.getElementById('statusMenu');
+      const chevron = document.getElementById('statusChevron');
+
+      if (btn && menu) {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isHidden = menu.classList.toggle('hidden');
+          if (chevron) {
+            chevron.style.transform = isHidden ? 'rotate(0deg)' : 'rotate(180deg)';
+          }
+        });
+
+        document.addEventListener('click', () => {
+          if (!menu.classList.contains('hidden')) {
+            menu.classList.add('hidden');
+            if (chevron) chevron.style.transform = 'rotate(0deg)';
+          }
+        });
+      }
+    })();
+  </script>
+</div></main>
+<!-- END: MainContentArea -->
+</div>
+<!-- END: AppShellContainer -->
+<!-- BEGIN: MobileFloatingActionButton -->
+<!-- Contextual quick floating button for mobile devices -->
+<button aria-label="Crear contacto rápido" class="md:hidden fixed bottom-5 right-5 w-14 h-14 bg-brand-violet text-white rounded-full shadow-floating flex items-center justify-center z-50 active:scale-95 transition">
+<svg class="w-6 h-6 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</button>
+<!-- END: MobileFloatingActionButton -->
+
+
+</body></html>

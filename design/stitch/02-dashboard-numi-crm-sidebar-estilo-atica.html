@@ -1,0 +1,787 @@
+<!DOCTYPE html><html lang="es" style="width: 1433px; height: 992px; overflow: hidden; position: relative;"><head></head><body class="text-slate-800 antialiased h-screen overflow-hidden p-3 lg:p-4 select-none"><svg class="inline-defs-container" aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden"></svg>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Dashboard - Numi CRM</title>
+<!-- Fonts: Plus Jakarta Sans & Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#F4F2FF',
+              100: '#EAE6FD',
+              200: '#D5CCFC',
+              500: '#7357F6',
+              600: '#5F43DE',
+              700: '#5338CA',
+              800: '#452B9E',
+              sidebar: '#5843BA'
+            },
+            surface: {
+              bg: '#EEF2F6',
+              card: '#FFFFFF'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'sans-serif']
+          },
+          boxShadow: {
+            card: '0 4px 20px -2px rgba(90, 80, 160, 0.05)',
+            cardHover: '0 8px 26px -4px rgba(90, 80, 160, 0.09)',
+            pill: '0 2px 8px rgba(0, 0, 0, 0.04)'
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-typography">
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #EBF0F5;
+    }
+    h1, h2, h3, h4, .font-heading {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+  </style>
+<style data-purpose="layout-and-curves">
+    /* Refined Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #D1D5DB;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #9CA3AF;
+    }
+  </style>
+
+
+<!-- BEGIN: AppCanvasContainer -->
+<!-- Outer rounded canvas simulating high-end desktop web app frame -->
+<div class="w-full h-full bg-[#F4F6FA] rounded-[32px] shadow-2xl flex overflow-hidden border border-slate-200/80">
+<!-- BEGIN: Sidebar -->
+<aside class="w-[248px] bg-gradient-to-b from-[#5642B8] to-[#4F3BAE] flex-shrink-0 flex flex-col justify-between p-5 text-white relative z-20" data-purpose="sidebar-navigation">
+<!-- Top Section: Logo & Nav items -->
+<div>
+<!-- Logo & Wordmark -->
+<div class="flex items-center gap-3 px-2 py-2 mb-7"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBv9p63W548gkw6G6gRJI7kbAqEd5jNcryhz42CVkJUg_46WGUzDXJyghuty6UpLabJMX1SqRjcsdhmPW1BJFHjNC9-jPNCABX_tVjLEFzvO5Nl3XuuuV3r720_-2xhhehhzxW1b2EWIJ1HDX8GGuC2J2dyejfLB0gC1P7vuPE6MUNxCH9UTRa3AOFmrOBMiUM0aMQ1iO8Xg6rNNLJP4ADggDC7Vd9wnbtQJI64L7EpHSWFKYFTLeChBQ8q5DPmc2vuUQ" alt="Numi CRM Logo" class="w-9 h-9 rounded-xl object-contain shadow-md ring-1 ring-white/20 flex-shrink-0"><div class="flex items-center gap-1.5"><span class="text-xl font-bold tracking-tight text-white font-heading leading-none select-none">numi</span><span class="text-[10px] font-bold uppercase tracking-wider bg-white/20 text-white/95 px-1.5 py-0.5 rounded border border-white/25 leading-none select-none">CRM</span></div></div>
+<!-- Navigation Menu -->
+<nav aria-label="Navegación principal" class="space-y-1.5">
+<!-- Active Item: Dashboard (with inverted tab effect / soft glow) -->
+<a class="group relative flex items-center justify-between px-3.5 py-3 rounded-2xl bg-white text-[#5642B8] font-semibold text-sm shadow-md transition-all" href="#">
+<div class="flex items-center gap-3">
+<div class="p-1 rounded-lg bg-[#5642B8]/10 text-[#5642B8]">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+<rect height="7" rx="1.5" width="7" x="3" y="3"></rect>
+<rect height="7" rx="1.5" width="7" x="14" y="3"></rect>
+<rect height="7" rx="1.5" width="7" x="14" y="14"></rect>
+<rect height="7" rx="1.5" width="7" x="3" y="14"></rect>
+</svg>
+</div>
+<span class="font-heading">Dashboard</span>
+</div>
+<!-- Active indicator dot -->
+<span class="w-1.5 h-1.5 rounded-full bg-[#5642B8]"></span>
+</a>
+<!-- Inactive Item: Bandeja -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-white/80 hover:text-white hover:bg-white/10 text-sm font-medium transition-all group" href="#">
+<div class="flex items-center gap-3">
+<div class="p-1 rounded-lg text-white/80 group-hover:text-white">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<span class="">Bandeja</span>
+</div>
+<svg class="w-3.5 h-3.5 text-white/40 group-hover:text-white/80 transition-colors" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</a>
+<!-- Inactive Item: Contactos -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-white/80 hover:text-white hover:bg-white/10 text-sm font-medium transition-all group" href="#">
+<div class="flex items-center gap-3">
+<div class="p-1 rounded-lg text-white/80 group-hover:text-white">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<span class="">Contactos</span>
+</div>
+<svg class="w-3.5 h-3.5 text-white/40 group-hover:text-white/80 transition-colors" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</a>
+<!-- Inactive Item: Usuarios -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-white/80 hover:text-white hover:bg-white/10 text-sm font-medium transition-all group" href="#">
+<div class="flex items-center gap-3">
+<div class="p-1 rounded-lg text-white/80 group-hover:text-white">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.999-3.199a3 3 0 115.998 0m-5.998 0a3 3 0 10-5.998 0" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<span class="">Usuarios</span>
+</div>
+<svg class="w-3.5 h-3.5 text-white/40 group-hover:text-white/80 transition-colors" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</a>
+<!-- Inactive Item: Configuración -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-white/80 hover:text-white hover:bg-white/10 text-sm font-medium transition-all group" href="#">
+<div class="flex items-center gap-3">
+<div class="p-1 rounded-lg text-white/80 group-hover:text-white">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round"></path>
+<circle cx="12" cy="12" r="3"></circle>
+</svg>
+</div>
+<span class="">Configuración</span>
+</div>
+<svg class="w-3.5 h-3.5 text-white/40 group-hover:text-white/80 transition-colors" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</a>
+</nav>
+</div>
+<!-- Bottom Sidebar Footer -->
+<div class="pt-4 border-t border-white/10 space-y-4">
+<a class="flex items-center gap-3 px-3 py-2 text-white/75 hover:text-white text-sm font-medium hover:bg-white/10 rounded-xl transition-all group" href="#">
+<svg class="w-4 h-4 text-white/70 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="">Cerrar sesión</span>
+</a>
+<!-- Powered By Widget -->
+<div class="px-3 flex items-center justify-between text-[11px] text-white/60">
+<span class="flex items-center gap-1.5">
+            Powered by <strong class="text-white font-semibold">numi</strong>
+</span>
+<span class="flex items-center gap-1 text-[10px] text-emerald-300 bg-emerald-500/20 px-2 py-0.5 rounded-full border border-emerald-400/30">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            Online
+          </span>
+</div>
+</div>
+</aside>
+<!-- END: Sidebar -->
+<!-- BEGIN: MainContentArea -->
+<main class="flex-1 flex flex-col h-full overflow-hidden bg-[#F6F8FC]" data-purpose="dashboard-main">
+<!-- BEGIN: TopBar -->
+<header class="h-20 px-8 flex items-center justify-between border-b border-slate-200/60 bg-white/70 backdrop-blur-md z-10 flex-shrink-0" data-purpose="top-navigation-bar"><!-- Left: Title & Subtitle -->
+<div class="flex flex-col justify-center flex-shrink-0">
+  <h1 class="text-2xl font-bold font-heading text-slate-900 tracking-tight leading-none">Dashboard</h1>
+  <p class="text-xs text-slate-500 mt-1.5">Visión global del canal de WhatsApp y actividad del equipo</p>
+</div>
+
+<!-- Center-Right Controls Container -->
+<div class="flex items-center gap-3 lg:gap-4 flex-shrink-0">
+  <!-- Date Filter & Comparative Badge Group -->
+  <div class="flex items-center gap-2 bg-white border border-slate-200/80 shadow-sm rounded-full p-1 pl-1.5 pr-2.5 hover:border-violet-200 transition-colors cursor-pointer group">
+    <button type="button" class="flex items-center gap-2 px-2.5 py-1 text-xs font-semibold text-slate-700 group-hover:text-violet-700 transition-colors">
+      <svg class="w-3.5 h-3.5 text-brand-600 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <rect height="18" rx="2" ry="2" width="18" x="3" y="4"></rect>
+        <line x1="16" x2="16" y1="2" y2="6"></line>
+        <line x1="8" x2="8" y1="2" y2="6"></line>
+        <line x1="3" x2="21" y1="10" y2="10"></line>
+      </svg>
+      <span class="font-bold text-slate-800 group-hover:text-brand-700 transition-colors whitespace-nowrap">Septiembre 2026</span>
+      <svg class="w-3 h-3 text-slate-400 group-hover:text-slate-600 transition-transform" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+        <path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </button>
+    <span class="h-3.5 w-px bg-slate-200"></span>
+    <span class="text-[11px] text-slate-500 bg-slate-50 border border-slate-100 px-2 py-0.5 rounded-full font-medium whitespace-nowrap">vs. agosto 2026</span>
+  </div>
+
+  <!-- Search Button / Quick Search Trigger -->
+  <button aria-label="Buscar" type="button" class="p-2 rounded-full bg-white border border-slate-200/80 text-slate-500 hover:text-slate-900 hover:border-slate-300 shadow-sm transition-all">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="8"></circle>
+      <path d="M21 21l-4.35-4.35" stroke-linecap="round"></path>
+    </svg>
+  </button>
+
+  <!-- Clinic / Branch Badge -->
+  <button type="button" class="flex items-center gap-2 bg-violet-50/70 border border-violet-100 px-3.5 py-1.5 rounded-full shadow-sm hover:border-violet-200 hover:bg-violet-50 transition-all text-left">
+    <div class="w-5 h-5 rounded-full bg-violet-600/10 flex items-center justify-center text-brand-600 flex-shrink-0">
+      <svg class="w-3 h-3 text-brand-600" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918"></path>
+      </svg>
+    </div>
+    <span class="text-xs font-semibold text-brand-700 tracking-tight whitespace-nowrap">Clínica Bella Piel</span>
+    <svg class="w-3 h-3 text-violet-400 ml-0.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+      <path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+  </button>
+
+  <!-- Notification Bell -->
+  <button aria-label="Notificaciones" type="button" class="relative p-2 rounded-full bg-white border border-slate-200/80 text-slate-600 hover:text-slate-900 shadow-sm hover:shadow transition-all">
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+    <span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-violet-600 ring-2 ring-white"></span>
+  </button>
+
+  <!-- User Profile Avatar Pill -->
+  
+</div></header>
+<!-- END: TopBar -->
+<!-- BEGIN: ScrollableDashboardBody -->
+<div class="flex-1 overflow-y-auto p-6 lg:p-7 space-y-6" data-purpose="scrollable-content">
+<!-- Two Columns Layout (70% Left, 30% Right) -->
+<div class="grid grid-cols-12 gap-6 items-start">
+<!-- ================= LEFT COLUMN (Col span 8 / ~70%) ================= -->
+<div class="col-span-12 xl:col-span-8 space-y-6">
+<!-- BEGIN: KPICardsRow -->
+<section class="grid grid-cols-2 md:grid-cols-4 gap-4" data-purpose="kpi-metrics-cards">
+<!-- KPI 1: Conversaciones del mes -->
+<div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-sm hover:shadow-card transition-shadow">
+<div class="flex items-start justify-between">
+<span class="text-xs font-medium text-slate-500 leading-tight">Conversaciones<br>del mes</span>
+<div class="p-2 rounded-xl bg-violet-50 text-brand-600">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</div>
+<div class="mt-3">
+<h3 class="text-2xl font-bold font-heading text-slate-900 tracking-tight">486</h3>
+<div class="flex items-center gap-1.5 mt-2">
+<span class="inline-flex items-center gap-0.5 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60">
+<svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                      +12%
+                    </span>
+<span class="text-[11px] text-slate-400">vs. mes anterior</span>
+</div>
+</div>
+</div>
+<!-- KPI 2: Tiempo promedio de atención -->
+<div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-sm hover:shadow-card transition-shadow">
+<div class="flex items-start justify-between">
+<span class="text-xs font-medium text-slate-500 leading-tight">Tiempo promedio<br>de atención</span>
+<div class="p-2 rounded-xl bg-blue-50 text-blue-600">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<circle cx="12" cy="12" r="9"></circle>
+<polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+</div>
+</div>
+<div class="mt-3">
+<h3 class="text-2xl font-bold font-heading text-slate-900 tracking-tight">6 min</h3>
+<div class="flex items-center gap-1.5 mt-2">
+<span class="inline-flex items-center gap-0.5 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60">
+<svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M19.5 4.5l-15 15m0 0h11.25m-11.25 0V8.25" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                      -2 min
+                    </span>
+<span class="text-[11px] text-slate-400">vs. mes anterior</span>
+</div>
+</div>
+</div>
+<!-- KPI 3: Nuevos leads -->
+<div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-sm hover:shadow-card transition-shadow">
+<div class="flex items-start justify-between">
+<span class="text-xs font-medium text-slate-500 leading-tight">Nuevos<br>leads</span>
+<div class="p-2 rounded-xl bg-indigo-50 text-indigo-600">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</div>
+<div class="mt-3">
+<h3 class="text-2xl font-bold font-heading text-slate-900 tracking-tight">132</h3>
+<div class="flex items-center gap-1.5 mt-2">
+<span class="inline-flex items-center gap-0.5 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60">
+<svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                      +9%
+                    </span>
+<span class="text-[11px] text-slate-400">vs. mes anterior</span>
+</div>
+</div>
+</div>
+<!-- KPI 4: Tasa de conversión -->
+<div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-sm hover:shadow-card transition-shadow">
+<div class="flex items-start justify-between">
+<span class="text-xs font-medium text-slate-500 leading-tight">Tasa de<br>conversión</span>
+<div class="p-2 rounded-xl bg-purple-50 text-purple-600">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+</div>
+<div class="mt-3">
+<h3 class="text-2xl font-bold font-heading text-slate-900 tracking-tight">18%</h3>
+<div class="flex items-center gap-1.5 mt-2">
+<span class="inline-flex items-center gap-0.5 text-[11px] font-semibold text-rose-700 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200/60">
+<svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M19.5 4.5l-15 15m0 0h11.25m-11.25 0V8.25" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                      -3 pts
+                    </span>
+<span class="text-[11px] text-slate-400">24 de 132 leads</span>
+</div>
+</div>
+</div>
+</section>
+<!-- END: KPICardsRow -->
+<!-- BEGIN: FeaturedWaveChartCard -->
+<!-- Large gradient chart container reflecting SCREEN_4 palette -->
+<section class="rounded-[24px] p-6 text-white bg-gradient-to-br from-[#684FE3] via-[#5C3EE0] to-[#5130D4] shadow-xl relative overflow-hidden" data-purpose="daily-conversations-chart">
+<!-- Background subtle luminous glows -->
+<div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-violet-400/20 blur-3xl pointer-events-none"></div>
+<div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-indigo-500/20 blur-3xl pointer-events-none"></div>
+<!-- Top Bar in Chart: Header and Switcher -->
+<div class="flex items-center justify-between mb-2 relative z-10">
+<div>
+<h2 class="text-lg font-bold font-heading">Conversaciones por día</h2>
+<p class="text-xs text-white/70">Flujo diario de interacciones entrantes vía WhatsApp</p>
+</div>
+<!-- Toggle pills -->
+<div class="bg-black/20 backdrop-blur-md p-1 rounded-full flex items-center border border-white/10 text-xs">
+<button class="px-3.5 py-1 rounded-full bg-white text-brand-700 font-semibold shadow-sm transition">
+                    Conversaciones
+                  </button>
+<button class="px-3.5 py-1 rounded-full text-white/80 hover:text-white font-medium transition">
+                    Nuevos leads
+                  </button>
+</div>
+</div>
+<!-- SVG Wave Chart Graphic -->
+<div class="relative w-full h-48 my-3">
+<!-- Tooltip floating above coordinate 18 sep -->
+<div class="absolute left-[54%] top-[12%] -translate-x-1/2 z-20 flex flex-col items-center">
+<div class="bg-white/95 backdrop-blur text-slate-800 text-[11px] font-semibold py-1 px-3 rounded-full shadow-lg flex items-center gap-1.5 whitespace-nowrap">
+<span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span>
+<strong class="font-bold">18 sep</strong> • 24 conversaciones
+                  </div>
+<!-- Tooltip indicator stem line -->
+<div class="w-px h-16 border-l border-dashed border-white/60 mt-1"></div>
+</div>
+<svg class="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 700 180">
+<defs>
+<linearGradient id="purpleAreaGrad" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#ffffff" stop-opacity="0.32"></stop>
+<stop offset="85%" stop-color="#ffffff" stop-opacity="0.02"></stop>
+<stop offset="100%" stop-color="#ffffff" stop-opacity="0"></stop>
+</linearGradient>
+</defs>
+<!-- Horizontal subtle guide lines -->
+<line stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4" x1="0" x2="700" y1="30" y2="30"></line>
+<line stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4" x1="0" x2="700" y1="80" y2="80"></line>
+<line stroke="rgba(255,255,255,0.08)" stroke-dasharray="4 4" x1="0" x2="700" y1="130" y2="130"></line>
+<!-- Filled Gradient Area -->
+<path d="M 0,140 
+                           C 60,135 120,130 180,120 
+                           C 240,110 300,105 340,65 
+                           C 370,30 400,20 420,50 
+                           C 450,110 480,150 510,145 
+                           C 540,135 560,25 610,35 
+                           C 640,45 670,125 700,135 
+                           L 700,180 L 0,180 Z" fill="url(#purpleAreaGrad)"></path>
+<!-- Smooth Solid Wave Stroke -->
+<path d="M 0,140 
+                           C 60,135 120,130 180,120 
+                           C 240,110 300,105 340,65 
+                           C 370,30 400,20 420,50 
+                           C 450,110 480,150 510,145 
+                           C 540,135 560,25 610,35 
+                           C 640,45 670,125 700,135" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-width="3.5"></path>
+<!-- Active Point Indicator on 18 Sep -->
+<circle class="shadow-lg" cx="395" cy="40" fill="#ffffff" r="5.5" stroke="#7C3AED" stroke-width="3.5"></circle>
+</svg>
+<!-- X-Axis timeline labels -->
+<div class="flex justify-between text-[11px] text-white/50 px-2 mt-2 font-medium">
+<span class="">1</span>
+<span class="">5</span>
+<span class="">10</span>
+<span class="">15</span>
+<span class="text-white font-bold">18</span>
+<span class="">20</span>
+<span class="">25</span>
+<span class="">30</span>
+</div>
+</div>
+<!-- Bottom Summary Metrics Inside the Card -->
+<div class="mt-4 pt-4 border-t border-white/15 grid grid-cols-3 gap-4">
+<div>
+<span class="text-[11px] text-white/70 block">Promedio diario</span>
+<span class="text-xl font-bold font-heading">16</span>
+</div>
+<div>
+<span class="text-[11px] text-white/70 block">Día con más conversaciones</span>
+<span class="text-xl font-bold font-heading">18 sep</span>
+</div>
+<div>
+<span class="text-[11px] text-white/70 block">Abiertas hoy</span>
+<span class="text-xl font-bold font-heading">23</span>
+</div>
+</div>
+</section>
+<!-- END: FeaturedWaveChartCard -->
+<!-- BEGIN: TeamPerformanceTableCard -->
+<section class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm" data-purpose="team-performance">
+<div class="flex items-center justify-between mb-4">
+<div>
+<h3 class="text-base font-bold font-heading text-slate-900">Rendimiento por asesor</h3>
+<p class="text-xs text-slate-500">Métricas del equipo en septiembre</p>
+</div>
+<span class="text-xs font-semibold px-3 py-1 bg-violet-50 text-brand-700 rounded-full border border-violet-100">
+                  4 asesores activos
+                </span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left text-xs">
+<thead>
+<tr class="text-slate-400 font-semibold uppercase text-[10px] tracking-wider border-b border-slate-100 pb-2">
+<th class="pb-3 pl-1">Asesor</th>
+<th class="pb-3 text-center">Conversaciones atendidas</th>
+<th class="pb-3 text-center">Tiempo Prom.</th>
+<th class="pb-3 text-center">Abiertas Ahora</th>
+<th class="pb-3 text-right pr-2">Pasaron a Cliente</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 font-medium text-slate-700">
+<!-- Row 1: Laura Gómez -->
+<tr class="hover:bg-slate-50/70 transition-colors">
+<td class="py-3 pl-1">
+<div class="flex items-center gap-2.5">
+<div class="w-7 h-7 rounded-full bg-violet-600 text-white flex items-center justify-center font-bold text-[10px]">LG</div>
+<div>
+<div class="font-bold text-slate-800">Laura Gómez</div>
+<div class="text-[10px] text-brand-600 font-semibold">Administrador</div>
+</div>
+</div>
+</td>
+<td class="py-3 text-center">
+<div class="inline-flex items-center gap-2 w-32">
+<span class="w-7 font-bold text-slate-900 text-right">142</span>
+<div class="flex-1 bg-slate-100 h-2 rounded-full overflow-hidden">
+<div class="bg-brand-600 h-full rounded-full" style="width: 85%"></div>
+</div>
+</div>
+</td>
+<td class="py-3 text-center font-semibold text-slate-800">5 min</td>
+<td class="py-3 text-center">
+<span class="px-2.5 py-0.5 rounded-full bg-purple-50 text-purple-700 font-bold text-[11px]">6</span>
+</td>
+<td class="py-3 text-right pr-2">
+<span class="inline-flex items-center gap-1 font-bold text-emerald-600 text-[11px] bg-emerald-50 px-2 py-0.5 rounded-full">
+<svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                          8
+                        </span>
+</td>
+</tr>
+<!-- Row 2: Camilo Arango -->
+<tr class="hover:bg-slate-50/70 transition-colors">
+<td class="py-3 pl-1">
+<div class="flex items-center gap-2.5">
+<div class="w-7 h-7 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-[10px]">CA</div>
+<div>
+<div class="font-bold text-slate-800">Camilo Arango</div>
+<div class="text-[10px] text-slate-400">Asesor</div>
+</div>
+</div>
+</td>
+<td class="py-3 text-center">
+<div class="inline-flex items-center gap-2 w-32">
+<span class="w-7 font-bold text-slate-900 text-right">131</span>
+<div class="flex-1 bg-slate-100 h-2 rounded-full overflow-hidden">
+<div class="bg-brand-600 h-full rounded-full" style="width: 78%"></div>
+</div>
+</div>
+</td>
+<td class="py-3 text-center font-semibold text-slate-800">6 min</td>
+<td class="py-3 text-center">
+<span class="px-2.5 py-0.5 rounded-full bg-purple-50 text-purple-700 font-bold text-[11px]">7</span>
+</td>
+<td class="py-3 text-right pr-2">
+<span class="inline-flex items-center gap-1 font-bold text-emerald-600 text-[11px] bg-emerald-50 px-2 py-0.5 rounded-full">
+<svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                          7
+                        </span>
+</td>
+</tr>
+<!-- Row 3: Valentina Ortiz -->
+<tr class="hover:bg-slate-50/70 transition-colors">
+<td class="py-3 pl-1">
+<div class="flex items-center gap-2.5">
+<div class="w-7 h-7 rounded-full bg-violet-700 text-white flex items-center justify-center font-bold text-[10px]">VO</div>
+<div>
+<div class="font-bold text-slate-800">Valentina Ortiz</div>
+<div class="text-[10px] text-slate-400">Asesor</div>
+</div>
+</div>
+</td>
+<td class="py-3 text-center">
+<div class="inline-flex items-center gap-2 w-32">
+<span class="w-7 font-bold text-slate-900 text-right">118</span>
+<div class="flex-1 bg-slate-100 h-2 rounded-full overflow-hidden">
+<div class="bg-brand-600 h-full rounded-full" style="width: 68%"></div>
+</div>
+</div>
+</td>
+<td class="py-3 text-center font-semibold text-slate-800">7 min</td>
+<td class="py-3 text-center">
+<span class="px-2.5 py-0.5 rounded-full bg-purple-50 text-purple-700 font-bold text-[11px]">5</span>
+</td>
+<td class="py-3 text-right pr-2">
+<span class="inline-flex items-center gap-1 font-bold text-emerald-600 text-[11px] bg-emerald-50 px-2 py-0.5 rounded-full">
+<svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                          5
+                        </span>
+</td>
+</tr>
+<!-- Row 4: Santiago Henao -->
+<tr class="hover:bg-slate-50/70 transition-colors">
+<td class="py-3 pl-1">
+<div class="flex items-center gap-2.5">
+<div class="w-7 h-7 rounded-full bg-purple-600 text-white flex items-center justify-center font-bold text-[10px]">SH</div>
+<div>
+<div class="font-bold text-slate-800">Santiago Henao</div>
+<div class="text-[10px] text-slate-400">Asesor</div>
+</div>
+</div>
+</td>
+<td class="py-3 text-center">
+<div class="inline-flex items-center gap-2 w-32">
+<span class="w-7 font-bold text-slate-900 text-right">95</span>
+<div class="flex-1 bg-slate-100 h-2 rounded-full overflow-hidden">
+<div class="bg-brand-600 h-full rounded-full" style="width: 54%"></div>
+</div>
+</div>
+</td>
+<td class="py-3 text-center font-semibold text-slate-800">8 min</td>
+<td class="py-3 text-center">
+<span class="px-2.5 py-0.5 rounded-full bg-purple-50 text-purple-700 font-bold text-[11px]">5</span>
+</td>
+<td class="py-3 text-right pr-2">
+<span class="inline-flex items-center gap-1 font-bold text-emerald-600 text-[11px] bg-emerald-50 px-2 py-0.5 rounded-full">
+<svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                          4
+                        </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- END: TeamPerformanceTableCard -->
+</div>
+<!-- ================= END LEFT COLUMN ================= -->
+<!-- ================= RIGHT COLUMN (Col span 4 / ~30%) ================= -->
+<div class="col-span-12 xl:col-span-4 space-y-6">
+<!-- BEGIN: ContactosPorEstadoCard -->
+<section class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm" data-purpose="status-pipeline-breakdown">
+<div class="flex items-start justify-between mb-4">
+<div>
+<h3 class="text-base font-bold font-heading text-slate-900 leading-tight">Contactos por<br>estado</h3>
+<span class="text-xs text-slate-400 block mt-1">Contactos en total</span>
+</div>
+<div class="text-right">
+<span class="text-3xl font-extrabold font-heading text-slate-900 tracking-tight">1.248</span>
+</div>
+</div>
+<!-- Status List with Bars -->
+<div class="space-y-3.5 mt-5">
+<!-- Status: Nuevo -->
+<div class="flex items-center justify-between text-xs">
+<div class="w-28 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-blue-500"></span>
+<span class="font-medium text-slate-700">Nuevo</span>
+</div>
+<div class="flex-1 mx-3 bg-slate-100 h-2 rounded-full overflow-hidden">
+<div class="bg-blue-500 h-full rounded-full" style="width: 55%"></div>
+</div>
+<span class="font-bold text-slate-800 text-right w-8">210</span>
+</div>
+<!-- Status: En contacto -->
+<div class="flex items-center justify-between text-xs">
+<div class="w-28 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-amber-500"></span>
+<span class="font-medium text-slate-700">En contacto</span>
+</div>
+<div class="flex-1 mx-3 bg-slate-100 h-2 rounded-full overflow-hidden">
+<div class="bg-amber-500 h-full rounded-full" style="width: 80%"></div>
+</div>
+<span class="font-bold text-slate-800 text-right w-8">305</span>
+</div>
+<!-- Status: Calificado -->
+<div class="flex items-center justify-between text-xs">
+<div class="w-28 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-purple-500"></span>
+<span class="font-medium text-slate-700">Calificado</span>
+</div>
+<div class="flex-1 mx-3 bg-slate-100 h-2 rounded-full overflow-hidden">
+<div class="bg-purple-500 h-full rounded-full" style="width: 48%"></div>
+</div>
+<span class="font-bold text-slate-800 text-right w-8">188</span>
+</div>
+<!-- Status: Cliente -->
+<div class="flex items-center justify-between text-xs">
+<div class="w-28 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+<span class="font-medium text-slate-700">Cliente</span>
+</div>
+<div class="flex-1 mx-3 bg-slate-100 h-2 rounded-full overflow-hidden">
+<div class="bg-emerald-500 h-full rounded-full" style="width: 90%"></div>
+</div>
+<span class="font-bold text-slate-800 text-right w-8">342</span>
+</div>
+<!-- Status: En pausa -->
+<div class="flex items-center justify-between text-xs">
+<div class="w-28 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-slate-400"></span>
+<span class="font-medium text-slate-700">En pausa</span>
+</div>
+<div class="flex-1 mx-3 bg-slate-100 h-2 rounded-full overflow-hidden">
+<div class="bg-slate-400 h-full rounded-full" style="width: 25%"></div>
+</div>
+<span class="font-bold text-slate-800 text-right w-8">96</span>
+</div>
+<!-- Status: Perdido -->
+<div class="flex items-center justify-between text-xs">
+<div class="w-28 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-rose-500"></span>
+<span class="font-medium text-slate-700">Perdido</span>
+</div>
+<div class="flex-1 mx-3 bg-slate-100 h-2 rounded-full overflow-hidden">
+<div class="bg-rose-500 h-full rounded-full" style="width: 28%"></div>
+</div>
+<span class="font-bold text-slate-800 text-right w-8">107</span>
+</div>
+</div>
+</section>
+<!-- END: ContactosPorEstadoCard -->
+<!-- BEGIN: AccesosRapidosCard -->
+<section class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm" data-purpose="quick-actions">
+<h3 class="text-base font-bold font-heading text-slate-900 mb-4">Accesos rápidos</h3>
+<div class="space-y-2.5">
+<!-- Action 1 -->
+<a class="group flex items-center justify-between p-3 rounded-xl border border-slate-100 bg-slate-50/50 hover:bg-violet-50/50 hover:border-violet-100 transition-all" href="#">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-xl bg-violet-600 text-white flex items-center justify-center shadow-sm">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.502 49.188 49.188 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<span class="text-xs font-semibold text-slate-700 group-hover:text-violet-900">Ver conversaciones sin asignar</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-5 h-5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold flex items-center justify-center">3</span>
+<svg class="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</div>
+</a>
+<!-- Action 2 -->
+<a class="group flex items-center justify-between p-3 rounded-xl border border-slate-100 bg-slate-50/50 hover:bg-violet-50/50 hover:border-violet-100 transition-all" href="#">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-xl bg-violet-600 text-white flex items-center justify-center shadow-sm">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.375 21c-2.348 0-4.545-.59-6.375-1.765z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<span class="text-xs font-semibold text-slate-700 group-hover:text-violet-900">Crear contacto</span>
+</div>
+<svg class="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</a>
+<!-- Action 3 -->
+<a class="group flex items-center justify-between p-3 rounded-xl border border-slate-100 bg-slate-50/50 hover:bg-violet-50/50 hover:border-violet-100 transition-all" href="#">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-xl bg-violet-600 text-white flex items-center justify-center shadow-sm">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.999-3.199a3 3 0 115.998 0m-5.998 0a3 3 0 10-5.998 0" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<span class="text-xs font-semibold text-slate-700 group-hover:text-violet-900">Invitar usuario</span>
+</div>
+<svg class="w-3.5 h-3.5 text-slate-400 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</a>
+</div>
+</section>
+<!-- END: AccesosRapidosCard -->
+<!-- BEGIN: EquipoCard -->
+<section class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm" data-purpose="team-list">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-base font-bold font-heading text-slate-900">Equipo</h3>
+<a class="text-xs font-semibold text-brand-600 hover:text-brand-800 transition" href="#">Ver todos</a>
+</div>
+<div class="space-y-3.5">
+<!-- Member 1: Laura Gómez -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="w-8 h-8 rounded-full bg-violet-600 text-white font-bold text-xs flex items-center justify-center">LG</div>
+<span class="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-white"></span>
+</div>
+<div>
+<h4 class="text-xs font-bold text-slate-800 leading-tight">Laura Gómez</h4>
+<span class="text-[10px] text-slate-400 font-medium">Administrador</span>
+</div>
+</div>
+<span class="text-[11px] font-semibold text-violet-700 bg-violet-50 px-2.5 py-1 rounded-full border border-violet-100">
+                    6 abiertas
+                  </span>
+</div>
+<!-- Member 2: Camilo Arango -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="w-8 h-8 rounded-full bg-indigo-600 text-white font-bold text-xs flex items-center justify-center">CA</div>
+<span class="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-white"></span>
+</div>
+<div>
+<h4 class="text-xs font-bold text-slate-800 leading-tight">Camilo Arango</h4>
+<span class="text-[10px] text-slate-400 font-medium">Asesor</span>
+</div>
+</div>
+<span class="text-[11px] font-semibold text-violet-700 bg-violet-50 px-2.5 py-1 rounded-full border border-violet-100">
+                    7 abiertas
+                  </span>
+</div>
+<!-- Member 3: Valentina Ortiz -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="w-8 h-8 rounded-full bg-violet-700 text-white font-bold text-xs flex items-center justify-center">VO</div>
+<span class="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-white"></span>
+</div>
+<div>
+<h4 class="text-xs font-bold text-slate-800 leading-tight">Valentina Ortiz</h4>
+<span class="text-[10px] text-slate-400 font-medium">Asesor</span>
+</div>
+</div>
+<span class="text-[11px] font-semibold text-violet-700 bg-violet-50 px-2.5 py-1 rounded-full border border-violet-100">
+                    5 abiertas
+                  </span>
+</div>
+<!-- Member 4: Santiago Henao -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="w-8 h-8 rounded-full bg-purple-600 text-white font-bold text-xs flex items-center justify-center">SH</div>
+<span class="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-slate-300 ring-2 ring-white"></span>
+</div>
+<div>
+<h4 class="text-xs font-bold text-slate-800 leading-tight">Santiago Henao</h4>
+<span class="text-[10px] text-slate-400 font-medium">Asesor</span>
+</div>
+</div>
+<span class="text-[11px] font-semibold text-violet-700 bg-violet-50 px-2.5 py-1 rounded-full border border-violet-100">
+                    5 abiertas
+                  </span>
+</div>
+</div>
+</section>
+<!-- END: EquipoCard -->
+</div>
+<!-- ================= END RIGHT COLUMN ================= -->
+</div>
+</div>
+<!-- END: ScrollableDashboardBody -->
+</main>
+<!-- END: MainContentArea -->
+</div>
+<!-- END: AppCanvasContainer -->
+
+
+
+
+</body></html>

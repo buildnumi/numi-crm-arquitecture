@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+
+<html lang="es"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-tertiary-container":"#f2dfff","primary-container":"#7c3aed","surface":"#fcf8ff","on-secondary-fixed-variant":"#2f2ebe","on-surface":"#1b1b23","surface-container":"#efecf9","on-tertiary-fixed-variant":"#6900b3","inverse-primary":"#d2bbff","on-secondary-fixed":"#07006c","surface-dim":"#dbd8e5","secondary":"#4648d4","primary":"#630ed4","inverse-surface":"#302f39","tertiary-container":"#8d36db","on-error":"#ffffff","secondary-fixed":"#e1e0ff","tertiary":"#730bc1","on-tertiary-fixed":"#2c0051","outline":"#7b7487","on-error-container":"#93000a","inverse-on-surface":"#f2effb","on-secondary-container":"#fffbff","on-primary-container":"#ede0ff","primary-fixed":"#eaddff","on-background":"#1b1b23","secondary-container":"#6063ee","on-tertiary":"#ffffff","background":"#fcf8ff","surface-container-high":"#eae6f3","tertiary-fixed-dim":"#ddb7ff","on-surface-variant":"#4a4455","on-primary":"#ffffff","error-container":"#ffdad6","tertiary-fixed":"#f0dbff","secondary-fixed-dim":"#c0c1ff","on-primary-fixed":"#25005a","surface-tint":"#732ee4","surface-bright":"#fcf8ff","outline-variant":"#ccc3d8","on-secondary":"#ffffff","primary-fixed-dim":"#d2bbff","surface-container-lowest":"#ffffff","surface-container-low":"#f5f2fe","surface-container-highest":"#e4e1ed","surface-variant":"#e4e1ed","on-primary-fixed-variant":"#5a00c6","error":"#ba1a1a"},borderRadius:{"DEFAULT":"1rem","lg":"2rem","xl":"3rem","full":"9999px"},spacing:{"margin-mobile":"1rem","space-lg":"1.5rem","space-sm":"0.5rem","space-xs":"0.25rem","space-2xl":"3rem","gutter-mobile":"1rem","gutter":"1.5rem","space-md":"1rem","margin":"2rem","space-xl":"2rem"},fontFamily:{"caption":["Inter"],"body-md":["Inter"],"body-sm":["Inter"],"display":["Plus Jakarta Sans"],"headline-lg-mobile":["Plus Jakarta Sans"],"body-lg":["Inter"],"display-mobile":["Plus Jakarta Sans"],"label-sm":["Inter"],"kpi-number":["Plus Jakarta Sans"],"headline-lg":["Plus Jakarta Sans"],"headline-md":["Plus Jakarta Sans"],"headline-sm":["Plus Jakarta Sans"],"label-md":["Inter"]},fontSize:{"caption":["11px",{"lineHeight":"14px","letterSpacing":"0.02em","fontWeight":"500"}],"body-md":["15px",{"lineHeight":"24px","fontWeight":"400"}],"body-sm":["13px",{"lineHeight":"20px","fontWeight":"400"}],"display":["48px",{"lineHeight":"56px","letterSpacing":"-0.03em","fontWeight":"800"}],"headline-lg-mobile":["26px",{"lineHeight":"34px","letterSpacing":"-0.02em","fontWeight":"700"}],"body-lg":["18px",{"lineHeight":"28px","fontWeight":"400"}],"display-mobile":["36px",{"lineHeight":"44px","letterSpacing":"-0.02em","fontWeight":"800"}],"label-sm":["12px",{"lineHeight":"16px","letterSpacing":"0.01em","fontWeight":"600"}],"kpi-number":["32px",{"lineHeight":"38px","letterSpacing":"-0.02em","fontWeight":"700"}],"headline-lg":["32px",{"lineHeight":"40px","letterSpacing":"-0.02em","fontWeight":"700"}],"headline-md":["24px",{"lineHeight":"32px","letterSpacing":"-0.015em","fontWeight":"700"}],"headline-sm":["20px",{"lineHeight":"28px","letterSpacing":"-0.01em","fontWeight":"600"}],"label-md":["14px",{"lineHeight":"20px","letterSpacing":"0.005em","fontWeight":"600"}]}}}}</script></head><body class="bg-[#F1EEFB] text-on-surface antialiased min-h-screen selection:bg-primary-fixed selection:text-on-primary-fixed"><aside class="fixed left-0 top-0 h-screen w-60 z-50 flex flex-col justify-between bg-gradient-to-b from-[#0A0A12] to-[#1E1538] text-white py-5 px-3 shadow-[0_10px_30px_-5px_rgba(124,58,237,0.18)]"><div class="flex flex-col gap-6"><div class="px-2 flex flex-col gap-3"><div class="flex items-center gap-2.5"><div class="w-9 h-9 rounded-xl bg-surface-container-lowest/10 backdrop-blur-md flex items-center justify-center font-display text-headline-sm text-tertiary-fixed font-bold shadow-inner">N</div><span class="font-display text-headline-md tracking-tight font-bold text-white">Numi</span></div><div class="inline-flex items-center self-start px-2.5 py-1 rounded-full bg-[#A855F7]/15 text-[#D8B4FE]"><span class="font-caption text-caption tracking-wider font-semibold uppercase">Consola de Plataforma</span></div></div><nav class="flex flex-col gap-1.5 pt-2" data-active-classes="bg-surface-container-lowest text-primary-container font-semibold shadow-md"><a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-white/70 hover:bg-white/10 hover:text-white transition-all duration-150" data-path="panel-general" href="#"><span class="material-symbols-outlined text-[20px]">dashboard</span><span class="font-label-md text-label-md">Panel general</span></a><a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-white/70 hover:bg-white/10 hover:text-white transition-all duration-150" data-path="resumen" href="#"><span class="material-symbols-outlined text-[20px]">apartment</span><span class="font-label-md text-label-md">Organizaciones</span></a><a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-white/70 hover:bg-white/10 hover:text-white transition-all duration-150" data-path="auditoria" href="#"><span class="material-symbols-outlined text-[20px]">shield</span><span class="font-label-md text-label-md">Auditoría</span></a></nav></div><div class="flex flex-col gap-3 pt-4 border-t border-white/10 px-2"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-full bg-primary-container text-white flex items-center justify-center font-display text-label-md font-bold ring-2 ring-white/15">AG</div><div class="flex flex-col min-w-0"><span class="font-label-md text-label-md text-white font-medium truncate">Anthony González</span><span class="font-caption text-caption text-white/60 truncate">Operador de plataforma</span></div></div><div class="flex flex-col gap-1 pt-1"><a class="flex items-center justify-between px-2.5 py-1.5 rounded-lg text-white/70 hover:bg-white/10 hover:text-white transition-colors" href="#"><span class="font-body-sm text-body-sm">Ir al CRM</span><span class="material-symbols-outlined text-[16px]">open_in_new</span></a><a class="flex items-center justify-between px-2.5 py-1.5 rounded-lg text-white/70 hover:bg-white/10 hover:text-white transition-colors" href="#"><span class="font-body-sm text-body-sm">Cerrar sesión</span><span class="material-symbols-outlined text-[16px]">logout</span></a></div></div></aside><div class="pl-60 min-h-screen flex flex-col"><header class="fixed top-0 left-60 right-0 h-16 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-8"><div class="flex items-center gap-4 min-w-0"><img alt="logo.jpeg" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1XlJVKkZ5NI_251f_AAG2PshzJoONFMN-EB56Du2PIp3SYDqnjt8qzfq3LrjlDLyvAe0AxZYXCuCy7D5B1woRs_tgFJAdiZYNo_UHX8gHVdTWvxH5AlVuEFbLF_CWcvJaPz0bfBziKrX_a8J2iJ-Ly48CTFTb0N0Yn_9XKF_9UQlVcnVQZ_D8dQe3_RzbwoW21oOju7FeQISBupKI9WjnLqbppcAhEBZtIjQMYuN0IcpISTwFhBnvSH_JpUvnFuWQYDcRUhDRqr"/><div class="h-5 w-px bg-outline-variant/50"></div><div class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm truncate"><span class="hover:text-on-surface transition-colors cursor-pointer">Organizaciones</span><span class="material-symbols-outlined text-[16px] text-outline">chevron_right</span><span class="font-semibold text-on-surface truncate">Clínica Bella Piel</span></div></div><div class="flex items-center gap-4"><div class="relative flex items-center"><span class="material-symbols-outlined absolute left-3 text-outline text-[18px]">search</span><input class="w-64 h-10 pl-9 pr-3 rounded-full bg-surface-container-low text-on-surface placeholder:text-outline font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all duration-150" placeholder="Buscar organización, operador o log..." type="text"/></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></header><main class="w-full pt-16 bg-[#F1EEFB] min-h-screen px-8 py-8"><div class="flex flex-col w-full max-w-[1400px] mx-auto gap-8 pb-16">
+<!-- Top Navigation & Breadcrumb -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2 text-on-surface-variant font-caption text-caption">
+<span class="hover:text-primary transition-colors cursor-pointer">Organizaciones</span>
+<span class="material-symbols-outlined text-[14px] text-outline">chevron_right</span>
+<span class="hover:text-primary transition-colors cursor-pointer">Clínica Bella Piel</span>
+<span class="material-symbols-outlined text-[14px] text-outline">chevron_right</span>
+<span class="text-primary font-semibold">Actividad</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        Sincronización en tiempo real
+      </span>
+<button class="w-8 h-8 rounded-full bg-surface-container-lowest shadow-sm flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" title="Descargar registro">
+<span class="material-symbols-outlined text-[18px]">download</span>
+</button>
+</div>
+</div>
+<!-- Entity Header Card -->
+<div class="relative bg-surface-container-lowest rounded-2xl p-7 shadow-[0_10px_30px_-5px_rgba(124,58,237,0.07)] overflow-hidden">
+<div class="absolute -right-16 -top-16 w-64 h-64 bg-gradient-to-br from-primary-fixed/30 via-tertiary-fixed/10 to-transparent rounded-full blur-2xl pointer-events-none"></div>
+<div class="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
+<div class="flex items-start md:items-center gap-5">
+<div class="relative">
+<div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-primary to-secondary-container p-0.5 shadow-md">
+<div class="w-full h-full bg-surface-container-lowest rounded-[14px] flex items-center justify-center overflow-hidden">
+<span class="font-display font-bold text-headline-sm text-primary">BP</span>
+</div>
+</div>
+<div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-emerald-500 ring-2 ring-surface-container-lowest flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[12px] font-bold">check</span>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex flex-wrap items-center gap-3">
+<h1 class="font-display text-headline-lg text-on-surface tracking-tight font-bold">Clínica Bella Piel</h1>
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center gap-1 px-3 py-0.5 rounded-full bg-emerald-50 text-emerald-600 font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                Activa
+              </span>
+<span class="inline-flex items-center gap-1 px-3 py-0.5 rounded-full bg-surface-container-high text-primary-container font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">timer</span>
+                Piloto · 6 días
+              </span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-outline">Clínica estética · Medellín, Colombia · ID: org_bp_9921</p>
+</div>
+</div>
+<div class="flex items-center gap-3 self-end md:self-center">
+<button class="px-5 h-11 rounded-full bg-surface-container-low text-on-surface hover:bg-surface-container transition-all flex items-center gap-2 font-label-md text-label-md">
+<span class="material-symbols-outlined text-[18px]">launch</span>
+          Acceder al CRM
+        </button>
+<button class="px-5 h-11 rounded-full bg-error-container/40 text-error hover:bg-error-container/70 transition-all flex items-center gap-2 font-label-md text-label-md font-semibold">
+<span class="material-symbols-outlined text-[18px]">block</span>
+          Suspender
+        </button>
+</div>
+</div>
+<!-- Navigation Tabs -->
+<div class="flex items-center gap-8 mt-8 border-t-0 pt-2">
+<a class="pb-3 font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[18px]">pie_chart</span>
+        Resumen
+      </a>
+<a class="pb-3 font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[18px]">group</span>
+        Usuarios
+        <span class="px-1.5 py-0.2 rounded-full bg-surface-container text-outline text-[11px] font-bold">4</span>
+</a>
+<a class="pb-3 font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[18px]">chat</span>
+        WhatsApp
+        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+</a>
+<a class="pb-3 font-label-md text-label-md text-primary font-bold relative flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[18px]">history</span>
+        Actividad
+        <span class="absolute bottom-0 left-0 right-0 h-[3px] bg-primary rounded-full"></span>
+</a>
+<a class="pb-3 font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+        Configuración
+      </a>
+</div>
+</div>
+<!-- Bento Stats Strip (Contextual activity volume) -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+<div class="bg-surface-container-lowest p-5 rounded-2xl shadow-[0_10px_30px_-5px_rgba(124,58,237,0.05)] flex items-center justify-between">
+<div>
+<span class="font-caption text-caption uppercase tracking-wider text-outline">Total Eventos</span>
+<div class="font-display text-kpi-number text-on-surface font-bold mt-0.5">28</div>
+</div>
+<div class="w-12 h-12 rounded-2xl bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[24px]">dataset</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-5 rounded-2xl shadow-[0_10px_30px_-5px_rgba(124,58,237,0.05)] flex items-center justify-between">
+<div>
+<span class="font-caption text-caption uppercase tracking-wider text-outline">Operadores Activos</span>
+<div class="font-display text-kpi-number text-on-surface font-bold mt-0.5">2</div>
+</div>
+<div class="w-12 h-12 rounded-2xl bg-surface-container flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[24px]">manage_accounts</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-5 rounded-2xl shadow-[0_10px_30px_-5px_rgba(124,58,237,0.05)] flex items-center justify-between">
+<div>
+<span class="font-caption text-caption uppercase tracking-wider text-outline">Canales Enlazados</span>
+<div class="font-display text-kpi-number text-emerald-600 font-bold mt-0.5">1</div>
+</div>
+<div class="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600">
+<span class="material-symbols-outlined text-[24px]">sync_saved_locally</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-5 rounded-2xl shadow-[0_10px_30px_-5px_rgba(124,58,237,0.05)] flex items-center justify-between">
+<div>
+<span class="font-caption text-caption uppercase tracking-wider text-outline">Auditoría Hash</span>
+<div class="font-caption text-caption text-primary font-mono font-semibold mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">verified</span> 0x8F9B...44E1
+        </div>
+</div>
+<div class="w-12 h-12 rounded-2xl bg-surface-container-high flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-[24px]">security</span>
+</div>
+</div>
+</div>
+<!-- Main Section: Activity Feed & Controls -->
+<div class="bg-surface-container-lowest rounded-2xl p-8 shadow-[0_10px_30px_-5px_rgba(124,58,237,0.07)] flex flex-col gap-8">
+<!-- Filter Bar Header -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<h2 class="font-display text-headline-sm text-on-surface font-bold">Registro de actividad</h2>
+<p class="font-body-sm text-body-sm text-outline mt-0.5">Trazabilidad inmutable de acciones realizadas por operadores y usuarios.</p>
+</div>
+<div class="flex items-center gap-3">
+<!-- Filter Dropdown Styled -->
+<div class="relative">
+<select class="appearance-none h-11 pl-4 pr-10 rounded-full bg-surface-container font-label-md text-label-md text-on-surface hover:bg-surface-container-high focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer" id="actionFilter">
+<option value="all">Tipo de acción: Todas</option>
+<option value="invites">Invitaciones &amp; Enlaces</option>
+<option value="edits">Ediciones de perfil</option>
+<option value="connections">Conexiones WhatsApp</option>
+</select>
+<span class="material-symbols-outlined absolute right-3.5 top-1/2 -translate-y-1/2 text-outline pointer-events-none text-[18px]">expand_more</span>
+</div>
+<button class="h-11 px-4 rounded-full bg-surface-container-low hover:bg-surface-container text-on-surface flex items-center gap-2 font-label-md text-label-md transition-all" title="Filtrar por rango">
+<span class="material-symbols-outlined text-[18px] text-outline">calendar_today</span>
+<span>Últimos 30 días</span>
+</button>
+</div>
+</div>
+<!-- Vertical Timeline -->
+<div class="relative pt-2">
+<!-- Continuous Timeline Spine -->
+<div class="absolute left-6 top-6 bottom-8 w-[2px] bg-surface-container-high"></div>
+<div class="flex flex-col gap-8 relative">
+<!-- Item 1: Copió enlace -->
+<div class="activity-row flex items-start gap-5 group" data-category="invites">
+<div class="relative z-10 w-12 h-12 rounded-2xl bg-surface-container flex items-center justify-center text-primary-container shadow-sm group-hover:scale-105 transition-transform duration-200">
+<span class="material-symbols-outlined text-[22px]">content_copy</span>
+</div>
+<div class="flex-1 bg-surface-container-low/60 hover:bg-surface-container-low rounded-2xl p-5 transition-colors duration-150">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+<div class="flex items-center gap-3">
+<div class="w-7 h-7 rounded-full bg-primary-container text-white flex items-center justify-center font-display text-[11px] font-bold">
+                  AG
+                </div>
+<div class="font-body-md text-body-md text-on-surface font-medium">
+<span class="font-semibold text-primary">Anthony</span> copió el enlace de invitación de <span class="font-semibold text-on-surface">Mariana Toro</span>
+</div>
+</div>
+<span class="font-caption text-caption text-outline flex items-center gap-1.5 self-start sm:self-auto">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                12 oct, 10:05 a. m.
+              </span>
+</div>
+<div class="mt-2 pl-10 flex items-center gap-2">
+<span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-caption text-caption font-medium">Enlace de un solo uso</span>
+<span class="text-outline text-[12px]">·</span>
+<span class="font-caption text-caption text-outline">Expira en 48 horas</span>
+</div>
+</div>
+</div>
+<!-- Item 2: Invitó asesor -->
+<div class="activity-row flex items-start gap-5 group" data-category="invites">
+<div class="relative z-10 w-12 h-12 rounded-2xl bg-surface-container flex items-center justify-center text-secondary shadow-sm group-hover:scale-105 transition-transform duration-200">
+<span class="material-symbols-outlined text-[22px]">person_add</span>
+</div>
+<div class="flex-1 bg-surface-container-low/60 hover:bg-surface-container-low rounded-2xl p-5 transition-colors duration-150">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+<div class="flex items-center gap-3">
+<div class="w-7 h-7 rounded-full bg-primary-container text-white flex items-center justify-center font-display text-[11px] font-bold">
+                  AG
+                </div>
+<div class="font-body-md text-body-md text-on-surface font-medium">
+<span class="font-semibold text-primary">Anthony</span> invitó a <span class="font-semibold text-on-surface">Mariana Toro</span> como <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-secondary-fixed text-on-secondary-fixed-variant font-label-sm text-label-sm font-semibold">Asesor</span>
+</div>
+</div>
+<span class="font-caption text-caption text-outline flex items-center gap-1.5 self-start sm:self-auto">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                12 oct, 10:03 a. m.
+              </span>
+</div>
+<div class="mt-2 pl-10">
+<span class="font-body-sm text-body-sm text-outline">Correo enviado a: <span class="text-on-surface font-medium">mariana.toro@bellapiel.com</span></span>
+</div>
+</div>
+</div>
+<!-- Item 3: Editó datos + EXPANDED DETAIL BOX -->
+<div class="activity-row flex items-start gap-5 group" data-category="edits">
+<div class="relative z-10 w-12 h-12 rounded-2xl bg-surface-container flex items-center justify-center text-tertiary shadow-sm group-hover:scale-105 transition-transform duration-200">
+<span class="material-symbols-outlined text-[22px]">edit_note</span>
+</div>
+<div class="flex-1 bg-surface-container-low/60 hover:bg-surface-container-low rounded-2xl p-5 transition-colors duration-150 flex flex-col gap-4">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+<div class="flex items-center gap-3">
+<div class="w-7 h-7 rounded-full bg-secondary text-white flex items-center justify-center font-display text-[11px] font-bold">
+                  FO
+                </div>
+<div class="font-body-md text-body-md text-on-surface font-medium">
+<span class="font-semibold text-secondary">Franco</span> editó los datos de la organización
+                </div>
+</div>
+<span class="font-caption text-caption text-outline flex items-center gap-1.5 self-start sm:self-auto">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                08 oct, 3:40 p. m.
+              </span>
+</div>
+<!-- Caja de Detalle Expandida -->
+<div class="ml-10 bg-surface-container-lowest rounded-xl p-4 shadow-sm flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-tertiary">difference</span>
+                  2 campos actualizados
+                </span>
+<span class="font-caption text-caption text-outline">Auditoría ID: #MOD-7729</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+<!-- Field 1 -->
+<div class="bg-surface-container-low p-3 rounded-lg flex flex-col gap-1">
+<span class="font-caption text-caption uppercase tracking-wider text-outline">Ciudad</span>
+<div class="flex items-center gap-2 font-body-sm text-body-sm flex-wrap">
+<span class="line-through text-outline">Envigado</span>
+<span class="material-symbols-outlined text-[14px] text-primary">arrow_forward</span>
+<span class="font-semibold text-primary px-2 py-0.5 rounded bg-surface-container-lowest">Medellín</span>
+</div>
+</div>
+<!-- Field 2 -->
+<div class="bg-surface-container-low p-3 rounded-lg flex flex-col gap-1">
+<span class="font-caption text-caption uppercase tracking-wider text-outline">Teléfono del contacto</span>
+<div class="flex items-center gap-2 font-body-sm text-body-sm flex-wrap">
+<span class="line-through text-outline">+57 312 000 1111</span>
+<span class="material-symbols-outlined text-[14px] text-primary">arrow_forward</span>
+<span class="font-semibold text-primary px-2 py-0.5 rounded bg-surface-container-lowest">+57 312 000 4567</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Item 4: Test Conexión WhatsApp Correcta -->
+<div class="activity-row flex items-start gap-5 group" data-category="connections">
+<div class="relative z-10 w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600 shadow-sm group-hover:scale-105 transition-transform duration-200">
+<span class="material-symbols-outlined text-[22px]">verified_user</span>
+</div>
+<div class="flex-1 bg-surface-container-low/60 hover:bg-surface-container-low rounded-2xl p-5 transition-colors duration-150">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+<div class="flex items-center gap-3">
+<div class="w-7 h-7 rounded-full bg-secondary text-white flex items-center justify-center font-display text-[11px] font-bold">
+                  FO
+                </div>
+<div class="font-body-md text-body-md text-on-surface font-medium flex items-center flex-wrap gap-2">
+<span><span class="font-semibold text-secondary">Franco</span> probó la conexión de WhatsApp</span>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                    Correcta
+                  </span>
+</div>
+</div>
+<span class="font-caption text-caption text-outline flex items-center gap-1.5 self-start sm:self-auto">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                07 oct, 11:20 a. m.
+              </span>
+</div>
+<div class="mt-2 pl-10 flex items-center gap-4">
+<span class="font-body-sm text-body-sm text-outline">Latencia de webhook: <span class="text-on-surface font-semibold">184ms</span></span>
+<span class="text-outline">·</span>
+<span class="font-body-sm text-body-sm text-outline">Eco de saludo recibido</span>
+</div>
+</div>
+</div>
+<!-- Item 5: Conectó WhatsApp -->
+<div class="activity-row flex items-start gap-5 group" data-category="connections">
+<div class="relative z-10 w-12 h-12 rounded-2xl bg-surface-container flex items-center justify-center text-emerald-600 shadow-sm group-hover:scale-105 transition-transform duration-200">
+<span class="material-symbols-outlined text-[22px]">hub</span>
+</div>
+<div class="flex-1 bg-surface-container-low/60 hover:bg-surface-container-low rounded-2xl p-5 transition-colors duration-150">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+<div class="flex items-center gap-3">
+<div class="w-7 h-7 rounded-full bg-secondary text-white flex items-center justify-center font-display text-[11px] font-bold">
+                  FO
+                </div>
+<div class="font-body-md text-body-md text-on-surface font-medium">
+<span class="font-semibold text-secondary">Franco</span> conectó WhatsApp (<span class="font-semibold font-mono text-on-surface">+57 604 444 1290</span>)
+                </div>
+</div>
+<span class="font-caption text-caption text-outline flex items-center gap-1.5 self-start sm:self-auto">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                07 oct, 11:15 a. m.
+              </span>
+</div>
+<div class="mt-2 pl-10 flex items-center gap-2">
+<span class="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-caption text-caption font-semibold">Cloud API Meta</span>
+<span class="text-outline text-[12px]">·</span>
+<span class="font-caption text-caption text-outline">WABA ID: 910283746192837</span>
+</div>
+</div>
+</div>
+<!-- Item 6: Creación de la Organización -->
+<div class="activity-row flex items-start gap-5 group" data-category="invites">
+<div class="relative z-10 w-12 h-12 rounded-2xl bg-gradient-to-tr from-primary to-primary-container flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform duration-200">
+<span class="material-symbols-outlined text-[22px]">add_business</span>
+</div>
+<div class="flex-1 bg-surface-container-low/60 hover:bg-surface-container-low rounded-2xl p-5 transition-colors duration-150">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+<div class="flex items-center gap-3">
+<div class="w-7 h-7 rounded-full bg-primary-container text-white flex items-center justify-center font-display text-[11px] font-bold">
+                  AG
+                </div>
+<div class="font-body-md text-body-md text-on-surface font-medium">
+<span class="font-semibold text-primary">Anthony</span> creó la organización e invitó a <span class="font-semibold text-on-surface">Laura Gómez</span> como <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-primary-fixed text-on-primary-fixed-variant font-label-sm text-label-sm font-semibold">Administrador</span>
+</div>
+</div>
+<span class="font-caption text-caption text-outline flex items-center gap-1.5 self-start sm:self-auto">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                06 oct, 9:00 a. m.
+              </span>
+</div>
+<div class="mt-3 pl-10 flex flex-wrap items-center gap-2">
+<span class="px-3 py-1 rounded-full bg-surface-container-lowest font-caption text-caption text-on-surface-variant shadow-sm">Plan Piloto Activado (14 días)</span>
+<span class="px-3 py-1 rounded-full bg-surface-container-lowest font-caption text-caption text-on-surface-variant shadow-sm">Sector: Cuidado Personal y Belleza</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Pagination / Audit Note -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t-0 mt-4">
+<div class="flex items-center gap-2 font-caption text-caption text-outline">
+<span class="material-symbols-outlined text-[16px]">lock_clock</span>
+<span>Mostrando 6 eventos recientes. Los registros se retienen durante 180 días según la política de cumplimiento.</span>
+</div>
+<button class="px-5 h-9 rounded-full bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-label-sm transition-all flex items-center gap-1.5">
+<span>Cargar registros anteriores</span>
+<span class="material-symbols-outlined text-[16px]">expand_more</span>
+</button>
+</div>
+</div>
+</div>
+<script>
+  // Simple reactive filter behavior
+  const filterSelect = document.getElementById('actionFilter');
+  if (filterSelect) {
+    filterSelect.addEventListener('change', (e) => {
+      const selected = e.target.value;
+      const rows = document.querySelectorAll('.activity-row');
+      rows.forEach(row => {
+        const cat = row.getAttribute('data-category');
+        if (selected === 'all' || cat === selected) {
+          row.style.display = 'flex';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    });
+  }
+</script></main></div></body></html>

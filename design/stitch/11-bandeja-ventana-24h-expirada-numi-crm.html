@@ -1,0 +1,190 @@
+<!DOCTYPE html><html lang="es" style=""><head>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"></head><body class="text-slate-800 antialiased h-screen overflow-hidden p-3 lg:p-4 select-none"><svg aria-hidden="true" class="inline-defs-container" style="position:absolute;width:0;height:0;overflow:hidden"></svg>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Dashboard - Numi CRM</title>
+<!-- Fonts: Plus Jakarta Sans & Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#F4F2FF',
+              100: '#EAE6FD',
+              200: '#D5CCFC',
+              500: '#7357F6',
+              600: '#5F43DE',
+              700: '#5338CA',
+              800: '#452B9E',
+              sidebar: '#5843BA'
+            },
+            surface: {
+              bg: '#EEF2F6',
+              card: '#FFFFFF'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'sans-serif']
+          },
+          boxShadow: {
+            card: '0 4px 20px -2px rgba(90, 80, 160, 0.05)',
+            cardHover: '0 8px 26px -4px rgba(90, 80, 160, 0.09)',
+            pill: '0 2px 8px rgba(0, 0, 0, 0.04)'
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-typography">
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #EBF0F5;
+    }
+    h1, h2, h3, h4, .font-heading {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+  </style>
+<style data-purpose="layout-and-curves">
+    /* Refined Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #D1D5DB;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #9CA3AF;
+    }
+  </style>
+<meta content="web_dashboard" name="shell-type">
+<!-- BEGIN: AppCanvasContainer -->
+<!-- Outer rounded canvas simulating high-end desktop web app frame -->
+<div class="w-full h-full bg-[#F4F6FA] rounded-[32px] shadow-2xl flex overflow-hidden border border-slate-200/80">
+<!-- BEGIN: Sidebar -->
+<aside class="w-[72px] min-w-[72px] max-w-[72px] bg-gradient-to-b from-[#5642B8] to-[#4F3BAE] flex-shrink-0 flex flex-col justify-between items-center py-5 px-2 text-white relative z-20" data-purpose="sidebar-navigation">
+<!-- Top Section: Logo & Nav items -->
+<div class="flex flex-col items-center w-full">
+<!-- Centered Logo Tile (38x38px) -->
+<div class="mb-6 flex items-center justify-center">
+<div class="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center shadow-md ring-1 ring-white/20">
+<span class="text-white font-bold text-lg font-heading leading-none">N</span>
+</div>
+</div>
+<!-- Navigation Icons -->
+<nav aria-label="Navegación principal" class="flex flex-col items-center gap-3 w-full">
+<!-- Dashboard (Inactive) -->
+<a aria-label="Dashboard" class="w-11 h-11 rounded-2xl flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all" href="#" title="Dashboard">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+<rect height="7" rx="1.5" width="7" x="3" y="3"></rect>
+<rect height="7" rx="1.5" width="7" x="14" y="3"></rect>
+<rect height="7" rx="1.5" width="7" x="14" y="14"></rect>
+<rect height="7" rx="1.5" width="7" x="3" y="14"></rect>
+</svg>
+</a>
+<!-- Bandeja (Active Item) -->
+<a aria-label="Bandeja" class="w-11 h-11 bg-white rounded-2xl flex items-center justify-center text-[#5642B8] shadow-sm transition-all" href="#" title="Bandeja">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+<path d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</a>
+<!-- Contactos (Inactive) -->
+<a aria-label="Contactos" class="w-11 h-11 rounded-2xl flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all" href="#" title="Contactos">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</a>
+<!-- Usuarios (Inactive) -->
+<a aria-label="Usuarios" class="w-11 h-11 rounded-2xl flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all" href="#" title="Usuarios">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.999-3.199a3 3 0 115.998 0m-5.998 0a3 3 0 10-5.998 0" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</a>
+<!-- Configuración (Inactive) -->
+<a aria-label="Configuración" class="w-11 h-11 rounded-2xl flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all" href="#" title="Configuración">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round"></path>
+<circle cx="12" cy="12" r="3"></circle>
+</svg>
+</a>
+</nav>
+</div>
+<!-- Bottom Controls: Expand chevron & Logout -->
+<div class="flex flex-col items-center gap-2 pt-4 border-t border-white/10 w-full">
+<button aria-label="Expandir menú" class="w-9 h-9 rounded-xl flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition-all" title="Expandir" type="button">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+<a aria-label="Cerrar sesión" class="w-11 h-11 rounded-2xl flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all" href="#" title="Cerrar sesión">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</a>
+</div>
+</aside>
+<!-- END: Sidebar -->
+<!-- BEGIN: MainContentArea -->
+<main class="flex-1 flex flex-col h-full overflow-hidden bg-[#F6F8FC]" data-purpose="dashboard-main"><div class="flex flex-col w-full h-full p-4 lg:p-6 overflow-hidden">
+<!-- Top Bar: Navigation Context, Business Tag & Active Agent -->
+<div class="flex items-center justify-between pb-4 shrink-0">
+<!-- Left: Page Title, Business Chip & WhatsApp Status -->
+<div class="flex items-center gap-3.5">
+<h1 class="font-headline-md text-[24px] font-bold text-on-surface tracking-tight font-heading leading-tight">Bandeja</h1>
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-low text-on-surface text-label-sm font-label-sm shadow-sm border border-slate-200/80">
+<span class="material-symbols-outlined text-primary text-[16px]">corporate_fare</span>
+<span class="font-medium">Clínica Bella Piel</span>
+<span class="w-2 h-2 rounded-full bg-emerald-500 ml-0.5"></span>
+</div>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-600 text-caption font-medium border border-emerald-400/30 shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+      WhatsApp conectado
+    </span>
+</div>
+<!-- Right: User Profile Menu -->
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-lowest shadow-sm border border-slate-200/80 cursor-pointer hover:bg-surface-container-low transition-colors">
+<div class="w-7 h-7 rounded-full bg-primary-fixed text-primary font-headline-sm text-[11px] flex items-center justify-center font-bold">
+      LG
+    </div>
+<div class="flex items-center gap-1.5 text-left pr-1">
+<span class="font-label-sm text-label-sm text-on-surface font-semibold">Laura Gómez</span>
+<span class="text-outline text-[11px]">·</span>
+<span class="font-caption text-caption text-on-surface-variant">Administrador</span>
+</div>
+<span class="material-symbols-outlined text-outline text-[18px]">expand_more</span>
+</div>
+</div>
+<!-- Three Column Layout Canvas -->
+<div class="flex-1 flex gap-4 min-h-0 overflow-hidden"><section class="w-[360px] flex-shrink-0 flex flex-col h-full bg-white rounded-2xl shadow-[0_10px_30px_-5px_rgba(124,58,237,0.07)] p-4 overflow-hidden"><div class="flex items-center gap-2 mb-3 shrink-0"><div class="flex-1 p-1 rounded-xl bg-[#F3EEFE] flex items-center text-xs"><button class="flex-1 py-1.5 px-2 text-center rounded-lg text-[#6B7280] hover:text-[#1F1B2E] transition-colors font-medium flex items-center justify-center gap-1.5" type="button"><span class="">Mías</span><span class="px-1.5 py-0.2 rounded-full bg-white/70 text-[10px] text-[#6B7280] font-semibold leading-tight">12</span></button><button class="flex-1 py-1.5 px-2 text-center rounded-lg text-[#6B7280] hover:text-[#1F1B2E] transition-colors font-medium flex items-center justify-center gap-1.5" type="button"><span class="">Sin asignar</span><span class="px-1.5 py-0.2 rounded-full bg-white/70 text-[10px] text-[#6B7280] font-semibold leading-tight">3</span></button><button class="flex-1 py-1.5 px-2 text-center rounded-lg bg-white text-[#7C3AED] shadow-sm font-semibold transition-all flex items-center justify-center gap-1.5" type="button"><span class="">Todas</span><span class="px-1.5 py-0.2 rounded-full bg-[#F3EEFE] text-[10px] text-[#7C3AED] font-bold leading-tight">48</span></button></div><button aria-label="Colapsar panel de conversaciones" class="w-8 h-8 rounded-xl flex items-center justify-center text-[#8B8AA0] hover:text-[#7C3AED] hover:bg-[#F3EEFE] transition-colors shrink-0" title="Colapsar panel" type="button"><span class="material-symbols-outlined text-[20px]">chevron_left</span></button></div><div class="relative shrink-0 mb-3"><span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span><input class="w-full h-[40px] pl-10 pr-4 rounded-xl bg-[#F6F5FB] border-0 text-sm font-normal text-[#1F1B2E] placeholder:text-outline focus:ring-2 focus:ring-primary/20 focus:bg-white transition-all" placeholder="Buscar nombre o teléfono" type="text"></div><div class="flex items-center gap-2 shrink-0 pb-3 overflow-x-auto no-scrollbar"><button class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#F6F5FB] hover:bg-surface-container text-[#1F1B2E] text-xs font-medium shrink-0 transition-colors" type="button">Responsable <span class="text-[10px] text-outline">▾</span></button><button class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#F6F5FB] hover:bg-surface-container text-[#1F1B2E] text-xs font-medium shrink-0 transition-colors" type="button">Estado <span class="text-[10px] text-outline">▾</span></button><button class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#F3EEFE] text-[#7C3AED] text-xs font-medium shrink-0" type="button">Abiertas <span class="text-[10px]">▾</span></button></div><div class="flex-1 overflow-y-auto pr-0.5 space-y-2"><article class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#F9F8FE] cursor-pointer transition-colors border-l-[3px] border-transparent"><div class="w-11 h-11 rounded-full bg-primary text-white font-bold text-sm flex items-center justify-center shrink-0 shadow-sm">ML</div><div class="flex-1 min-w-0 flex flex-col gap-1"><div class="flex items-center justify-between"><span class="font-semibold text-sm text-[#0A0A12] truncate">María Fernanda López</span><span class="text-xs text-[#8B8AA0] shrink-0 font-medium">10:42</span></div><div class="flex items-center justify-between"><p class="text-xs text-[#8B8AA0] truncate leading-tight">¿El precio incluye la valoración?</p><span class="bg-[#7C3AED] text-white rounded-full text-[11px] font-bold px-1.5 py-0.5 min-w-[18px] text-center shrink-0">2</span></div><div class="flex items-center justify-between pt-0.5"><span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#F3E8FF] text-[#A855F7] text-[10px] font-semibold"><span class="w-1.5 h-1.5 rounded-full bg-[#A855F7]"></span>Calificado</span><div class="flex items-center gap-1 shrink-0"><div class="w-4 h-4 rounded-full bg-primary-fixed text-primary text-[9px] font-bold flex items-center justify-center">LG</div><span class="text-[11px] text-[#8B8AA0] font-medium">Laura</span></div></div></div></article><article class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#F9F8FE] cursor-pointer transition-colors border-l-[3px] border-transparent"><div class="w-11 h-11 rounded-full bg-surface-container-high text-[#1F1B2E] font-bold text-sm flex items-center justify-center shrink-0">AR</div><div class="flex-1 min-w-0 flex flex-col gap-1"><div class="flex items-center justify-between"><span class="font-semibold text-sm text-[#0A0A12] truncate">Andrés Restrepo</span><span class="text-xs text-[#8B8AA0] shrink-0">09:15</span></div><div class="flex items-center justify-between"><p class="text-xs text-[#8B8AA0] truncate leading-tight">Hola, quisiera agendar cita para toxina botulínica...</p></div><div class="flex items-center justify-between pt-0.5"><span class="inline-flex items-center px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-600 text-[10px] font-semibold">Nuevo</span><span class="inline-flex items-center px-2 py-0.5 rounded-full bg-[#FEF3C7] text-[#D97706] text-[10px] font-semibold">Sin asignar</span></div></div></article><article class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#F9F8FE] cursor-pointer transition-colors border-l-[3px] border-transparent"><div class="w-11 h-11 rounded-full bg-emerald-100 text-emerald-800 font-bold text-sm flex items-center justify-center shrink-0">PR</div><div class="flex-1 min-w-0 flex flex-col gap-1"><div class="flex items-center justify-between"><span class="font-semibold text-sm text-[#0A0A12] truncate">Paula Ríos</span><span class="text-xs text-[#8B8AA0] shrink-0">Ayer</span></div><div class="flex items-center justify-between"><p class="text-xs text-[#8B8AA0] truncate leading-tight">Perfecto, nos vemos el jueves a las 3:00 pm</p></div><div class="flex items-center justify-between pt-0.5"><span class="inline-flex items-center px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 text-[10px] font-semibold">Cliente</span><div class="flex items-center gap-1 shrink-0"><div class="w-4 h-4 rounded-full bg-primary-fixed text-primary text-[9px] font-bold flex items-center justify-center">LG</div><span class="text-[11px] text-[#8B8AA0] font-medium">Laura</span></div></div></div></article><article class="relative flex items-center gap-3 p-3 rounded-xl bg-[#F3EEFE] border-l-[3px] border-[#7C3AED] cursor-pointer transition-all"><div class="w-11 h-11 rounded-full bg-amber-100 text-amber-900 font-bold text-sm flex items-center justify-center shrink-0 shadow-sm">JM</div><div class="flex-1 min-w-0 flex flex-col gap-1"><div class="flex items-center justify-between"><span class="font-semibold text-sm text-[#0A0A12] truncate">Juan David Mejía</span><span class="text-xs text-[#8B8AA0] shrink-0 font-medium">Hace 2 días</span></div><div class="flex items-center justify-between"><p class="text-xs text-[#8B8AA0] truncate leading-tight">Muchas gracias Camilo, lo voy a revisar...</p></div><div class="flex items-center justify-between pt-0.5"><span class="inline-flex items-center px-2 py-0.5 rounded-full bg-amber-50 text-amber-600 text-[10px] font-semibold">En contacto</span><div class="flex items-center gap-1 shrink-0"><div class="w-4 h-4 rounded-full bg-surface-container-high text-[#1F1B2E] text-[9px] font-bold flex items-center justify-center">CA</div><span class="text-[11px] text-[#8B8AA0] font-medium">Camilo</span></div></div></div></article><article class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#F9F8FE] cursor-pointer transition-colors border-l-[3px] border-transparent opacity-60"><div class="w-11 h-11 rounded-full bg-surface-container text-outline font-bold text-sm flex items-center justify-center shrink-0">SC</div><div class="flex-1 min-w-0 flex flex-col gap-1"><div class="flex items-center justify-between"><span class="font-semibold text-sm text-[#0A0A12] truncate">Sofía Cardona</span><span class="text-xs text-[#8B8AA0] shrink-0">08 oct</span></div><div class="flex items-center justify-between"><p class="text-xs text-[#8B8AA0] truncate leading-tight">Quedo atenta para retomar en noviembre</p></div><div class="flex items-center justify-between pt-0.5"><span class="inline-flex items-center px-2 py-0.5 rounded-full bg-surface-container text-outline text-[10px] font-medium">En pausa</span><span class="inline-flex items-center gap-0.5 text-[11px] text-[#8B8AA0] font-medium"><span class="material-symbols-outlined text-[13px]">check</span> Cerrada</span></div></div></article><article class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#F9F8FE] cursor-pointer transition-colors border-l-[3px] border-transparent"><div class="w-11 h-11 rounded-full bg-surface-container-low text-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-[18px]">call</span></div><div class="flex-1 min-w-0 flex flex-col gap-1"><div class="flex items-center justify-between"><span class="font-semibold text-sm text-[#0A0A12] truncate">+57 310 456 7788</span><span class="text-xs text-[#8B8AA0] shrink-0">05 oct</span></div><div class="flex items-center justify-between"><p class="text-xs text-[#8B8AA0] truncate leading-tight">Buenas tardes, información de citas</p></div><div class="flex items-center justify-between pt-0.5"><span class="inline-flex items-center px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-600 text-[10px] font-semibold">Nuevo</span><span class="inline-flex items-center px-2 py-0.5 rounded-full bg-[#FEF3C7] text-[#D97706] text-[10px] font-semibold">Sin asignar</span></div></div></article></div></section><section class="flex-1 min-w-0 flex flex-col h-full bg-surface-container-lowest rounded-[20px] shadow-[0_10px_30px_-5px_rgba(124,58,237,0.07)] p-4 overflow-hidden"><header class="h-[72px] w-full bg-white px-5 border-b border-[#F1EEFB] flex items-center justify-between shrink-0"><div class="flex items-center gap-3 min-w-0"><div class="w-10 h-10 rounded-full bg-amber-100 text-amber-900 font-bold text-sm flex items-center justify-center shrink-0 shadow-sm">JM</div><div class="flex flex-col justify-center min-w-0"><div class="flex items-center gap-2"><h2 class="font-semibold text-[16px] text-[#0A0A12] leading-tight truncate">Juan David Mejía</h2><span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-600 border border-amber-200 flex items-center gap-1.5 shrink-0 whitespace-nowrap"><span class="w-1.5 h-1.5 rounded-full bg-[#D97706]"></span>En contacto</span></div><div class="flex items-center gap-1.5 text-[13px] text-[#8B8AA0] leading-tight mt-0.5 whitespace-nowrap"><span class="">+57 315 889 4210</span><span class="">·</span><span class="">Asignado a: <strong class="text-[#1F1B2E] font-medium">Camilo Arango (CA)</strong></span></div></div></div></header><div class="flex-1 my-2 p-4 rounded-2xl bg-[#F8F7FD] overflow-y-auto flex flex-col space-y-4"><div class="flex justify-center"><span class="px-3 py-0.5 rounded-full bg-white text-[#8B8AA0] text-[11px] font-medium shadow-sm border border-slate-200/80">Hace 2 días · 10 de octubre</span></div><div class="flex flex-col items-start max-w-[70%]"><div class="bg-white text-[#1F1B2E] p-3.5 rounded-[18px] rounded-bl-[6px] shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-slate-100"><p class="font-body-sm text-[13.5px] leading-relaxed text-[#1F1B2E]">Buenas tardes, quisiera consultar los precios del tratamiento láser para rejuvenecimiento y manchas faciales.</p><div class="text-right mt-1.5"><span class="font-caption text-[10px] text-[#8B8AA0]">13:40</span></div></div></div><div class="flex flex-col items-end max-w-[70%] self-end"><span class="text-[11px] font-medium text-[#8B8AA0] mb-1 pr-1">Camilo</span><div class="bg-[#7C3AED] text-white p-3.5 rounded-[18px] rounded-br-[6px] shadow-[0_4px_16px_-2px_rgba(124,58,237,0.3)]"><p class="font-body-sm text-[13.5px] leading-relaxed text-white font-normal">¡Hola Juan David! Un gusto saludarte. El tratamiento de láser CO2 fraccionado para rejuvenecimiento y manchas tiene un valor de $620.000 COP por sesión o paquete de 3 sesiones por $1.550.000 COP.</p><div class="flex items-center justify-end gap-1 mt-1.5 text-white/70"><span class="font-caption text-[10px]">13:48</span><span class="text-[11px] font-semibold text-white/80">✓✓</span></div></div></div><div class="flex flex-col items-end max-w-[70%] self-end"><span class="text-[11px] font-medium text-[#8B8AA0] mb-1 pr-1">Camilo</span><div class="bg-[#7C3AED] text-white p-3.5 rounded-[18px] rounded-br-[6px] shadow-[0_4px_16px_-2px_rgba(124,58,237,0.3)]"><p class="font-body-sm text-[13.5px] leading-relaxed text-white font-normal">Incluye valoración médica inicial y crema regeneradora post-procedimiento. ¿Te gustaría agendar una cita de evaluación?</p><div class="flex items-center justify-end gap-1 mt-1.5 text-white/70"><span class="font-caption text-[10px]">13:50</span><span class="text-[11px] font-semibold text-white/80">✓✓</span></div></div></div><div class="flex flex-col items-start max-w-[70%]"><div class="bg-white text-[#1F1B2E] p-3.5 rounded-[18px] rounded-bl-[6px] shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-slate-100"><p class="font-body-sm text-[13.5px] leading-relaxed text-[#1F1B2E]">Muchas gracias Camilo, lo voy a revisar con calma y cualquier duda te escribo.</p><div class="text-right mt-1.5"><span class="font-caption text-[10px] text-[#8B8AA0]">14:15</span></div></div></div></div><footer class="shrink-0 pt-1"><div class="mb-3 p-3.5 rounded-[14px] bg-[#FEF3C7] border border-[#FDE68A] flex items-start gap-3 shadow-sm"><span class="material-symbols-outlined text-[#D97706] text-[20px] shrink-0 mt-0.5">schedule</span><div class="flex-1 min-w-0"><p class="text-xs font-semibold text-amber-900 leading-tight mb-0.5">No puedes responder esta conversación</p><p class="text-[11px] text-amber-800 leading-relaxed">Pasaron más de 24 horas desde el último mensaje del cliente. WhatsApp solo permite responder cuando el cliente vuelva a escribir.</p></div></div><div class="relative flex items-center opacity-60 cursor-not-allowed"><button aria-label="Adjuntar archivo" class="absolute left-1.5 w-8 h-8 rounded-full text-outline flex items-center justify-center cursor-not-allowed z-20" disabled="" title="No disponible" type="button"><span class="material-symbols-outlined text-[20px]">attach_file</span></button><input class="w-full h-[46px] pl-10 pr-24 rounded-full bg-[#F6F5FB] border border-slate-200 text-body-sm text-[#8B8AA0] placeholder:text-[#8B8AA0] cursor-not-allowed shadow-sm select-none" disabled="" id="messageInput" placeholder="Ventana de 24 horas cerrada para respuestas libres..." type="text"><button aria-label="Grabar nota de voz" class="absolute right-11 w-9 h-9 rounded-full bg-surface-container text-outline flex items-center justify-center cursor-not-allowed z-20" disabled="" id="micBtn" title="No disponible" type="button"><span class="material-symbols-outlined text-[19px] leading-none">mic</span></button><button aria-label="Enviar mensaje" class="absolute right-1 w-9 h-9 rounded-full bg-[#8B8AA0] text-white flex items-center justify-center cursor-not-allowed" disabled="" id="sendBtn" type="button"><span class="material-symbols-outlined text-[18px] ml-0.5 leading-none">send</span></button></div><div class="text-center mt-1.5"><span class="text-[10px] text-[#8B8AA0]">Plantillas aprobadas por WhatsApp disponibles para reanudar el contacto</span></div></footer></section><aside class="w-[300px] flex-shrink-0 flex flex-col h-full bg-surface-container-lowest rounded-[20px] shadow-[0_10px_30px_-5px_rgba(124,58,237,0.07)] p-5 overflow-y-auto"><div class="flex flex-col items-center text-center pb-5 border-b border-surface-container-low relative"><button aria-label="Ocultar panel" class="absolute right-0 top-0 w-8 h-8 rounded-full flex items-center justify-center text-[#8B8AA0] hover:text-[#7C3AED] hover:bg-[#F3EEFE] transition-colors" title="Ocultar panel" type="button"><span class="material-symbols-outlined text-[20px]">chevron_right</span></button><div class="w-[72px] h-[72px] min-w-[72px] rounded-full bg-amber-100 border-2 border-amber-300 flex items-center justify-center shadow-sm mb-3"><span class="text-amber-900 font-bold text-[22px] tracking-tight leading-none">JM</span></div><h3 class="font-headline-sm text-[18px] font-semibold text-[#0A0A12] tracking-tight">Juan David Mejía</h3><p class="font-body-sm text-[13px] text-[#8B8AA0] mt-0.5">+57 315 889 4210</p><p class="font-body-sm text-[12px] text-[#8B8AA0] truncate max-w-full">juan.mejia@gmail.com</p><div class="flex items-center gap-2 mt-3"><button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#F3EEFE] hover:bg-[#EAE4FC] text-[#7C3AED] text-xs font-semibold transition-colors" type="button"><span class="material-symbols-outlined text-[15px]">edit</span><span class="">Editar</span></button><button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#F3EEFE] hover:bg-[#EAE4FC] text-[#7C3AED] text-xs font-semibold transition-colors" title="Copiar teléfono" type="button"><span class="material-symbols-outlined text-[15px]">content_copy</span><span class="">Copiar</span></button></div></div><div class="py-4 border-b border-surface-container-low"><span class="block font-caption text-[12px] text-[#8B8AA0] uppercase tracking-wider mb-2 font-semibold">ESTADO DEL CONTACTO</span><div class="relative"><button class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-full bg-amber-50 border border-amber-300 hover:border-amber-400 transition-all text-left shadow-sm" type="button"><span class="inline-flex items-center gap-2 text-label-md font-semibold text-amber-900"><span class="w-2 h-2 rounded-full bg-[#D97706]"></span>En contacto</span><span class="material-symbols-outlined text-amber-800 text-[18px]">expand_more</span></button></div></div><div class="flex flex-col gap-2 mb-6"><button class="w-full h-10 rounded-full bg-[#F3EEFE] hover:bg-[#EAE4FC] text-[#7C3AED] font-medium text-sm flex items-center justify-center gap-2 transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">smart_toy</span><span class="">Devolver al bot</span></button><button class="w-full h-10 rounded-full bg-white border border-[#E4E1F0] text-[#1F1B2E] hover:bg-[#F9F8FE] font-medium text-sm flex items-center justify-center gap-2 transition-colors shadow-sm" type="button"><span class="material-symbols-outlined text-[18px] text-[#8B8AA0]">check_circle</span><span class="">Cerrar conversación</span></button></div><div class="py-4 border-b border-surface-container-low space-y-2.5"><span class="block font-caption text-[12px] text-[#8B8AA0] uppercase tracking-wider font-semibold">INFORMACIÓN</span><div class="flex items-center justify-between text-body-sm text-[13px]"><span class="text-[#8B8AA0]">Creado</span><span class="font-medium text-[#0A0A12]">28 sep 2026</span></div><div class="flex items-center justify-between text-body-sm text-[13px]"><span class="text-[#8B8AA0]">Último mensaje</span><span class="font-medium text-[#0A0A12]">Hace 2 días, 14:15</span></div><div class="flex items-center justify-between text-body-sm text-[13px]"><span class="text-[#8B8AA0]">Conversaciones</span><span class="font-medium text-[#0A0A12]">1</span></div></div><div class="py-4 flex-1"><span class="block font-caption text-[12px] text-[#8B8AA0] uppercase tracking-wider font-semibold mb-3.5">HISTORIAL DE ESTADOS</span><div class="relative pl-5 space-y-4"><div class="absolute left-1.5 top-2 bottom-2 w-[2px] bg-surface-container-high"></div><div class="relative"><div class="absolute -left-5 top-1 w-3 h-3 rounded-full bg-[#D97706] border-2 border-surface-container-lowest shadow-sm"></div><div><p class="font-label-sm text-[12.5px] text-[#D97706] font-bold">Nuevo → En contacto</p><p class="font-caption text-[11px] text-[#8B8AA0]">Camilo · 29 sep</p></div></div></div></div><div class="pt-3 shrink-0"><button class="w-full py-2.5 rounded-full bg-[#F3EEFE] hover:bg-[#EAE4FC] text-[#7C3AED] font-semibold text-label-md text-center transition-colors shadow-sm active:scale-[0.99]" type="button">Ver contacto completo</button></div></aside></div>
+</div>
+<script>
+  // Simple micro-interaction for sending message simulation
+  const input = document.getElementById('messageInput');
+  const sendBtn = document.getElementById('sendBtn');
+
+  if (input && sendBtn) {
+    const handleSend = () => {
+      const val = input.value.trim();
+      if (!val) return;
+      input.value = '';
+    };
+
+    sendBtn.addEventListener('click', handleSend);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') handleSend();
+    });
+  }
+</script></main>
+<!-- END: MainContentArea -->
+</div>
+<!-- END: AppCanvasContainer -->
+
+
+</body></html>

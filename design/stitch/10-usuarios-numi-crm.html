@@ -1,0 +1,628 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_dashboard" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-container-highest": "#e4e1ed", "on-secondary": "#ffffff", "on-surface": "#1b1b23", "on-background": "#1b1b23", "secondary-fixed": "#e1e0ff", "error-container": "#ffdad6", "surface-bright": "#fcf8ff", "on-primary-container": "#ede0ff", "inverse-surface": "#302f39", "surface-container-low": "#f5f2fe", "primary-fixed": "#eaddff", "on-primary-fixed": "#25005a", "tertiary": "#730bc1", "on-tertiary-fixed": "#2c0051", "tertiary-fixed-dim": "#ddb7ff", "on-primary": "#ffffff", "inverse-on-surface": "#f2effb", "surface-container-lowest": "#ffffff", "on-secondary-fixed": "#07006c", "primary-container": "#7c3aed", "on-secondary-fixed-variant": "#2f2ebe", "secondary-fixed-dim": "#c0c1ff", "tertiary-container": "#8d36db", "surface-dim": "#dbd8e5", "outline": "#7b7487", "on-surface-variant": "#4a4455", "surface-container": "#efecf9", "outline-variant": "#ccc3d8", "secondary": "#4648d4", "inverse-primary": "#d2bbff", "on-primary-fixed-variant": "#5a00c6", "primary": "#630ed4", "on-error-container": "#93000a", "surface": "#fcf8ff", "on-secondary-container": "#fffbff", "error": "#ba1a1a", "on-tertiary-container": "#f2dfff", "surface-variant": "#e4e1ed", "on-tertiary-fixed-variant": "#6900b3", "primary-fixed-dim": "#d2bbff", "surface-tint": "#732ee4", "secondary-container": "#6063ee", "surface-container-high": "#eae6f3", "background": "#fcf8ff", "on-tertiary": "#ffffff", "tertiary-fixed": "#f0dbff", "on-error": "#ffffff" }, "borderRadius": { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" }, "spacing": { "margin-mobile": "1rem", "gutter": "1.5rem", "space-md": "1rem", "space-xl": "2rem", "gutter-mobile": "1rem", "space-sm": "0.5rem", "space-2xl": "3rem", "margin": "2rem", "space-xs": "0.25rem", "space-lg": "1.5rem" }, "fontFamily": { "caption": ["Inter"], "label-md": ["Inter"], "body-md": ["Inter"], "headline-lg-mobile": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "label-sm": ["Inter"], "headline-md": ["Plus Jakarta Sans"], "body-sm": ["Inter"], "headline-sm": ["Plus Jakarta Sans"], "display": ["Plus Jakarta Sans"], "body-lg": ["Inter"], "display-mobile": ["Plus Jakarta Sans"], "kpi-number": ["Plus Jakarta Sans"] }, "fontSize": { "caption": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "500" }], "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.005em", "fontWeight": "600" }], "body-md": ["15px", { "lineHeight": "24px", "fontWeight": "400" }], "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "600" }], "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "700" }], "body-sm": ["13px", { "lineHeight": "20px", "fontWeight": "400" }], "headline-sm": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "display": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.03em", "fontWeight": "800" }], "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }], "display-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "800" }], "kpi-number": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }] } } } }</script></head><body class="bg-surface-container-low font-body-md text-on-surface min-h-screen p-space-md lg:p-space-lg"><div class="max-w-[1440px] mx-auto min-h-[calc(100vh-3rem)] bg-surface-container-lowest rounded-xl shadow-[0_10px_30px_-5px_rgba(124,58,237,0.07)] flex overflow-hidden relative"><aside class="w-[248px] bg-gradient-to-b from-[#5642B8] to-[#4F3BAE] flex-shrink-0 flex flex-col justify-between p-5 text-white relative z-20 select-none" data-purpose="sidebar-navigation">
+<!-- Top Section: Logo & Nav items -->
+<div>
+<!-- Logo & Wordmark -->
+<div class="flex items-center gap-3 px-2 py-2 mb-7">
+<div class="w-9 h-9 rounded-xl bg-[#090A10] flex items-center justify-center relative shadow-md ring-1 ring-white/20 flex-shrink-0 overflow-hidden">
+<svg viewBox="0 0 100 100" class="w-5 h-5" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M28 78V24H44L68 56V24H80V78H64L40 46V78H28Z" fill="white"></path>
+<polygon points="68,24 80,24 80,36" fill="#8B5CF6"></polygon>
+</svg>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="text-xl font-bold tracking-tight text-white font-heading leading-none select-none">numi</span>
+<span class="text-[10px] font-bold uppercase tracking-wider bg-white/20 text-white/95 px-1.5 py-0.5 rounded border border-white/25 leading-none select-none">CRM</span>
+</div>
+</div>
+<!-- Navigation Menu -->
+<nav aria-label="Navegación principal" class="space-y-1.5">
+<!-- Inactive Item: Dashboard -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-white/80 hover:text-white hover:bg-white/10 text-sm font-medium transition-all group" href="#" data-path="dashboard">
+<div class="flex items-center gap-3">
+<div class="p-1 rounded-lg text-white/80 group-hover:text-white">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+<rect height="7" rx="1.5" width="7" x="3" y="3"></rect>
+<rect height="7" rx="1.5" width="7" x="14" y="3"></rect>
+<rect height="7" rx="1.5" width="7" x="14" y="14"></rect>
+<rect height="7" rx="1.5" width="7" x="3" y="14"></rect>
+</svg>
+</div>
+<span class="">Dashboard</span>
+</div>
+<svg class="w-3.5 h-3.5 text-white/40 group-hover:text-white/80 transition-colors" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</a>
+<!-- Inactive Item: Bandeja -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-white/80 hover:text-white hover:bg-white/10 text-sm font-medium transition-all group" href="#" data-path="bandeja">
+<div class="flex items-center gap-3">
+<div class="p-1 rounded-lg text-white/80 group-hover:text-white">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<span class="">Bandeja</span>
+</div>
+<svg class="w-3.5 h-3.5 text-white/40 group-hover:text-white/80 transition-colors" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</a>
+<!-- Inactive Item: Contactos -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-white/80 hover:text-white hover:bg-white/10 text-sm font-medium transition-all group" href="#" data-path="contactos">
+<div class="flex items-center gap-3">
+<div class="p-1 rounded-lg text-white/80 group-hover:text-white">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21c-2.676 0-5.216-.584-7.499-1.632z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<span class="">Contactos</span>
+</div>
+<svg class="w-3.5 h-3.5 text-white/40 group-hover:text-white/80 transition-colors" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</a>
+<!-- Active Item: Usuarios (with inverted tab pill / soft glow & active indicator dot) -->
+<a class="group relative flex items-center justify-between px-3.5 py-3 rounded-2xl bg-white text-[#5642B8] font-semibold text-sm shadow-md transition-all" href="#" data-path="usuarios" aria-current="page">
+<div class="flex items-center gap-3">
+<div class="p-1 rounded-lg bg-[#5642B8]/10 text-[#5642B8]">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.999-3.199a3 3 0 115.998 0m-5.998 0a3 3 0 10-5.998 0" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+</div>
+<span class="font-bold">Usuarios</span>
+</div>
+<!-- Active indicator dot -->
+<span class="w-1.5 h-1.5 rounded-full bg-[#5642B8]"></span>
+</a>
+<!-- Inactive Item: Configuración -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-white/80 hover:text-white hover:bg-white/10 text-sm font-medium transition-all group" href="#" data-path="configuracion">
+<div class="flex items-center gap-3">
+<div class="p-1 rounded-lg text-white/80 group-hover:text-white">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round"></path>
+<circle cx="12" cy="12" r="3"></circle>
+</svg>
+</div>
+<span class="">Configuración</span>
+</div>
+<svg class="w-3.5 h-3.5 text-white/40 group-hover:text-white/80 transition-colors" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</a>
+</nav>
+</div>
+<!-- Bottom Sidebar Footer -->
+<div class="pt-4 border-t border-white/10 space-y-4">
+<a class="flex items-center gap-3 px-3 py-2 text-white/75 hover:text-white text-sm font-medium hover:bg-white/10 rounded-xl transition-all group" href="#" data-path="login">
+<svg class="w-4 h-4 text-white/70 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="">Cerrar sesión</span>
+</a>
+<!-- Powered By Widget -->
+<div class="px-3 flex items-center justify-between text-[11px] text-white/60">
+<span class="flex items-center gap-1.5">
+Powered by <strong class="text-white font-semibold">numi</strong>
+</span>
+<span class="flex items-center gap-1 text-[10px] text-emerald-300 bg-emerald-500/20 px-2 py-0.5 rounded-full border border-emerald-400/30">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+Online
+</span>
+</div>
+</div>
+</aside><div class="flex-1 flex flex-col min-w-0"><header class="h-20 shrink-0 px-space-xl flex items-center justify-between bg-surface-container-lowest/80 backdrop-blur-xl z-10"><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-sm bg-surface-container-low px-space-md py-space-xs rounded-full cursor-pointer hover:bg-surface-container transition-colors"><span class="material-symbols-outlined text-primary text-[18px]">storefront</span><span class="font-label-md text-label-md text-on-surface font-medium">Clínica Bella Piel</span><span class="material-symbols-outlined text-on-surface-variant text-[16px]">expand_more</span></div><div class="flex items-center gap-space-xs bg-surface-container-low px-space-md py-space-xs rounded-full"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span><span class="font-label-sm text-label-sm text-on-surface-variant">WhatsApp conectado</span></div></div><div class="flex items-center gap-space-lg"><button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors relative" type="button"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-primary ring-2 ring-surface-container-lowest"></span></button><div class="flex items-center gap-space-sm pl-space-sm"><div class="flex flex-col text-right"><span class="font-label-md text-label-md text-on-surface leading-tight">Laura Gómez</span><span class="font-caption text-caption text-on-surface-variant">Administrador</span></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="flex-1 px-space-xl pb-space-xl pt-0 overflow-y-auto bg-surface-container-lowest"><div class="flex flex-col w-full">
+<!-- Dynamic active sidebar highlighter for "Usuarios" -->
+<script>
+    (function () {
+      const navLinks = document.querySelectorAll('aside nav a');
+      navLinks.forEach((link) => {
+        if (link.getAttribute('data-path') === 'usuarios') {
+          link.className =
+            'flex items-center gap-space-sm px-space-md py-space-sm rounded-full bg-surface-container-lowest text-primary shadow-sm font-bold font-label-md text-label-md transition-all duration-200';
+          const icon = link.querySelector('.material-symbols-outlined');
+          if (icon) {
+            icon.style.fontVariationSettings = "'FILL' 1";
+          }
+        } else {
+          link.className =
+            'flex items-center gap-space-sm px-space-md py-space-sm rounded-full text-on-primary/80 hover:bg-white/15 hover:text-on-primary transition-all duration-200 font-label-md text-label-md';
+          const icon = link.querySelector('.material-symbols-outlined');
+          if (icon) {
+            icon.style.fontVariationSettings = "'FILL' 0";
+          }
+        }
+      });
+    })();
+  </script>
+<!-- Page Header -->
+<div class="flex flex-col gap-1 mb-6">
+<h1 class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tight">
+      Usuarios
+    </h1>
+<p class="font-body-md text-body-md text-on-surface-variant font-normal">
+      Invita a tu equipo y controla quién puede entrar.
+    </p>
+</div>
+<!-- Summary Row: KPI Metric Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+<!-- Card 1: Activos -->
+<div class="bg-surface-container-lowest rounded-[20px] p-5 shadow-[0_10px_30px_-5px_rgba(124,58,237,0.07)] flex items-center gap-4 transition-all duration-200 hover:-translate-y-0.5">
+<div class="w-12 h-12 rounded-2xl bg-surface-container-low text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[26px]">group</span>
+</div>
+<div class="flex flex-col">
+<span class="font-kpi-number text-kpi-number font-bold text-on-surface leading-none">4</span>
+<span class="font-label-md text-label-md text-on-surface-variant font-medium mt-1">Activos</span>
+</div>
+</div>
+<!-- Card 2: Invitaciones pendientes -->
+<div class="bg-surface-container-lowest rounded-[20px] p-5 shadow-[0_10px_30px_-5px_rgba(124,58,237,0.07)] flex items-center gap-4 transition-all duration-200 hover:-translate-y-0.5">
+<div class="w-12 h-12 rounded-2xl bg-surface-container-low text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[26px]">mark_email_unread</span>
+</div>
+<div class="flex flex-col">
+<span class="font-kpi-number text-kpi-number font-bold text-on-surface leading-none">1</span>
+<span class="font-label-md text-label-md text-on-surface-variant font-medium mt-1">Invitaciones pendientes</span>
+</div>
+</div>
+<!-- Card 3: Desactivados -->
+<div class="bg-surface-container-lowest rounded-[20px] p-5 shadow-[0_10px_30px_-5px_rgba(124,58,237,0.07)] flex items-center gap-4 transition-all duration-200 hover:-translate-y-0.5">
+<div class="w-12 h-12 rounded-2xl bg-surface-container-low text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[26px]">person_off</span>
+</div>
+<div class="flex flex-col">
+<span class="font-kpi-number text-kpi-number font-bold text-on-surface leading-none">1</span>
+<span class="font-label-md text-label-md text-on-surface-variant font-medium mt-1">Desactivados</span>
+</div>
+</div>
+</div>
+<!-- Toolbar: Search & Action Button -->
+<div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mb-6">
+<div class="relative w-full sm:w-80">
+<span class="material-symbols-outlined text-outline text-[20px] absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none">search</span>
+<input class="w-full h-[46px] pl-11 pr-4 rounded-[14px] bg-surface-container text-body-md font-body-md text-on-surface placeholder:text-outline focus:outline-none focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/25 transition-all" placeholder="Buscar por nombre o correo" type="text">
+</div>
+<button class="h-[46px] px-6 rounded-full bg-primary text-on-primary font-label-md text-label-md font-semibold inline-flex items-center justify-center gap-2 shadow-[0_8px_20px_-4px_rgba(124,58,237,0.35)] hover:bg-tertiary transition-all duration-200 shrink-0" type="button">
+<span class="material-symbols-outlined text-[20px]">add</span>
+<span class="">Invitar usuario</span>
+</button>
+</div>
+<!-- Team Members Table Card -->
+<div class="bg-surface-container-lowest rounded-[20px] p-6 shadow-[0_10px_30px_-5px_rgba(124,58,237,0.07)] relative overflow-visible">
+<!-- Desktop & Tablet Table View -->
+<div class="hidden sm:block overflow-visible">
+<table class="w-full border-collapse text-left">
+<thead>
+<tr class="bg-surface-container-low/60 rounded-xl">
+<th class="py-3.5 pl-4 pr-3 font-caption text-caption uppercase text-on-surface-variant tracking-wider font-semibold rounded-l-xl">
+              Usuario
+            </th>
+<th class="py-3.5 px-3 font-caption text-caption uppercase text-on-surface-variant tracking-wider font-semibold">
+              Rol
+            </th>
+<th class="py-3.5 px-3 font-caption text-caption uppercase text-on-surface-variant tracking-wider font-semibold">
+              Estado
+            </th>
+<th class="py-3.5 px-3 font-caption text-caption uppercase text-on-surface-variant tracking-wider font-semibold hidden lg:table-cell">
+              Conversaciones abiertas
+            </th>
+<th class="py-3.5 pr-4 pl-3 font-caption text-caption uppercase text-on-surface-variant tracking-wider font-semibold text-right rounded-r-xl">
+              Acciones
+            </th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-low">
+<!-- Row 1: Laura Gómez (Current Admin) -->
+<tr class="hover:bg-surface-container-low/40 transition-colors">
+<td class="py-4 pl-4 pr-3 min-w-0">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-low text-primary flex items-center justify-center font-headline-sm text-headline-sm font-bold shrink-0">
+                  LG
+                </div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-[15px] leading-snug font-semibold text-on-surface truncate">Laura Gómez</span>
+<span class="bg-surface-container-low text-primary font-caption text-caption px-2 py-0.5 rounded-full font-semibold">Tú</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">laura@bellapiel.co</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-3 align-middle">
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container-low text-primary font-label-sm text-label-sm font-semibold">
+                Administrador
+              </span>
+</td>
+<td class="py-4 px-3 align-middle">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 font-label-sm text-label-sm font-medium">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                Activo
+              </span>
+</td>
+<td class="py-4 px-3 align-middle hidden lg:table-cell">
+<span class="font-label-md text-label-md font-medium text-on-surface">6</span>
+</td>
+<td class="py-4 pr-4 pl-3 text-right align-middle">
+<button aria-label="Opciones de usuario" class="w-8 h-8 rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low flex items-center justify-center ml-auto transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">more_horiz</span>
+</button>
+</td>
+</tr>
+<!-- Row 2: Camilo Arango (With Open Popover Menu) -->
+<tr class="hover:bg-surface-container-low/40 transition-colors relative">
+<td class="py-4 pl-4 pr-3 min-w-0">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-low text-secondary flex items-center justify-center font-headline-sm text-headline-sm font-bold shrink-0">
+                  CA
+                </div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-[15px] leading-snug font-semibold text-on-surface truncate">Camilo Arango</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">camilo@bellapiel.co</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-3 align-middle">
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm font-medium">
+                Asesor
+              </span>
+</td>
+<td class="py-4 px-3 align-middle">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 font-label-sm text-label-sm font-medium">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                Activo
+              </span>
+</td>
+<td class="py-4 px-3 align-middle hidden lg:table-cell">
+<span class="font-label-md text-label-md font-medium text-on-surface">7</span>
+</td>
+<td class="py-4 pr-4 pl-3 text-right align-middle relative">
+<button aria-label="Opciones de usuario" class="w-8 h-8 rounded-full bg-surface-container-low text-primary flex items-center justify-center ml-auto shadow-sm" type="button">
+<span class="material-symbols-outlined text-[20px]">more_horiz</span>
+</button>
+<!-- Open Popover Menu -->
+<div class="absolute right-4 top-14 z-30 w-52 bg-surface-container-lowest rounded-2xl p-2 shadow-[0_18px_36px_-8px_rgba(124,58,237,0.14),0_4px_12px_-2px_rgba(10,10,18,0.06)] flex flex-col gap-1 text-left">
+<button class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-on-surface hover:bg-surface-container-low transition-colors font-body-sm text-body-sm w-full text-left" type="button">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant">published_with_changes</span>
+<span class="">Cambiar rol</span>
+</button>
+<button class="flex items-center gap-2.5 px-3 py-2 rounded-xl text-error hover:bg-error-container/40 transition-colors font-body-sm text-body-sm font-medium w-full text-left" type="button">
+<span class="material-symbols-outlined text-[18px] text-error">person_remove</span>
+<span class="">Desactivar usuario</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3: Valentina Ortiz -->
+<tr class="hover:bg-surface-container-low/40 transition-colors">
+<td class="py-4 pl-4 pr-3 min-w-0">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-low text-tertiary flex items-center justify-center font-headline-sm text-headline-sm font-bold shrink-0">
+                  VO
+                </div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-[15px] leading-snug font-semibold text-on-surface truncate">Valentina Ortiz</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">valentina@bellapiel.co</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-3 align-middle">
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm font-medium">
+                Asesor
+              </span>
+</td>
+<td class="py-4 px-3 align-middle">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 font-label-sm text-label-sm font-medium">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                Activo
+              </span>
+</td>
+<td class="py-4 px-3 align-middle hidden lg:table-cell">
+<span class="font-label-md text-label-md font-medium text-on-surface">5</span>
+</td>
+<td class="py-4 pr-4 pl-3 text-right align-middle">
+<button aria-label="Opciones de usuario" class="w-8 h-8 rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low flex items-center justify-center ml-auto transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">more_horiz</span>
+</button>
+</td>
+</tr>
+<!-- Row 4: Santiago Henao -->
+<tr class="hover:bg-surface-container-low/40 transition-colors">
+<td class="py-4 pl-4 pr-3 min-w-0">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-low text-primary flex items-center justify-center font-headline-sm text-headline-sm font-bold shrink-0">
+                  SH
+                </div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-[15px] leading-snug font-semibold text-on-surface truncate">Santiago Henao</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">santiago@bellapiel.co</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-3 align-middle">
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm font-medium">
+                Asesor
+              </span>
+</td>
+<td class="py-4 px-3 align-middle">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 font-label-sm text-label-sm font-medium">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                Activo
+              </span>
+</td>
+<td class="py-4 px-3 align-middle hidden lg:table-cell">
+<span class="font-label-md text-label-md font-medium text-on-surface">5</span>
+</td>
+<td class="py-4 pr-4 pl-3 text-right align-middle">
+<button aria-label="Opciones de usuario" class="w-8 h-8 rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low flex items-center justify-center ml-auto transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">more_horiz</span>
+</button>
+</td>
+</tr>
+<!-- Row 5: Mariana Toro (Invitado) -->
+<tr class="hover:bg-surface-container-low/40 transition-colors">
+<td class="py-4 pl-4 pr-3 min-w-0">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-amber-50 text-amber-700 flex items-center justify-center font-headline-sm text-headline-sm font-bold shrink-0">
+                  MT
+                </div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-[15px] leading-snug font-semibold text-on-surface truncate">Mariana Toro</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">mariana@bellapiel.co</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-3 align-middle">
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm font-medium">
+                Asesor
+              </span>
+</td>
+<td class="py-4 px-3 align-middle">
+<div class="flex flex-col items-start">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100/70 text-amber-800 font-label-sm text-label-sm font-medium">
+<span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                  Invitado
+                </span>
+<span class="font-caption text-[11px] text-on-surface-variant/70 mt-1 pl-1">Invitación enviada el 12 oct</span>
+</div>
+</td>
+<td class="py-4 px-3 align-middle hidden lg:table-cell">
+<span class="font-label-md text-label-md font-medium text-outline">—</span>
+</td>
+<td class="py-4 pr-4 pl-3 text-right align-middle">
+<button aria-label="Opciones de usuario" class="w-8 h-8 rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low flex items-center justify-center ml-auto transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">more_horiz</span>
+</button>
+</td>
+</tr>
+<!-- Row 6: Carlos Ruiz (Desactivado - 60% opacity) -->
+<tr class="opacity-60 hover:opacity-80 transition-opacity">
+<td class="py-4 pl-4 pr-3 min-w-0">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container text-outline flex items-center justify-center font-headline-sm text-headline-sm font-bold shrink-0">
+                  CR
+                </div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-[15px] leading-snug font-semibold text-on-surface truncate">Carlos Ruiz</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">carlos@bellapiel.co</span>
+</div>
+</div>
+</td>
+<td class="py-4 px-3 align-middle">
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm font-medium">
+                Asesor
+              </span>
+</td>
+<td class="py-4 px-3 align-middle">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm font-medium">
+<span class="w-2 h-2 rounded-full bg-outline"></span>
+                Desactivado
+              </span>
+</td>
+<td class="py-4 px-3 align-middle hidden lg:table-cell">
+<span class="font-label-md text-label-md font-medium text-outline">—</span>
+</td>
+<td class="py-4 pr-4 pl-3 text-right align-middle">
+<button aria-label="Opciones de usuario" class="w-8 h-8 rounded-full text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low flex items-center justify-center ml-auto transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">more_horiz</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Mobile Stacked Card View (< 768px) -->
+<div class="sm:hidden flex flex-col divide-y divide-surface-container-low">
+<!-- Mobile Item 1 -->
+<div class="py-4 flex flex-col gap-3">
+<div class="flex items-start justify-between gap-3">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-10 h-10 rounded-full bg-surface-container-low text-primary flex items-center justify-center font-headline-sm text-headline-sm font-bold shrink-0">
+              LG
+            </div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-[15px] font-semibold text-on-surface truncate">Laura Gómez</span>
+<span class="bg-surface-container-low text-primary font-caption text-[10px] px-1.5 py-0.5 rounded-full font-semibold">Tú</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">laura@bellapiel.co</span>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full text-on-surface-variant flex items-center justify-center" type="button">
+<span class="material-symbols-outlined text-[20px]">more_horiz</span>
+</button>
+</div>
+<div class="flex items-center justify-between text-body-sm">
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-surface-container-low text-primary font-label-sm text-label-sm font-semibold">
+              Administrador
+            </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-label-sm text-label-sm font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+              Activo
+            </span>
+</div>
+<span class="text-caption font-caption text-on-surface-variant font-medium">6 chats</span>
+</div>
+</div>
+<!-- Mobile Item 2 -->
+<div class="py-4 flex flex-col gap-3">
+<div class="flex items-start justify-between gap-3">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-10 h-10 rounded-full bg-surface-container-low text-secondary flex items-center justify-center font-headline-sm text-headline-sm font-bold shrink-0">
+              CA
+            </div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-[15px] font-semibold text-on-surface truncate">Camilo Arango</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">camilo@bellapiel.co</span>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full text-on-surface-variant flex items-center justify-center" type="button">
+<span class="material-symbols-outlined text-[20px]">more_horiz</span>
+</button>
+</div>
+<div class="flex items-center justify-between text-body-sm">
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm font-medium">
+              Asesor
+            </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-label-sm text-label-sm font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+              Activo
+            </span>
+</div>
+<span class="text-caption font-caption text-on-surface-variant font-medium">7 chats</span>
+</div>
+</div>
+<!-- Mobile Item 3 -->
+<div class="py-4 flex flex-col gap-3">
+<div class="flex items-start justify-between gap-3">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-10 h-10 rounded-full bg-surface-container-low text-tertiary flex items-center justify-center font-headline-sm text-headline-sm font-bold shrink-0">
+              VO
+            </div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-[15px] font-semibold text-on-surface truncate">Valentina Ortiz</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">valentina@bellapiel.co</span>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full text-on-surface-variant flex items-center justify-center" type="button">
+<span class="material-symbols-outlined text-[20px]">more_horiz</span>
+</button>
+</div>
+<div class="flex items-center justify-between text-body-sm">
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm font-medium">
+              Asesor
+            </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-label-sm text-label-sm font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+              Activo
+            </span>
+</div>
+<span class="text-caption font-caption text-on-surface-variant font-medium">5 chats</span>
+</div>
+</div>
+<!-- Mobile Item 4 -->
+<div class="py-4 flex flex-col gap-3">
+<div class="flex items-start justify-between gap-3">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-10 h-10 rounded-full bg-surface-container-low text-primary flex items-center justify-center font-headline-sm text-headline-sm font-bold shrink-0">
+              SH
+            </div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-[15px] font-semibold text-on-surface truncate">Santiago Henao</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">santiago@bellapiel.co</span>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full text-on-surface-variant flex items-center justify-center" type="button">
+<span class="material-symbols-outlined text-[20px]">more_horiz</span>
+</button>
+</div>
+<div class="flex items-center justify-between text-body-sm">
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm font-medium">
+              Asesor
+            </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-label-sm text-label-sm font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+              Activo
+            </span>
+</div>
+<span class="text-caption font-caption text-on-surface-variant font-medium">5 chats</span>
+</div>
+</div>
+<!-- Mobile Item 5: Mariana Toro -->
+<div class="py-4 flex flex-col gap-3">
+<div class="flex items-start justify-between gap-3">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-10 h-10 rounded-full bg-amber-50 text-amber-700 flex items-center justify-center font-headline-sm text-headline-sm font-bold shrink-0">
+              MT
+            </div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-[15px] font-semibold text-on-surface truncate">Mariana Toro</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">mariana@bellapiel.co</span>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full text-on-surface-variant flex items-center justify-center" type="button">
+<span class="material-symbols-outlined text-[20px]">more_horiz</span>
+</button>
+</div>
+<div class="flex items-center justify-between text-body-sm">
+<div class="flex flex-col items-start">
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm font-medium">
+                Asesor
+              </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-100/70 text-amber-800 font-label-sm text-label-sm font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                Invitado
+              </span>
+</div>
+<span class="font-caption text-[11px] text-on-surface-variant/70 mt-1">Enviada el 12 oct</span>
+</div>
+<span class="text-caption font-caption text-outline">—</span>
+</div>
+</div>
+<!-- Mobile Item 6: Carlos Ruiz (Desactivado) -->
+<div class="py-4 flex flex-col gap-3 opacity-60">
+<div class="flex items-start justify-between gap-3">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-10 h-10 rounded-full bg-surface-container text-outline flex items-center justify-center font-headline-sm text-headline-sm font-bold shrink-0">
+              CR
+            </div>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-sm text-[15px] font-semibold text-on-surface truncate">Carlos Ruiz</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">carlos@bellapiel.co</span>
+</div>
+</div>
+<button class="w-8 h-8 rounded-full text-on-surface-variant flex items-center justify-center" type="button">
+<span class="material-symbols-outlined text-[20px]">more_horiz</span>
+</button>
+</div>
+<div class="flex items-center justify-between text-body-sm">
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm font-medium">
+              Asesor
+            </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-surface-container-highest text-on-surface-variant font-label-sm text-label-sm font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+              Desactivado
+            </span>
+</div>
+<span class="text-caption font-caption text-outline">—</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Mobile Floating Action Button (FAB) -->
+<div class="sm:hidden fixed bottom-6 right-6 z-40">
+<button aria-label="Invitar nuevo usuario" class="w-14 h-14 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-[0_8px_20px_-4px_rgba(124,58,237,0.45)] hover:scale-105 active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[28px]">add</span>
+</button>
+</div>
+</div></main></div></div>
+
+
+
+
+
+
+
+
+
+
+
+</body></html>

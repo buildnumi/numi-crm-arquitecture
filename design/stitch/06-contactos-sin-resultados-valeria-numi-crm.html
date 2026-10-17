@@ -1,0 +1,306 @@
+<!DOCTYPE html><html lang="es" style="width: 1293px; height: 904px; overflow: hidden; position: relative;"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Contactos - Numi CRM</title>
+<!-- Google Fonts: Plus Jakarta Sans & Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script data-purpose="tailwind-config">
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              violet: '#7C3AED',
+              violetHover: '#6D28D9',
+              indigo: '#6366F1',
+              purple: '#A855F7',
+              dark: '#0A0A12',
+              tint: '#F3EEFE',
+              canvas: '#F1EEFB',
+              sidebarDark: '#43329E',
+              sidebarLight: '#5342B3'
+            },
+            status: {
+              nuevoText: '#6366F1',
+              nuevoBg: '#EEF2FF',
+              contactoText: '#D97706',
+              contactoBg: '#FEF3C7',
+              calificadoText: '#9333EA',
+              calificadoBg: '#F3E8FF',
+              clienteText: '#16A34A',
+              clienteBg: '#DCFCE7',
+              pausaText: '#6B7280',
+              pausaBg: '#F3F4F6',
+              perdidoText: '#DC2626',
+              perdidoBg: '#FEE2E2'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            heading: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          boxShadow: {
+            card: '0 10px 30px -5px rgba(124, 58, 237, 0.07)',
+            floating: '0 12px 28px -6px rgba(124, 58, 237, 0.2)',
+          }
+        }
+      }
+    }
+  </script>
+<!-- Custom Typography & Global Styles -->
+<style data-purpose="custom-layout">
+    body {
+      background-color: #E2DEF0;
+      font-family: 'Inter', sans-serif;
+      color: #0A0A12;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    .font-heading {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    /* Scrollbar styling for smooth table & filter scrolls */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #D9D6E8;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #BCB8D2;
+    }
+
+    /* Table row transition */
+    .table-row-item {
+      transition: all 0.18s ease-in-out;
+    }
+  </style>
+</head>
+<body class="p-3 md:p-6 min-h-screen flex items-center justify-center">
+<!-- BEGIN: AppShellContainer -->
+<!-- Outer framed desktop container mimicking dashboard frame from specifications -->
+<div class="w-full max-w-[1440px] bg-[#F1EEFB] rounded-[36px] shadow-2xl p-3 md:p-4 flex flex-col md:flex-row gap-4 border border-white/60 min-h-[880px] overflow-hidden" data-purpose="crm-app-shell">
+<!-- BEGIN: LeftSidebar -->
+<!-- Expanded sidebar with Atica-style gradient matching Screen 12 -->
+<aside class="w-full md:w-[240px] shrink-0 bg-gradient-to-b from-[#5342B3] to-[#43329E] rounded-[28px] p-5 flex flex-col justify-between text-white shadow-lg" data-purpose="main-sidebar">
+<!-- Top Section: Logo & Navigation Items -->
+<div class="flex flex-col space-y-6">
+<!-- Brand Logo Block -->
+<div class="flex items-center space-x-3 px-1 pt-1" data-purpose="sidebar-brand">
+<img alt="Numi CRM Logo" class="w-9 h-9 rounded-xl object-cover shadow-sm bg-black/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRwB77yTjdshSmPvW9IxWzbWTV9aYbMoCYcnTjHZeB83L5XQh3UQMMwjrWgpKcg2eFXdrpOGHWd8uqCEXu2h6Ao_3Ogaj4lK5850hEjedtL8iLh1AhCd1ayHmEezK_AMCDIrbZKp_q2nSQQd9BgB9RYTxGmzHvFR2Bp24Q6UKk5snbA0KDaGkL5oRpgA03Z2NUj6ZrT2qC66T8oWd89Nn-MIYVeBlQ1Wj0z6xxVVeLSw54lfQbpp7JxK2e9Q0ZaYluGw">
+<div class="flex items-center gap-1.5">
+<span class="font-heading font-extrabold text-xl tracking-tight text-white">numi</span>
+<span class="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-white/20 text-white/95">CRM</span>
+</div>
+</div>
+<!-- Navigation Menu -->
+<nav aria-label="Navegación principal" class="flex flex-col space-y-1.5">
+<!-- Item: Dashboard -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-white/80 hover:bg-white/10 hover:text-white transition group text-sm font-medium" data-purpose="nav-dashboard" href="#">
+<div class="flex items-center space-x-3">
+<svg class="w-4 h-4 text-white/70 group-hover:text-white transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<rect height="7" rx="1.5" width="7" x="3" y="3"></rect>
+<rect height="7" rx="1.5" width="7" x="14" y="3"></rect>
+<rect height="7" rx="1.5" width="7" x="14" y="14"></rect>
+<rect height="7" rx="1.5" width="7" x="3" y="14"></rect>
+</svg>
+<span class="">Dashboard</span>
+</div>
+<svg class="w-3.5 h-3.5 text-white/50 group-hover:translate-x-0.5 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</a>
+<!-- Item: Bandeja -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-white/80 hover:bg-white/10 hover:text-white transition group text-sm font-medium" data-purpose="nav-inbox" href="#">
+<div class="flex items-center space-x-3">
+<svg class="w-4 h-4 text-white/70 group-hover:text-white transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="">Bandeja</span>
+</div>
+<svg class="w-3.5 h-3.5 text-white/50 group-hover:translate-x-0.5 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</a>
+<!-- Item: Contactos (ACTIVE ITEM) -->
+<a aria-current="page" class="flex items-center justify-between px-3.5 py-2.5 rounded-2xl bg-white text-brand-violet shadow-md text-sm font-semibold relative" data-purpose="nav-contacts-active" href="#">
+<div class="flex items-center space-x-3">
+<svg class="w-4 h-4 text-brand-violet" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+<path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="tracking-tight">Contactos</span>
+</div>
+<!-- Active indicator dot -->
+<span class="w-2 h-2 rounded-full bg-brand-violet"></span>
+</a>
+<!-- Item: Usuarios -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-white/80 hover:bg-white/10 hover:text-white transition group text-sm font-medium" data-purpose="nav-users" href="#">
+<div class="flex items-center space-x-3">
+<svg class="w-4 h-4 text-white/70 group-hover:text-white transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="">Usuarios</span>
+</div>
+<svg class="w-3.5 h-3.5 text-white/50 group-hover:translate-x-0.5 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</a>
+<!-- Item: Configuración -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-white/80 hover:bg-white/10 hover:text-white transition group text-sm font-medium" data-purpose="nav-settings" href="#">
+<div class="flex items-center space-x-3">
+<svg class="w-4 h-4 text-white/70 group-hover:text-white transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="">Configuración</span>
+</div>
+<svg class="w-3.5 h-3.5 text-white/50 group-hover:translate-x-0.5 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</a>
+</nav>
+</div>
+<!-- Bottom Section: Cerrar Sesión & Status Info -->
+<div class="pt-6 border-t border-white/10 space-y-4" data-purpose="sidebar-footer">
+<button class="flex items-center space-x-2.5 text-sm font-medium text-white/80 hover:text-white transition w-full px-2 py-1.5 rounded-lg hover:bg-white/5">
+<svg class="w-4 h-4 text-white/70" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="">Cerrar sesión</span>
+</button>
+<div class="flex items-center justify-between px-2 text-xs text-white/70">
+<span class="">Powered by <span class="font-bold text-white">numi</span></span>
+<span class="inline-flex items-center gap-1 text-[11px] bg-white/10 px-2 py-0.5 rounded-full font-medium text-emerald-300">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            Online
+          </span>
+</div>
+</div>
+</aside>
+<!-- END: LeftSidebar -->
+<!-- BEGIN: MainContentArea -->
+<!-- Central workspace containing Top Bar, Toolbar, Filter Bar, and Contacts Table -->
+<main class="flex-1 flex flex-col space-y-4 overflow-y-auto px-1 md:px-2" data-purpose="main-content-layout">
+<!-- BEGIN: TopBar -->
+<header class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 py-2" data-purpose="header-section">
+<!-- Left: Page Title and Counter -->
+<div class="flex items-baseline space-x-3">
+<h1 class="text-2xl font-bold font-heading text-brand-dark tracking-tight">Contactos</h1>
+<span class="text-sm font-medium text-[#8B8AA0]">1.248 contactos</span>
+</div>
+<!-- Right Chips & Profile Hub -->
+<div class="flex items-center flex-wrap gap-2.5 sm:gap-3" data-purpose="header-status-controls">
+<!-- WhatsApp Conectado Badge -->
+<div class="flex items-center space-x-1.5 bg-[#DCFCE7] text-[#15803D] text-xs font-semibold px-3 py-1.5 rounded-full shadow-xs">
+<span class="w-2 h-2 rounded-full bg-[#16A34A] inline-block animate-ping"></span>
+<span class="w-1.5 h-1.5 rounded-full bg-[#16A34A] inline-block -ml-3"></span>
+<span class="">WhatsApp conectado</span>
+</div>
+<!-- Business Selector Chip -->
+<div class="flex items-center space-x-2 bg-white px-3 py-1.5 rounded-full shadow-sm border border-[#EBE7F7] text-xs font-semibold text-brand-dark cursor-pointer hover:border-brand-violet/40 transition">
+<svg class="w-3.5 h-3.5 text-brand-violet" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="">Clínica Bella Piel</span>
+<svg class="w-3 h-3 text-[#8B8AA0]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</div>
+<!-- Notification Bell -->
+<button class="w-8 h-8 rounded-full bg-white flex items-center justify-center relative shadow-sm border border-[#EBE7F7] hover:border-brand-violet/40 text-brand-dark transition">
+<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+<path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<!-- Badge dot -->
+<span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-brand-violet"></span>
+</button>
+<!-- User Profile Tile -->
+<div class="flex items-center space-x-2 bg-white pl-1 pr-3 py-1 rounded-full shadow-sm border border-[#EBE7F7] cursor-pointer hover:border-brand-violet/40 transition">
+<div class="w-7 h-7 rounded-full bg-brand-violet text-white text-xs font-bold flex items-center justify-center">
+              LG
+            </div>
+<div class="text-left hidden sm:block">
+<div class="text-xs font-semibold text-brand-dark leading-tight">Laura Gómez</div>
+<div class="text-[10px] text-[#8B8AA0] leading-tight">Administrador</div>
+</div>
+<svg class="w-3 h-3 text-[#8B8AA0]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</div>
+</div>
+</header>
+<!-- END: TopBar -->
+<!-- BEGIN: ToolbarAndFilterArea -->
+<section class="space-y-3.5" data-purpose="actions-and-filters">
+<!-- Search and Primary Action -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+<!-- Search input box -->
+<div class="relative w-full sm:w-[380px]" data-purpose="search-box"><span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-brand-violet"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" stroke-linecap="round" stroke-linejoin="round"></path></svg></span><input class="w-full bg-[#F6F5FB] border-0 focus:ring-2 focus:ring-brand-violet/30 rounded-2xl py-2.5 pl-10 pr-10 text-xs sm:text-sm text-brand-dark font-medium placeholder-[#8B8AA0] transition shadow-inner" placeholder="Buscar por nombre, teléfono o correo" type="text" value="Valeria"><button class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-gray-400 hover:text-brand-dark transition cursor-pointer" title="Limpiar búsqueda"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"></path></svg></button></div>
+<!-- Add Contact Button -->
+<button class="inline-flex items-center justify-center space-x-2 bg-brand-violet hover:bg-brand-violetHover text-white px-5 py-2.5 rounded-full font-medium text-xs sm:text-sm shadow-md transition transform active:scale-95 shrink-0" data-purpose="add-contact-button">
+<svg class="w-4 h-4 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="">Nuevo contacto</span>
+</button>
+</div>
+<!-- Filter Pill Chips Row -->
+<div class="flex items-center space-x-2 overflow-x-auto pb-1.5 scrollbar-none" data-purpose="filter-pills-row">
+<!-- Todos (Active) -->
+<button class="inline-flex items-center space-x-1.5 px-4 py-1.5 rounded-full bg-brand-violet text-white text-xs font-semibold shadow-xs shrink-0 transition">
+<span class="">Todos</span>
+<span class="opacity-90">1.248</span>
+</button>
+<!-- Nuevo -->
+<button class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full bg-status-nuevoBg text-status-nuevoText hover:brightness-95 text-xs font-medium shrink-0 transition border border-indigo-100">
+<span class="w-1.5 h-1.5 rounded-full bg-status-nuevoText"></span>
+<span class="">Nuevo</span>
+<span class="font-semibold ml-0.5">210</span>
+</button>
+<!-- En contacto -->
+<button class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full bg-status-contactoBg text-status-contactoText hover:brightness-95 text-xs font-medium shrink-0 transition border border-amber-100">
+<span class="w-1.5 h-1.5 rounded-full bg-status-contactoText"></span>
+<span class="">En contacto</span>
+<span class="font-semibold ml-0.5">305</span>
+</button>
+<!-- Calificado -->
+<button class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full bg-status-calificadoBg text-status-calificadoText hover:brightness-95 text-xs font-medium shrink-0 transition border border-purple-100">
+<span class="w-1.5 h-1.5 rounded-full bg-status-calificadoText"></span>
+<span class="">Calificado</span>
+<span class="font-semibold ml-0.5">188</span>
+</button>
+<!-- Cliente -->
+<button class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full bg-status-clienteBg text-status-clienteText hover:brightness-95 text-xs font-medium shrink-0 transition border border-emerald-100">
+<span class="w-1.5 h-1.5 rounded-full bg-status-clienteText"></span>
+<span class="">Cliente</span>
+<span class="font-semibold ml-0.5">342</span>
+</button>
+<!-- En pausa -->
+<button class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full bg-status-pausaBg text-status-pausaText hover:brightness-95 text-xs font-medium shrink-0 transition border border-gray-200">
+<span class="w-1.5 h-1.5 rounded-full bg-status-pausaText"></span>
+<span class="">En pausa</span>
+<span class="font-semibold ml-0.5">96</span>
+</button>
+<!-- Perdido -->
+<button class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full bg-status-perdidoBg text-status-perdidoText hover:brightness-95 text-xs font-medium shrink-0 transition border border-rose-100">
+<span class="w-1.5 h-1.5 rounded-full bg-status-perdidoText"></span>
+<span class="">Perdido</span>
+<span class="font-semibold ml-0.5">107</span>
+</button>
+</div>
+</section>
+<!-- END: ToolbarAndFilterArea -->
+<!-- BEGIN: TableCardContainer -->
+<!-- Large white card housing the contacts table and footer pagination -->
+<section class="bg-white rounded-[24px] shadow-card border border-[#EBE7F7] overflow-hidden flex flex-col justify-between flex-1" data-purpose="contacts-data-card"><div class="flex-1 flex flex-col items-center justify-center py-16 px-6 text-center max-w-lg mx-auto"><div class="relative mb-6"><div class="w-24 h-24 rounded-full bg-[#F3EEFE] flex items-center justify-center shadow-inner"><svg class="w-12 h-12 text-brand-violet" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" stroke-linecap="round" stroke-linejoin="round"></circle><path d="M21 21l-4.35-4.35" stroke-linecap="round" stroke-linejoin="round"></path><path d="M8.5 10.5a2.5 2.5 0 015 0" stroke-dasharray="1 2" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><div class="absolute -bottom-1 -right-1 w-9 h-9 rounded-2xl bg-white border border-[#EBE7F7] shadow-sm flex items-center justify-center text-brand-purple"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-linecap="round" stroke-linejoin="round"></path></svg></div></div><h3 class="font-heading font-bold text-xl sm:text-2xl text-brand-dark tracking-tight mb-2">No encontramos contactos con “Valeria”</h3><p class="text-sm text-[#8B8AA0] max-w-sm mb-8 leading-relaxed">Revisa el nombre o busca por número de teléfono.</p><div class="flex flex-wrap items-center justify-center gap-3"><button class="inline-flex items-center justify-center px-5 py-2.5 rounded-full bg-[#F3EEFE] hover:bg-[#EBE4FA] text-brand-violet font-semibold text-xs sm:text-sm transition cursor-pointer">Limpiar búsqueda</button><button class="inline-flex items-center justify-center space-x-2 px-5 py-2.5 rounded-full bg-brand-violet hover:bg-brand-violetHover text-white font-semibold text-xs sm:text-sm shadow-md transition transform active:scale-95"><svg class="w-4 h-4 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>Nuevo contacto</span></button></div></div></section>
+<!-- END: TableCardContainer -->
+</main>
+<!-- END: MainContentArea -->
+</div>
+<!-- END: AppShellContainer -->
+<!-- BEGIN: MobileFloatingActionButton -->
+<!-- Contextual quick floating button for mobile devices -->
+<button aria-label="Crear contacto rápido" class="md:hidden fixed bottom-5 right-5 w-14 h-14 bg-brand-violet text-white rounded-full shadow-floating flex items-center justify-center z-50 active:scale-95 transition">
+<svg class="w-6 h-6 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</button>
+<!-- END: MobileFloatingActionButton -->
+</body></html>

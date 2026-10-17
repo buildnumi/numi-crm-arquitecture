@@ -1,0 +1,445 @@
+<!DOCTYPE html><html lang="es" style="width: 1300px; height: 992px; overflow: hidden; position: relative;"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Bandeja - Numi CRM</title>
+<!-- Fonts: Plus Jakarta Sans & Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@500;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#F4F2FF',
+              100: '#EAE6FD',
+              200: '#D5CCFC',
+              500: '#7357F6',
+              600: '#5F43DE',
+              700: '#5338CA',
+              800: '#452B9E',
+              sidebar: '#5843BA'
+            },
+            primary: '#7C3AED',
+            'primary-dark': '#6D28D9',
+            surface: {
+              bg: '#EEF2F6',
+              card: '#FFFFFF'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            heading: ['Plus Jakarta Sans', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+<style data-purpose="custom-typography">
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #EBF0F5;
+    }
+    h1, h2, h3, h4, .font-heading {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #D1D5DB;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #9CA3AF;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="text-slate-800 antialiased h-screen overflow-hidden p-3 lg:p-4 select-none">
+<!-- Outer rounded canvas simulating desktop web app frame -->
+<div class="w-full h-full bg-[#F4F6FA] rounded-[32px] shadow-2xl flex overflow-hidden border border-slate-200/80">
+<!-- BEGIN: Sidebar (Advisor View) -->
+<aside class="w-[72px] min-w-[72px] max-w-[72px] bg-gradient-to-b from-[#5642B8] to-[#4F3BAE] flex-shrink-0 flex flex-col justify-between items-center py-5 px-2 text-white relative z-20" data-purpose="sidebar-navigation"><!-- Top Section: Logo & Nav items -->
+<div class="flex flex-col items-center w-full">
+  <!-- Logo Tile -->
+  <div class="mb-6 flex items-center justify-center">
+    <div class="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center shadow-md ring-1 ring-white/20">
+      <span class="text-white font-bold text-lg font-heading leading-none">N</span>
+    </div>
+  </div>
+  <!-- Navigation items -->
+  <nav aria-label="Navegación principal" class="flex flex-col items-center gap-3 w-full">
+    <!-- Dashboard -->
+    <a aria-label="Dashboard" class="w-11 h-11 rounded-2xl flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all" href="#" title="Dashboard">
+      <span class="material-symbols-outlined text-[22px]">dashboard</span>
+    </a>
+    <!-- Bandeja (Active) -->
+    <a aria-label="Bandeja" class="w-11 h-11 bg-white rounded-2xl flex items-center justify-center text-[#5642B8] shadow-sm transition-all" href="#" title="Bandeja">
+      <span class="material-symbols-outlined text-[22px]">inbox</span>
+    </a>
+    <!-- Contactos -->
+    <a aria-label="Contactos" class="w-11 h-11 rounded-2xl flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all" href="#" title="Contactos">
+      <span class="material-symbols-outlined text-[22px]">group</span>
+    </a>
+    <!-- Usuarios -->
+    <a aria-label="Usuarios" class="w-11 h-11 rounded-2xl flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all" href="#" title="Usuarios">
+      <span class="material-symbols-outlined text-[22px]">badge</span>
+    </a>
+    <!-- Configuración -->
+    <a aria-label="Configuración" class="w-11 h-11 rounded-2xl flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all" href="#" title="Configuración">
+      <span class="material-symbols-outlined text-[22px]">settings</span>
+    </a>
+  </nav>
+</div>
+<!-- Bottom Controls: Salir -->
+<div class="flex flex-col items-center gap-2 pt-4 border-t border-white/10 w-full">
+  <a aria-label="Salir" class="w-11 h-11 rounded-2xl flex items-center justify-center text-white/70 hover:text-white hover:bg-white/10 transition-all" href="#" title="Salir">
+    <span class="material-symbols-outlined text-[22px]">logout</span>
+  </a>
+</div></aside>
+<!-- END: Sidebar -->
+<!-- BEGIN: Main Content Area -->
+<main class="flex-1 flex flex-col h-full overflow-hidden bg-[#F6F8FC]" data-purpose="dashboard-main">
+<div class="flex flex-col w-full h-full p-4 lg:p-6 overflow-hidden">
+<!-- Top Bar -->
+<div class="flex items-center justify-between pb-4 shrink-0">
+<!-- Left: Title, Clinic Chip, WhatsApp Status -->
+<div class="flex items-center gap-3.5">
+<h1 class="text-[24px] font-bold text-slate-900 tracking-tight font-heading leading-tight">Bandeja</h1>
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white text-slate-700 text-xs font-medium shadow-sm border border-slate-200">
+<span class="material-symbols-outlined text-purple-600 text-[16px]">corporate_fare</span>
+<span class="">Clínica Bella Piel</span>
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+</div>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-medium border border-emerald-300/60 shadow-sm">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              WhatsApp conectado
+            </span>
+</div>
+<!-- Right: Global Search & Advisor User Menu -->
+<div class="flex items-center gap-3">
+<div class="relative w-64 hidden xl:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">search</span>
+<input class="w-full h-9 pl-9 pr-3 rounded-full bg-white border border-slate-200 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600 transition-all" placeholder="Buscar conversaciones..." type="text">
+</div>
+<!-- Camilo Arango · Asesor -->
+<div class="flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-white shadow-sm border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors">
+<div class="w-7 h-7 rounded-full bg-purple-100 text-purple-700 text-[11px] font-bold flex items-center justify-center">
+                CA
+              </div>
+<div class="flex items-center gap-1.5 text-left pr-1">
+<span class="text-xs text-slate-900 font-semibold">Camilo Arango</span>
+<span class="text-slate-400 text-xs">·</span>
+<span class="text-xs text-slate-500 font-medium">Asesor</span>
+</div>
+<span class="material-symbols-outlined text-slate-400 text-[18px]">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Three Column Layout Canvas -->
+<div class="flex-1 flex gap-4 min-h-0 overflow-hidden">
+<!-- COLUMN 1: Conversation List -->
+<section class="w-[340px] xl:w-[360px] flex-shrink-0 flex flex-col h-full bg-white rounded-2xl shadow-sm border border-slate-200/80 p-4 overflow-hidden">
+<!-- Tabs: Mías (8) & Sin asignar (3) [Active] -->
+<div class="p-1 rounded-xl bg-[#F3EEFE] flex items-center text-xs mb-3 shrink-0">
+<button class="flex-1 py-1.5 px-2 text-center rounded-lg text-slate-600 hover:text-slate-900 transition-colors font-medium flex items-center justify-center gap-1.5" type="button">
+<span class="">Mías</span>
+<span class="px-1.5 py-0.5 rounded-full bg-white/80 text-[10px] text-slate-600 font-semibold leading-tight">8</span>
+</button>
+<button class="flex-1 py-1.5 px-2 text-center rounded-lg bg-white text-[#7C3AED] shadow-sm font-semibold transition-all flex items-center justify-center gap-1.5" type="button">
+<span class="">Sin asignar</span>
+<span class="px-1.5 py-0.5 rounded-full bg-[#F3EEFE] text-[10px] text-[#7C3AED] font-bold leading-tight">3</span>
+</button>
+</div>
+<!-- Search input -->
+<div class="relative shrink-0 mb-3">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">search</span>
+<input class="w-full h-10 pl-10 pr-3 rounded-xl bg-[#F6F5FB] border-0 text-xs text-slate-800 placeholder:text-slate-400 focus:ring-2 focus:ring-[#7C3AED]/20 focus:bg-white transition-all" placeholder="Buscar por nombre o teléfono" type="text">
+</div>
+<!-- Filter Pills -->
+<div class="flex items-center gap-2 shrink-0 pb-3 overflow-x-auto no-scrollbar">
+<button class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#F6F5FB] hover:bg-slate-100 text-slate-700 text-xs font-medium shrink-0 transition-colors" type="button">
+<span class="">Responsable</span>
+<span class="text-[10px] text-slate-400">▾</span>
+</button>
+<button class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#F6F5FB] hover:bg-slate-100 text-slate-700 text-xs font-medium shrink-0 transition-colors" type="button">
+<span class="">Estado</span>
+<span class="text-[10px] text-slate-400">▾</span>
+</button>
+<button class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#F3EEFE] text-[#7C3AED] text-xs font-semibold shrink-0" type="button">
+<span class="">Abiertas</span>
+<span class="text-[10px]">▾</span>
+</button>
+</div>
+<!-- Conversation Items (Unassigned tab content) -->
+<div class="flex-1 overflow-y-auto pr-0.5 space-y-2">
+<!-- Selected: Andrés Restrepo -->
+<article class="relative flex items-center gap-3 p-3 rounded-xl bg-[#F3EEFE] border-l-[3px] border-[#7C3AED] cursor-pointer transition-all shadow-sm">
+<div class="w-11 h-11 rounded-full bg-purple-200 text-purple-900 font-bold text-sm flex items-center justify-center shrink-0 shadow-sm">
+                  AR
+                </div>
+<div class="flex-1 min-w-0 flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-semibold text-sm text-slate-900 truncate">Andrés Restrepo</span>
+<span class="text-xs text-[#7C3AED] shrink-0 font-semibold">09:15</span>
+</div>
+<div class="flex items-center justify-between">
+<p class="text-xs text-slate-700 truncate font-medium leading-tight">Hola, quiero información sobre depilación láser</p>
+<span class="w-2 h-2 rounded-full bg-[#7C3AED] shrink-0 ml-1"></span>
+</div>
+<div class="flex items-center justify-between pt-0.5">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-600 text-[10px] font-semibold">Nuevo</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#FEF3C7] text-[#D97706] text-[10px] font-semibold">
+<span class="material-symbols-outlined text-[12px]">person_off</span>
+                      Sin asignar
+                    </span>
+</div>
+</div>
+</article>
+<!-- Row 2: +57 310 456 7788 -->
+<article class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#F9F8FE] cursor-pointer transition-colors border-l-[3px] border-transparent">
+<div class="w-11 h-11 rounded-full bg-slate-100 text-[#7C3AED] flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">call</span>
+</div>
+<div class="flex-1 min-w-0 flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-semibold text-sm text-slate-900 truncate">+57 310 456 7788</span>
+<span class="text-xs text-slate-400 shrink-0">08:40</span>
+</div>
+<div class="flex items-center justify-between">
+<p class="text-xs text-slate-500 truncate leading-tight">Buenas tardes, información de citas y paquetes...</p>
+</div>
+<div class="flex items-center justify-between pt-0.5">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-600 text-[10px] font-semibold">Nuevo</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-[#FEF3C7] text-[#D97706] text-[10px] font-semibold">Sin asignar</span>
+</div>
+</div>
+</article>
+<!-- Row 3: Camila Pérez -->
+<article class="flex items-center gap-3 p-3 rounded-xl hover:bg-[#F9F8FE] cursor-pointer transition-colors border-l-[3px] border-transparent">
+<div class="w-11 h-11 rounded-full bg-emerald-100 text-emerald-800 font-bold text-sm flex items-center justify-center shrink-0">
+                  CP
+                </div>
+<div class="flex-1 min-w-0 flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-semibold text-sm text-slate-900 truncate">Camila Pérez</span>
+<span class="text-xs text-slate-400 shrink-0">Ayer</span>
+</div>
+<div class="flex items-center justify-between">
+<p class="text-xs text-slate-500 truncate leading-tight">¿Tienen disponibilidad para valoración este viernes?</p>
+</div>
+<div class="flex items-center justify-between pt-0.5">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-600 text-[10px] font-semibold">Nuevo</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-[#FEF3C7] text-[#D97706] text-[10px] font-semibold">Sin asignar</span>
+</div>
+</div>
+</article>
+</div>
+</section>
+<!-- COLUMN 2: Chat Panel -->
+<section class="flex-1 min-w-0 flex flex-col h-full bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden">
+<!-- Chat Header -->
+<header class="h-[72px] w-full px-5 border-b border-slate-100 flex items-center justify-between shrink-0">
+<!-- Left Group -->
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-10 h-10 rounded-full bg-purple-100 text-purple-900 font-bold text-sm flex items-center justify-center shrink-0 shadow-sm">
+                  AR
+                </div>
+<div class="flex flex-col justify-center min-w-0">
+<div class="flex items-center gap-2">
+<h2 class="font-semibold text-[16px] text-slate-900 leading-tight truncate">Andrés Restrepo</h2>
+<span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-50 text-[#6366F1] border border-indigo-200 flex items-center gap-1.5 shrink-0 whitespace-nowrap">
+<span class="w-1.5 h-1.5 rounded-full bg-[#6366F1]"></span>
+                      Nuevo
+                    </span>
+</div>
+<div class="flex items-center gap-1.5 text-xs text-slate-500 leading-tight mt-0.5 whitespace-nowrap">
+<span class="flex items-center gap-1 text-slate-500 font-medium">
+<span class="material-symbols-outlined text-[14px] text-emerald-600">chat</span>
+                      +57 310 987 6543
+                    </span>
+</div>
+</div>
+</div>
+<!-- Right Group: Sin asignar chip & Asignarme button -->
+
+</header>
+<!-- Messages Area -->
+<div class="flex-1 p-5 bg-[#F8F7FD] overflow-y-auto flex flex-col space-y-4">
+<!-- Date Badge -->
+<div class="flex justify-center">
+<span class="px-3 py-0.5 rounded-full bg-white text-slate-400 text-[11px] font-medium shadow-sm border border-slate-200/80">Hoy</span>
+</div>
+<!-- Exactly ONE incoming message bubble from Andrés Restrepo -->
+<div class="flex flex-col items-start max-w-[70%]">
+<div class="bg-white text-slate-800 p-4 rounded-[18px] rounded-bl-[4px] shadow-sm border border-slate-100">
+<p class="text-sm leading-relaxed text-slate-800">Hola, quiero información sobre depilación láser</p>
+<div class="text-right mt-1.5">
+<span class="text-[10px] text-slate-400 font-medium">09:15</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Composer Footer -->
+<footer class="p-4 bg-white border-t border-slate-100 shrink-0">
+<!-- WhatsApp Window Reminder -->
+<div class="flex items-center justify-center mb-2.5">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F6F5FB] text-slate-600 text-[11px]">
+<span class="material-symbols-outlined text-[14px] text-[#7C3AED]">schedule</span>
+<span class="">Ventana de WhatsApp abierta · quedan <strong class="text-[#7C3AED] font-semibold">23 h 45 min</strong></span>
+</div>
+</div>
+<!-- Input bar -->
+<div class="relative flex items-center">
+<button aria-label="Adjuntar archivo" class="absolute left-2 w-8 h-8 rounded-full text-slate-400 hover:text-[#7C3AED] hover:bg-[#F3EEFE] flex items-center justify-center transition-all z-20" title="Adjuntar archivo" type="button">
+<span class="material-symbols-outlined text-[20px]">attach_file</span>
+</button>
+<input class="w-full h-11 pl-11 pr-24 rounded-full bg-[#F6F5FB] border border-slate-200 text-sm text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/20 focus:border-[#7C3AED] focus:bg-white shadow-sm transition-all" id="messageInput" placeholder="Escribe un mensaje..." type="text">
+<button aria-label="Grabar nota de voz" class="absolute right-12 w-8 h-8 rounded-full bg-[#F3EEFE] hover:bg-[#EAE4FC] text-[#7C3AED] flex items-center justify-center shadow-sm transition-all active:scale-95 z-20" id="micBtn" title="Grabar nota de voz" type="button">
+<span class="material-symbols-outlined text-[18px]">mic</span>
+</button>
+<button aria-label="Enviar mensaje" class="absolute right-1.5 w-8 h-8 rounded-full bg-[#7C3AED] hover:bg-[#6D28D9] text-white flex items-center justify-center shadow-sm transition-all active:scale-95" id="sendBtn" type="button">
+<span class="material-symbols-outlined text-[17px] ml-0.5">send</span>
+</button>
+</div>
+<div class="text-center mt-2">
+<span class="text-[10px] text-slate-400">Enter para enviar · Shift + Enter para nueva línea</span>
+</div>
+</footer>
+</section>
+<!-- COLUMN 3: Contact Details Panel -->
+<aside class="w-[280px] xl:w-[300px] flex-shrink-0 flex flex-col h-full bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 overflow-y-auto">
+<!-- Header Profile Section -->
+<div class="flex flex-col items-center text-center pb-5 border-b border-slate-100 relative">
+<div class="w-16 h-16 rounded-full bg-purple-100 border-2 border-purple-200 flex items-center justify-center shadow-sm mb-3">
+<span class="text-purple-900 font-bold text-xl tracking-tight leading-none">AR</span>
+</div>
+<h3 class="font-heading text-[17px] font-bold text-slate-900 tracking-tight">Andrés Restrepo</h3>
+<p class="text-xs text-slate-500 mt-0.5 font-medium">+57 310 987 6543</p>
+<p class="text-xs text-slate-400 truncate max-w-full">andres.restrepo@gmail.com</p>
+<div class="flex items-center gap-2 mt-3">
+<button class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-[#F3EEFE] hover:bg-[#EAE4FC] text-[#7C3AED] text-xs font-semibold transition-colors" type="button">
+<span class="material-symbols-outlined text-[14px]">edit</span>
+<span class="">Editar</span>
+</button>
+<button class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-[#F3EEFE] hover:bg-[#EAE4FC] text-[#7C3AED] text-xs font-semibold transition-colors" title="Copiar teléfono" type="button">
+<span class="material-symbols-outlined text-[14px]">content_copy</span>
+<span class="">Copiar</span>
+</button>
+</div>
+</div>
+<!-- Estado del contacto -->
+<div class="py-4 border-b border-slate-100">
+<span class="block text-[11px] text-slate-400 uppercase tracking-wider mb-2 font-bold">ESTADO DEL CONTACTO</span>
+<div class="relative">
+<div class="w-full flex items-center justify-between px-3 py-2 rounded-full bg-indigo-50 border border-indigo-200 shadow-sm cursor-pointer hover:bg-indigo-100/60 transition-colors">
+<span class="inline-flex items-center gap-2 text-xs font-semibold text-indigo-700">
+<span class="w-2 h-2 rounded-full bg-indigo-600"></span>
+                    Nuevo
+                  </span>
+<span class="material-symbols-outlined text-indigo-500 text-[18px]">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Asesor asignado -->
+<div class="py-4 border-b border-slate-100">
+<span class="block text-[11px] text-slate-400 uppercase tracking-wider mb-2 font-bold">ASESOR ASIGNADO</span>
+<div class="flex items-center justify-between p-2.5 rounded-xl bg-[#FEF3C7] border border-amber-200">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[#D97706] text-[18px]">person_off</span>
+<span class="text-xs font-semibold text-amber-900">Sin asignar</span>
+</div>
+<button class="text-xs font-bold text-[#7C3AED] hover:underline" type="button">
+                  Tomar lead
+                </button>
+</div>
+</div>
+<!-- Quick Action Buttons -->
+<div class="flex flex-col gap-2 my-4">
+<button class="w-full h-9 rounded-full bg-[#7C3AED] hover:bg-[#6D28D9] text-white font-medium text-xs flex items-center justify-center gap-1.5 transition-colors shadow-sm active:scale-95" type="button">
+<span class="material-symbols-outlined text-[16px]">person_add</span>
+<span class="">Asignarme esta conversación</span>
+</button>
+<button class="w-full h-9 rounded-full bg-[#F3EEFE] hover:bg-[#EAE4FC] text-[#7C3AED] font-medium text-xs flex items-center justify-center gap-1.5 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">smart_toy</span>
+<span class="">Devolver al bot</span>
+</button>
+<button class="w-full h-9 rounded-full bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 font-medium text-xs flex items-center justify-center gap-1.5 transition-colors shadow-sm" type="button">
+<span class="material-symbols-outlined text-[16px] text-slate-400">check_circle</span>
+<span class="">Cerrar conversación</span>
+</button>
+</div>
+<!-- Información -->
+<div class="py-3 border-b border-slate-100 space-y-2.5">
+<span class="block text-[11px] text-slate-400 uppercase tracking-wider font-bold">INFORMACIÓN</span>
+<div class="flex items-center justify-between text-xs">
+<span class="text-slate-400">Creado</span>
+<span class="font-medium text-slate-800">Hoy, 09:15</span>
+</div>
+<div class="flex items-center justify-between text-xs">
+<span class="text-slate-400">Último mensaje</span>
+<span class="font-medium text-slate-800">Hoy, 09:15</span>
+</div>
+<div class="flex items-center justify-between text-xs">
+<span class="text-slate-400">Conversaciones</span>
+<span class="font-medium text-slate-800">1</span>
+</div>
+</div>
+<!-- Historial de estados -->
+<div class="py-4 flex-1">
+<span class="block text-[11px] text-slate-400 uppercase tracking-wider font-bold mb-3">HISTORIAL DE ESTADOS</span>
+<div class="relative pl-4 space-y-3">
+<div class="relative">
+<div class="absolute -left-4 top-1 w-2.5 h-2.5 rounded-full bg-indigo-600 ring-4 ring-indigo-50"></div>
+<div>
+<p class="text-xs text-indigo-700 font-bold">Nuevo</p>
+<p class="text-[11px] text-slate-400">Hoy · 09:15</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom secondary pill button -->
+<div class="pt-2 shrink-0">
+<button class="w-full py-2.5 rounded-full bg-[#F3EEFE] hover:bg-[#EAE4FC] text-[#7C3AED] font-semibold text-xs text-center transition-colors shadow-sm active:scale-[0.99]" type="button">
+                Ver contacto completo
+              </button>
+</div>
+</aside>
+</div>
+</div>
+<script>
+        // Simple micro-interaction for sending message input
+        const input = document.getElementById('messageInput');
+        const sendBtn = document.getElementById('sendBtn');
+
+        if (input && sendBtn) {
+          const handleSend = () => {
+            const val = input.value.trim();
+            if (!val) return;
+            input.value = '';
+          };
+
+          sendBtn.addEventListener('click', handleSend);
+          input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') handleSend();
+          });
+        }
+      </script>
+</main>
+<!-- END: Main Content Area -->
+</div>
+</body></html>

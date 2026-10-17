@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Consola de Plataforma - Auditoría | Numi</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface": "#fcf8ff",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f5f2fe",
+            "surface-container": "#efecf9",
+            "surface-container-high": "#eae6f3",
+            "surface-container-highest": "#e4e1ed",
+            "primary": "#630ed4",
+            "primary-container": "#7c3aed",
+            "primary-fixed": "#eaddff",
+            "on-primary": "#ffffff",
+            "on-primary-fixed": "#25005a",
+            "secondary": "#4648d4",
+            "outline": "#7b7487",
+            "outline-variant": "#ccc3d8",
+            "on-surface": "#1b1b23",
+            "on-surface-variant": "#4a4455",
+            "error": "#ba1a1a",
+            "error-container": "#ffdad6",
+            "on-error-container": "#93000a"
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+            headline: ["Plus Jakarta Sans", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      font-family: 'Inter', sans-serif;
+      overscroll-behavior: none;
+    }
+    h1, h2, h3, .font-heading {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+    }
+    .material-symbols-fill {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+    }
+  </style>
+</head>
+<body class="bg-[#FAF8FE] text-on-surface min-h-screen antialiased selection:bg-primary-fixed selection:text-on-primary-fixed flex">
+<!-- SIDEBAR (Fixed 240px width with deep #0A0A12 to #1E1538 gradient) -->
+<aside class="fixed left-0 top-0 h-screen w-60 z-50 flex flex-col justify-between bg-gradient-to-b from-[#0A0A12] via-[#120F24] to-[#1E1538] text-white px-4 py-5 select-none shadow-2xl border-r border-white/5">
+<div class="flex flex-col gap-6">
+<!-- Logo & System Tag -->
+<div class="flex flex-col gap-2.5 px-2">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#7C3AED] to-[#A855F7] p-0.5 flex items-center justify-center shadow-lg shadow-[#7C3AED]/30">
+<div class="w-full h-full bg-[#120F24]/60 backdrop-blur-sm rounded-[10px] flex items-center justify-center font-heading font-extrabold text-white text-lg tracking-wider">
+              N
+            </div>
+</div>
+<span class="font-heading font-bold text-xl tracking-tight text-white">Numi</span>
+</div>
+<div>
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] tracking-wider uppercase font-semibold bg-[#A855F7]/15 text-[#C084FC] border border-[#A855F7]/25">
+            CONSOLA DE PLATAFORMA
+          </span>
+</div>
+</div>
+<!-- Navigation Items -->
+<nav class="flex flex-col gap-1.5 mt-2">
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-sm font-medium" href="#">
+<span class="material-symbols-outlined text-[20px] text-white/60">dashboard</span>
+<span>Panel general</span>
+</a>
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-white/70 hover:text-white hover:bg-white/5 transition-all text-sm font-medium" href="#">
+<span class="material-symbols-outlined text-[20px] text-white/60">domain</span>
+<span>Organizaciones</span>
+</a>
+<!-- ACTIVE ITEM: Auditoría -->
+<a class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-white text-[#7C3AED] font-semibold shadow-[0_4px_20px_rgba(124,58,237,0.3)] transition-all text-sm" href="#">
+<span class="material-symbols-outlined text-[20px] text-[#7C3AED] material-symbols-fill">verified_user</span>
+<span>Auditoría</span>
+</a>
+</nav>
+</div>
+<!-- User & Session Footer -->
+<div class="flex flex-col gap-3 pt-4 bg-white/[0.04] rounded-2xl p-3 border border-white/5 backdrop-blur-sm">
+<div class="flex items-center gap-2.5 px-1">
+<div class="w-8 h-8 rounded-full bg-gradient-to-tr from-[#7C3AED] to-[#A855F7] flex items-center justify-center text-white text-xs font-heading font-bold shadow-sm">
+          AG
+        </div>
+<div class="flex flex-col min-w-0 flex-1">
+<span class="text-xs font-semibold text-white truncate leading-snug">Anthony González</span>
+<span class="text-[11px] text-white/50 truncate">Operador de plataforma</span>
+</div>
+</div>
+<div class="flex flex-col gap-1 border-t border-white/10 pt-2 text-xs">
+<a class="flex items-center justify-between px-2 py-1.5 rounded-lg text-white/60 hover:text-white hover:bg-white/5 transition-colors" href="#">
+<span>Ir al CRM</span>
+<span class="material-symbols-outlined text-[15px]">open_in_new</span>
+</a>
+<a class="flex items-center justify-between px-2 py-1.5 rounded-lg text-white/60 hover:text-rose-300 hover:bg-rose-500/10 transition-colors" href="#">
+<span>Cerrar sesión</span>
+<span class="material-symbols-outlined text-[15px]">logout</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- MAIN WRAPPER (Left padding = 240px) -->
+<div class="pl-60 flex-1 flex flex-col min-h-screen">
+<!-- TOP HEADER BAR -->
+<header class="h-16 sticky top-0 bg-[#FAF8FE]/90 backdrop-blur-md z-40 border-b border-[#E9E4F5] px-8 flex items-center justify-between gap-4">
+<!-- Breadcrumb -->
+<div class="flex items-center gap-2 text-sm text-on-surface-variant font-medium">
+<span class="text-outline hover:text-on-surface transition-colors cursor-pointer">Consola</span>
+<span class="text-outline-variant font-normal">/</span>
+<span class="text-on-surface font-semibold">Auditoría</span>
+</div>
+<!-- Right Header Actions -->
+<div class="flex items-center gap-4">
+<!-- Search Bar -->
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3.5 text-[18px] text-outline pointer-events-none">search</span>
+<input class="w-64 lg:w-72 h-9 pl-9 pr-4 rounded-full bg-white border border-[#E4DEEE] text-on-surface placeholder:text-outline text-xs outline-none focus:ring-2 focus:ring-[#7C3AED]/20 focus:border-[#7C3AED] transition-all shadow-sm" placeholder="Buscar en auditoría..." type="text"/>
+</div>
+<!-- Live Status Pill -->
+<div class="hidden md:inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200/60 text-xs font-medium shadow-xs">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+<span>Sistema operativo · 14 Oct, 09:42 COT</span>
+</div>
+<!-- Notification Bell -->
+<button class="relative w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:text-[#7C3AED] hover:bg-white transition-all border border-transparent hover:border-[#E4DEEE]" type="button">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#7C3AED] ring-2 ring-[#FAF8FE]"></span>
+</button>
+<!-- User Profile Pill / Avatar -->
+<div class="flex items-center gap-2 pl-1 border-l border-[#E9E4F5]">
+<div class="w-8 h-8 rounded-full bg-gradient-to-tr from-[#7C3AED] to-[#A855F7] flex items-center justify-center text-white text-xs font-heading font-bold shadow-sm">
+            AG
+          </div>
+</div>
+</div>
+</header>
+<!-- CONTENT BODY -->
+<main class="p-8 flex flex-col gap-6 flex-1 max-w-[1440px] w-full mx-auto">
+<!-- PAGE TITLE & HEADER BAR -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<div class="flex items-center gap-2.5">
+<h1 class="text-[26px] leading-8 font-bold text-on-surface font-heading tracking-tight">Auditoría</h1>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#F3E8FF] text-[#7C3AED] text-xs font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-[#7C3AED] animate-ping"></span>
+              En vivo
+            </span>
+</div>
+<p class="text-sm text-outline mt-1 font-normal">
+            Registro inmutable de trazabilidad de acciones operativas en plataforma
+          </p>
+</div>
+<!-- Action / Verification Badges -->
+<div class="flex items-center gap-3">
+<div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#E4DEEE] text-[#7C3AED] text-xs font-medium shadow-sm">
+<span class="material-symbols-outlined text-[17px] text-[#7C3AED] material-symbols-fill">verified_user</span>
+<span>Hash SHA-256 verificado</span>
+</div>
+<button class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white hover:bg-[#FAF8FE] border border-[#D5CBE6] text-[#7C3AED] font-semibold text-xs tracking-wide shadow-sm hover:shadow transition-all active:scale-95" type="button">
+<span class="material-symbols-outlined text-[17px]">download</span>
+<span>Exportar CSV</span>
+</button>
+</div>
+</div>
+<!-- FILTERS TOOLBAR (White rounded container) -->
+<div class="bg-white rounded-2xl p-3 px-4 shadow-[0_4px_20px_-2px_rgba(124,58,237,0.05)] border border-[#ECE7F4] flex flex-wrap items-center justify-between gap-3">
+<div class="flex flex-wrap items-center gap-2.5">
+<!-- Operator Filter -->
+<div class="relative">
+<select class="h-9 pl-3.5 pr-8 rounded-xl bg-[#F7F5FC] border-0 text-on-surface text-xs font-medium outline-none cursor-pointer focus:ring-2 focus:ring-[#7C3AED]/20 hover:bg-[#EFEBF9] transition-all appearance-none">
+<option value="all">Todos los operadores</option>
+<option value="franco">Franco (Operador)</option>
+<option value="anthony">Anthony (Admin)</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2 text-[18px] text-outline pointer-events-none">expand_more</span>
+</div>
+<!-- Organization Filter -->
+<div class="relative">
+<select class="h-9 pl-3.5 pr-8 rounded-xl bg-[#F7F5FC] border-0 text-on-surface text-xs font-medium outline-none cursor-pointer focus:ring-2 focus:ring-[#7C3AED]/20 hover:bg-[#EFEBF9] transition-all appearance-none">
+<option value="all">Todas las organizaciones</option>
+<option value="altos">Inmobiliaria Altos del Sur</option>
+<option value="aurora">Clínica Aurora</option>
+<option value="bella">Clínica Bella Piel</option>
+<option value="sonrie">Dental Sonríe</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2 text-[18px] text-outline pointer-events-none">expand_more</span>
+</div>
+<!-- Action Filter -->
+<div class="relative">
+<select class="h-9 pl-3.5 pr-8 rounded-xl bg-[#F7F5FC] border-0 text-on-surface text-xs font-medium outline-none cursor-pointer focus:ring-2 focus:ring-[#7C3AED]/20 hover:bg-[#EFEBF9] transition-all appearance-none">
+<option value="all">Todas las acciones</option>
+<option value="probar">Probar conexión</option>
+<option value="crear">Crear organización</option>
+<option value="copiar">Copiar enlace</option>
+<option value="editar">Editar datos</option>
+<option value="suspender">Suspender</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2 text-[18px] text-outline pointer-events-none">expand_more</span>
+</div>
+<!-- Date Range Selector -->
+<button class="h-9 px-3.5 rounded-xl bg-[#F7F5FC] hover:bg-[#EFEBF9] text-on-surface text-xs font-medium inline-flex items-center gap-2 border-0 transition-all cursor-pointer" type="button">
+<span class="material-symbols-outlined text-[16px] text-[#7C3AED]">calendar_today</span>
+<span>01 oct – 14 oct 2026</span>
+<span class="material-symbols-outlined text-[16px] text-outline">arrow_drop_down</span>
+</button>
+</div>
+<!-- Reset Button -->
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-outline hover:text-[#7C3AED] hover:bg-[#F7F5FC] rounded-lg transition-all" type="button">
+<span class="material-symbols-outlined text-[16px]">filter_alt_off</span>
+<span>Limpiar filtros</span>
+</button>
+</div>
+<!-- AUDIT LOG TABLE CARD (20px border radius with soft violet shadow) -->
+<div class="bg-white rounded-[20px] shadow-[0_8px_30px_-4px_rgba(124,58,237,0.06)] border border-[#EBE6F5] overflow-hidden">
+<div class="w-full overflow-x-auto">
+<table class="w-full text-left border-collapse min-w-[960px]">
+<thead>
+<tr class="bg-[#FAF8FE] border-b border-[#EBE6F5] text-[11px] font-semibold text-outline uppercase tracking-wider">
+<th class="py-3.5 pl-6 pr-4">Fecha y hora</th>
+<th class="py-3.5 px-4">Operador</th>
+<th class="py-3.5 px-4">Organización</th>
+<th class="py-3.5 px-4">Acción</th>
+<th class="py-3.5 px-4">Resumen / Detalles</th>
+<th class="py-3.5 pr-6 pl-4 text-right">Detalle</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#F2EEF9] text-xs">
+<!-- ROW 1: Connection Test Meta API Error -->
+<tr class="hover:bg-[#FAF8FE]/80 transition-colors">
+<td class="py-4 pl-6 pr-4 whitespace-nowrap text-on-surface font-medium">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-outline">schedule</span>
+<span>14 oct 2026, 9:12 a. m.</span>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-[#E9D8FD] text-[#6B21A8] flex items-center justify-center font-bold text-[11px]">
+                      FO
+                    </div>
+<span class="font-medium text-on-surface">Franco</span>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<div class="flex flex-col">
+<span class="font-semibold text-on-surface">Inmobiliaria Altos del Sur</span>
+<span class="text-[11px] text-outline">Bienes Raíces · Itagüí</span>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full bg-[#F3EFFB] text-[#553C9A] font-medium text-[11px]">
+                    Probar conexión
+                  </span>
+</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-50 text-rose-700 border border-rose-200/60 font-medium text-[11px]">
+<span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+                    Fallida: token inválido (Meta API Error 190)
+                  </span>
+</td>
+<td class="py-4 pr-6 pl-4 text-right">
+<button class="w-7 h-7 rounded-full inline-flex items-center justify-center text-outline hover:text-[#7C3AED] hover:bg-[#F3EFFB] transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</td>
+</tr>
+<!-- ROW 2: Organization Creation -->
+<tr class="hover:bg-[#FAF8FE]/80 transition-colors">
+<td class="py-4 pl-6 pr-4 whitespace-nowrap text-on-surface font-medium">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-outline">schedule</span>
+<span>13 oct 2026, 4:30 p. m.</span>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-[#7C3AED] text-white flex items-center justify-center font-bold text-[11px] shadow-sm">
+                      AG
+                    </div>
+<span class="font-medium text-on-surface">Anthony</span>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<div class="flex flex-col">
+<span class="font-semibold text-on-surface">Clínica Aurora</span>
+<span class="text-[11px] text-outline">Salud · Medellín</span>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full bg-[#EDE9FE] text-[#6D28D9] font-medium text-[11px]">
+                    Crear organización
+                  </span>
+</td>
+<td class="py-4 px-4">
+<span class="text-on-surface font-normal">Creada como Piloto (14 días) e invitó a Natalia Arango</span>
+</td>
+<td class="py-4 pr-6 pl-4 text-right">
+<button class="w-7 h-7 rounded-full inline-flex items-center justify-center text-outline hover:text-[#7C3AED] hover:bg-[#F3EFFB] transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</td>
+</tr>
+<!-- ROW 3: Copy Link -->
+<tr class="hover:bg-[#FAF8FE]/80 transition-colors">
+<td class="py-4 pl-6 pr-4 whitespace-nowrap text-on-surface font-medium">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-outline">schedule</span>
+<span>12 oct 2026, 10:05 a. m.</span>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-[#7C3AED] text-white flex items-center justify-center font-bold text-[11px] shadow-sm">
+                      AG
+                    </div>
+<span class="font-medium text-on-surface">Anthony</span>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<div class="flex flex-col">
+<span class="font-semibold text-on-surface">Clínica Bella Piel</span>
+<span class="text-[11px] text-outline">Estética &amp; Salud · Medellín</span>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full bg-[#F3EFFB] text-[#553C9A] font-medium text-[11px]">
+                    Copiar enlace
+                  </span>
+</td>
+<td class="py-4 px-4">
+<span class="text-on-surface font-normal">Invitación de Mariana Toro (enlace de un solo uso copiado)</span>
+</td>
+<td class="py-4 pr-6 pl-4 text-right">
+<button class="w-7 h-7 rounded-full inline-flex items-center justify-center text-outline hover:text-[#7C3AED] hover:bg-[#F3EFFB] transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</td>
+</tr>
+<!-- ROW 4: EXPANDED ROW (Edit Data Diff) -->
+<tr class="bg-[#F5F2FE]/50 font-medium">
+<td class="py-4 pl-6 pr-4 whitespace-nowrap text-[#7C3AED]">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+<span class="font-semibold">08 oct 2026, 3:40 p. m.</span>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-[#E9D8FD] text-[#6B21A8] flex items-center justify-center font-bold text-[11px]">
+                      FO
+                    </div>
+<span class="font-semibold text-on-surface">Franco</span>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<div class="flex flex-col">
+<span class="font-semibold text-on-surface">Clínica Bella Piel</span>
+<span class="text-[11px] text-outline">Estética &amp; Salud · Medellín</span>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full bg-[#7C3AED] text-white font-semibold text-[11px] shadow-xs">
+                    Editar datos
+                  </span>
+</td>
+<td class="py-4 px-4">
+<span class="font-semibold text-on-surface">Ciudad y teléfono del contacto actualizados</span>
+</td>
+<td class="py-4 pr-6 pl-4 text-right">
+<button class="w-7 h-7 rounded-full inline-flex items-center justify-center bg-[#7C3AED] text-white rotate-90 transition-transform shadow-xs" type="button">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</td>
+</tr>
+<!-- EXPANDED DIFF CONTAINER ROW -->
+<tr class="bg-[#F5F2FE]/50">
+<td class="px-6 pb-6 pt-1" colspan="6">
+<div class="bg-white rounded-xl p-5 border border-[#E2D9F3] shadow-sm flex flex-col gap-4">
+<!-- Diff Header -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-[#F0EBF7] gap-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#7C3AED] text-[20px]">difference</span>
+<h4 class="font-heading font-bold text-sm text-on-surface">Trazabilidad de modificaciones (Diff)</h4>
+<span class="px-2 py-0.5 rounded-full bg-[#F3E8FF] text-[#7C3AED] font-semibold text-[11px]">2 campos afectados</span>
+</div>
+<div class="flex items-center gap-3 text-[11px] text-outline font-normal">
+<span class="inline-flex items-center gap-1"><span class="font-medium text-on-surface">ID Auditoría:</span> <span class="font-mono">AUD-7729-MOD</span></span>
+<span>•</span>
+<span class="inline-flex items-center gap-1"><span class="font-medium text-on-surface">IP:</span> 181.137.94.12</span>
+<span>•</span>
+<span class="inline-flex items-center gap-1 text-[#7C3AED] font-medium"><span class="material-symbols-outlined text-[13px]">lock</span> Hash: 0x8F9B...44E1</span>
+</div>
+</div>
+<!-- 2 Columns with Before/After Diff Blocks -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Field 1: Ciudad -->
+<div class="p-3.5 rounded-xl bg-[#FAF8FE] border border-[#ECE5F6] flex flex-col gap-2">
+<div class="flex items-center justify-between text-xs">
+<span class="text-[11px] font-semibold text-outline uppercase tracking-wider">Campo modificado</span>
+<span class="font-semibold text-on-surface">Ciudad</span>
+</div>
+<div class="flex items-center gap-3 pt-1">
+<!-- Old Value -->
+<div class="flex-1 px-3 py-2 rounded-lg bg-white border border-[#EAE3F4] text-outline line-through text-xs font-medium">
+                            Envigado
+                          </div>
+<span class="material-symbols-outlined text-[#7C3AED] text-[18px] shrink-0">arrow_forward</span>
+<!-- New Value -->
+<div class="flex-1 px-3 py-2 rounded-lg bg-[#F3E8FF] border border-[#D8B4FE] text-[#6B21A8] font-bold text-xs flex items-center justify-between">
+<span>Medellín</span>
+<span class="material-symbols-outlined text-[16px] text-emerald-600 material-symbols-fill">check_circle</span>
+</div>
+</div>
+</div>
+<!-- Field 2: Teléfono -->
+<div class="p-3.5 rounded-xl bg-[#FAF8FE] border border-[#ECE5F6] flex flex-col gap-2">
+<div class="flex items-center justify-between text-xs">
+<span class="text-[11px] font-semibold text-outline uppercase tracking-wider">Campo modificado</span>
+<span class="font-semibold text-on-surface">Teléfono de contacto</span>
+</div>
+<div class="flex items-center gap-3 pt-1">
+<!-- Old Value -->
+<div class="flex-1 px-3 py-2 rounded-lg bg-white border border-[#EAE3F4] text-outline line-through text-xs font-medium">
+                            +57 312 000 1111
+                          </div>
+<span class="material-symbols-outlined text-[#7C3AED] text-[18px] shrink-0">arrow_forward</span>
+<!-- New Value -->
+<div class="flex-1 px-3 py-2 rounded-lg bg-[#F3E8FF] border border-[#D8B4FE] text-[#6B21A8] font-bold text-xs flex items-center justify-between">
+<span>+57 312 000 4567</span>
+<span class="material-symbols-outlined text-[16px] text-emerald-600 material-symbols-fill">check_circle</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<!-- ROW 5: Suspended Tenant -->
+<tr class="hover:bg-[#FAF8FE]/80 transition-colors">
+<td class="py-4 pl-6 pr-4 whitespace-nowrap text-on-surface font-medium">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-outline">schedule</span>
+<span>21 sep 2026, 2:00 p. m.</span>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-[#E9D8FD] text-[#6B21A8] flex items-center justify-center font-bold text-[11px]">
+                      FO
+                    </div>
+<span class="font-medium text-on-surface">Franco</span>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<div class="flex flex-col">
+<span class="font-semibold text-on-surface">Dental Sonríe</span>
+<span class="text-[11px] text-outline">Salud Oral · Envigado</span>
+</div>
+</td>
+<td class="py-4 px-4 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200 font-semibold text-[11px]">
+                    Suspender
+                  </span>
+</td>
+<td class="py-4 px-4">
+<span class="text-on-surface font-normal">Motivo: Fin del piloto (notificado a administración)</span>
+</td>
+<td class="py-4 pr-6 pl-4 text-right">
+<button class="w-7 h-7 rounded-full inline-flex items-center justify-center text-outline hover:text-[#7C3AED] hover:bg-[#F3EFFB] transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- TABLE FOOTER & PAGINATION -->
+<div class="px-6 py-4 bg-[#FAF8FE] border-t border-[#EBE6F5] flex flex-col sm:flex-row items-center justify-between gap-4">
+<!-- Security Notice -->
+<div class="flex items-center gap-2 text-xs text-outline font-normal">
+<span class="material-symbols-outlined text-[16px] text-[#7C3AED]">lock</span>
+<span>Los registros de auditoría no se pueden editar ni borrar. Retención obligatoria por 180 días bajo cadena de custodia criptográfica.</span>
+</div>
+<!-- Pagination Controls -->
+<div class="flex items-center gap-4">
+<span class="text-xs text-outline">Mostrando 5 de 142 eventos</span>
+<div class="flex items-center gap-1">
+<button class="w-7 h-7 rounded-lg flex items-center justify-center text-outline hover:text-[#7C3AED] hover:bg-white transition-colors" disabled="" type="button">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="w-7 h-7 rounded-lg flex items-center justify-center bg-[#7C3AED] text-white font-semibold text-xs shadow-xs" type="button">
+                1
+              </button>
+<button class="w-7 h-7 rounded-lg flex items-center justify-center text-on-surface hover:bg-white text-xs font-medium transition-colors" type="button">
+                2
+              </button>
+<button class="w-7 h-7 rounded-lg flex items-center justify-center text-on-surface hover:bg-white text-xs font-medium transition-colors" type="button">
+                3
+              </button>
+<span class="px-1 text-outline text-xs">...</span>
+<button class="w-7 h-7 rounded-lg flex items-center justify-center text-on-surface hover:bg-white text-xs font-medium transition-colors" type="button">
+                29
+              </button>
+<button class="w-7 h-7 rounded-lg flex items-center justify-center text-on-surface hover:text-[#7C3AED] hover:bg-white transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
